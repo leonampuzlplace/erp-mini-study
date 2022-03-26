@@ -18,12 +18,6 @@ class CompanyRepository extends BaseRepository
     return $companyRepository;
   }
 
-  public function destroy(int $companyId): bool
-  {
-    $companyFound = $this->model->findOrFail($companyId);
-    return $companyFound->delete();
-  }
-
   public function index(array $paginateOptions = [], array $filter = []): array
   {
     $paginateOptions = $this->paginateOptionsValidated($paginateOptions);
@@ -63,27 +57,5 @@ class CompanyRepository extends BaseRepository
     return ($paginateOptions['onlyData'] == 1)
       ? $queryBuilder->toArray()['data'] 
       : $queryBuilder->toArray();    
-  }
-
-  public function show(int $companyId, bool $resultIsModel = false): Company | array
-  {
-    $companyFound = $this->model->findOrFail($companyId);
-    return $resultIsModel 
-      ? $companyFound
-      : $companyFound->toArray();
-  }
-
-  public function store(array $companyData): array
-  {
-    return $this->model
-      ->create($companyData)
-      ->toArray();
-  }
-
-  public function update(int $companyId, array $companyData): array
-  {
-    $companyFound = $this->show($companyId, true);
-    tap($companyFound)->update($companyData);
-    return $companyFound->toArray();
   }
 }

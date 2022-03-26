@@ -22,6 +22,34 @@ abstract class BaseRepository
     return $this->model;
   }
 
+  public function destroy(int $id): bool
+  {
+    $modelFound = $this->model->findOrFail($id);
+    return $modelFound->delete();
+  }
+
+  public function show(int $id, bool $resultIsModel = false): Model | array
+  {
+    $modelFound = $this->model->findOrFail($id);
+    return $resultIsModel
+      ? $modelFound
+      : $modelFound->toArray();
+  }
+
+  public function store(array $data): array
+  {
+    return $this->model
+      ->create($data)
+      ->toArray();
+  }
+
+  public function update(int $id, array $data): array
+  {
+    $modelFound = $this->show($id, true);
+    tap($modelFound)->update($data);
+    return $modelFound->toArray();
+  }
+
   protected function persist(\Closure $function)
   {
     try {
