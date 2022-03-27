@@ -44,7 +44,7 @@ class CompanyRepository extends BaseRepository
             ->orWhere('company.company_ein', 'like', $value);
         });
       }
-    }    
+    }
 
     // Paginação
     $queryBuilder = match ($paginateOptions['paginateType']){
@@ -57,5 +57,5 @@ class CompanyRepository extends BaseRepository
     return ($paginateOptions['onlyData'] == 1)
       ? $queryBuilder->toArray()['data'] 
       : $queryBuilder->toArray();    
-  }
+  }  
 }

@@ -31,7 +31,7 @@ class CompanyController extends Controller
     try {
       $data = CompanyIndexService::make(
         $queryParams['paginateOptions'],
-        $queryParams['filter']
+        $queryParams['filter'],
       )->execute();
     } catch (\Exception $ex) {
       return $this->responseError($ex->getMessage());

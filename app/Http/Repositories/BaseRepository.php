@@ -22,10 +22,21 @@ abstract class BaseRepository
     return $this->model;
   }
 
-  public function destroy(int $id): bool
+  public function destroy(int $id, bool $withTransaction = false): bool
   {
-    $modelFound = $this->model->findOrFail($id);
-    return $modelFound->delete();
+    $executeDestroy = function ($id) {
+      $modelFound = $this->model->findOrFail($id);
+      return $modelFound->delete();
+    };
+
+    return match ($withTransaction) {
+      true => $this->withTransaction()->persist(
+        function () use ($executeDestroy, $id) {
+          return $executeDestroy($id);
+        }
+      ),
+      false => $executeDestroy($id),
+    };
   }
 
   public function show(int $id, bool $resultIsModel = false): Model | array
@@ -36,18 +47,38 @@ abstract class BaseRepository
       : $modelFound->toArray();
   }
 
-  public function store(array $data): array
+  public function store(array $data, bool $withTransaction = false): array
   {
-    return $this->model
-      ->create($data)
-      ->toArray();
+    $executeStore = function ($data) {
+      return $this->model->create($data)->toArray();
+    };
+
+    return match ($withTransaction) {
+      true => $this->withTransaction()->persist(
+        function () use ($executeStore, $data) {
+          return $executeStore($data);
+        }
+      ),
+      false => $executeStore($data),
+    };
   }
 
-  public function update(int $id, array $data): array
+  public function update(int $id, array $data, bool $withTransaction = false): array
   {
-    $modelFound = $this->show($id, true);
-    tap($modelFound)->update($data);
-    return $modelFound->toArray();
+    $executeUpdate = function ($id, $data) {
+      $modelFound = $this->show($id, true);
+      tap($modelFound)->update($data);
+      return $modelFound->toArray();
+    };
+
+    return match ($withTransaction) {
+      true => $this->withTransaction()->persist(
+        function () use ($executeUpdate, $id, $data) {
+          return $executeUpdate($id, $data);
+        }
+      ),
+      false => $executeUpdate($id, $data),
+    };    
   }
 
   protected function persist(\Closure $function)
@@ -67,10 +98,6 @@ abstract class BaseRepository
     $this->withTransaction = true;
     return $this;
   }
-  // Exemplo de uso
-  // return $this->withTransaction()->persist(function () use ($request) {
-  //   return $this->repository->store($request->all());
-  // });
 
   public function paginateOptionsValidated(array $paginateOptions = []): array
   {
