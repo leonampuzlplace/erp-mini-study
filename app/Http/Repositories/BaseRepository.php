@@ -17,20 +17,15 @@ abstract class BaseRepository
     $this->model = $model;
   }
 
-  public function getModel(): Model
-  {
-    return $this->model;
-  }
-
-  public function destroy(int $id, bool $withTransaction = false): bool
+  public function destroy(int $id): bool
   {
     $executeDestroy = function ($id) {
       $modelFound = $this->model->findOrFail($id);
       return $modelFound->delete();
     };
 
-    return match ($withTransaction) {
-      true => $this->withTransaction()->persist(
+    return match ($this->withTransaction) {
+      true => DB::transaction(
         function () use ($executeDestroy, $id) {
           return $executeDestroy($id);
         }
@@ -47,14 +42,15 @@ abstract class BaseRepository
       : $modelFound->toArray();
   }
 
-  public function store(array $data, bool $withTransaction = false): array
+  public function store(array $data): array
   {
+    dd($this->withTransaction);
     $executeStore = function ($data) {
       return $this->model->create($data)->toArray();
     };
 
-    return match ($withTransaction) {
-      true => $this->withTransaction()->persist(
+    return match ($this->withTransaction) {
+      true => DB::transaction(
         function () use ($executeStore, $data) {
           return $executeStore($data);
         }
@@ -63,7 +59,7 @@ abstract class BaseRepository
     };
   }
 
-  public function update(int $id, array $data, bool $withTransaction = false): array
+  public function update(int $id, array $data): array
   {
     $executeUpdate = function ($id, $data) {
       $modelFound = $this->show($id, true);
@@ -71,8 +67,8 @@ abstract class BaseRepository
       return $modelFound->toArray();
     };
 
-    return match ($withTransaction) {
-      true => $this->withTransaction()->persist(
+    return match ($this->withTransaction) {
+      true => DB::transaction(
         function () use ($executeUpdate, $id, $data) {
           return $executeUpdate($id, $data);
         }
@@ -81,21 +77,9 @@ abstract class BaseRepository
     };    
   }
 
-  protected function persist(\Closure $function)
+  public function withTransaction(bool $active)
   {
-    try {
-      if (!$this->withTransaction) {
-        return $function();
-      }
-    } catch (Throwable $exception) {
-      throw $exception;
-    }
-    return DB::transaction($function);
-  }
-
-  protected function withTransaction()
-  {
-    $this->withTransaction = true;
+    $this->withTransaction = $active;
     return $this;
   }
 
