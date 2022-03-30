@@ -110,13 +110,6 @@ abstract class BaseRepository
         3 => $filter['searchValue'] ?? '',         // Igual
       },
     ];
-  }
-
-  public function prepareBuilder(): Builder
-  {
-    return $this->model->where(
-      $this->model->getTable().'.'.$this->model->getKeyName(), '>', 0
-    );
-  }
+  }  
 }
 

@@ -22,7 +22,9 @@ class CompanyRepository extends BaseRepository
   {
     $paginateOptions = $this->paginateOptionsValidated($paginateOptions);
     $filter = $this->filterValidated($filter);
-    $queryBuilder = $this->prepareBuilder();
+    
+    // Iniciar construção da Query
+    $queryBuilder = $this->model->newQuery();
 
     // Ordenação
     if ($filter['orderBy']) {
