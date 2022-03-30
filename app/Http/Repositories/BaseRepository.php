@@ -44,7 +44,6 @@ abstract class BaseRepository
 
   public function store(array $data): array
   {
-    dd($this->withTransaction);
     $executeStore = function ($data) {
       return $this->model->create($data)->toArray();
     };

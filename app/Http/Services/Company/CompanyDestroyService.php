@@ -9,12 +9,15 @@ class CompanyDestroyService
   private int $companyId;
   private CompanyRepository $companyRepository;
 
+  private function __construct(CompanyRepository $companyRepository, int $companyId)
+  {
+    $this->companyRepository = $companyRepository;
+    $this->companyId = $companyId;
+  }
+
   public static function make(int $companyId): CompanyDestroyService
   {
-    $companyService = new self;
-    $companyService->companyRepository = CompanyRepository::make();
-    $companyService->companyId = $companyId;
-    return $companyService;
+    return new self(CompanyRepository::make(), $companyId);
   }
 
   public function execute(): bool

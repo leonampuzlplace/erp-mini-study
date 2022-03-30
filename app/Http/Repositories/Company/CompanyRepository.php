@@ -7,15 +7,14 @@ use App\Models\Company;
 
 class CompanyRepository extends BaseRepository
 {
-  public function __construct()
+  private function __construct(Company $company)
   {
-    parent::__construct(new Company());
+    parent::__construct($company);
   }
 
   public static function make(): CompanyRepository
   {
-    $companyRepository = new self;
-    return $companyRepository;
+    return new self(new Company);
   }
 
   public function index(array $paginateOptions = [], array $filter = []): array

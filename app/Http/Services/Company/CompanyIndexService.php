@@ -10,13 +10,20 @@ class CompanyIndexService
   private array $paginateOptions;
   private array $filter;
 
+  private function __construct(CompanyRepository $companyRepository, array $paginateOptions = [], array $filter = [])
+  {
+    $this->companyRepository = $companyRepository;
+    $this->paginateOptions = $paginateOptions;
+    $this->filter = $filter;
+  }
+
   public static function make(array $paginateOptions = [], array $filter = []): CompanyIndexService
   {
-    $companyService = new self;
-    $companyService->companyRepository = CompanyRepository::make();
-    $companyService->paginateOptions = $paginateOptions;
-    $companyService->filter = $filter;
-    return $companyService;
+    return new self(
+      CompanyRepository::make(), 
+      $paginateOptions, 
+      $filter
+    );  
   }
 
   public function execute(): array

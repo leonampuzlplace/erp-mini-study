@@ -9,13 +9,17 @@ class CompanyUpdateService
   private int $companyId;
   private array $companyData;
   private CompanyRepository $companyRepository;
-  
+
+  private function __construct(CompanyRepository $companyRepository, int $companyId, array $companyData)
+  {
+    $this->companyRepository = $companyRepository;
+    $this->companyId = $companyId;
+    $this->companyData = $companyData;
+  }
+
   public static function make(int $companyId, array $companyData): CompanyUpdateService
   {
-    $companyService = new self;
-    $companyService->companyRepository = CompanyRepository::make();
-    $companyService->companyId = $companyId;
-    $companyService->companyData = $companyData;
+    $companyService = new self(CompanyRepository::make(), $companyId, $companyData);
     return $companyService;
   }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
+use App\Http\Repositories\Company\CompanyRepository;
 use App\Http\Requests\Company\CompanyRequest;
 use App\Http\Services\Company\CompanyDestroyService;
 use App\Http\Services\Company\CompanyIndexService;
@@ -52,6 +53,7 @@ class CompanyController extends Controller
   public function store(CompanyRequest $request): JsonResponse
   {
     $companyData = $request->validated();
+
     try {
       $data = CompanyStoreService::make($companyData)->execute();
     } catch (\Exception $ex) {

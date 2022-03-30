@@ -8,13 +8,16 @@ class CompanyStoreService
 {
   private array $companyData;
   private CompanyRepository $companyRepository;
-  
+
+  private function __construct(CompanyRepository $companyRepository, array $companyData)
+  {
+    $this->companyRepository = $companyRepository;
+    $this->companyData = $companyData;
+  }
+
   public static function make(array $companyData): CompanyStoreService
   {
-    $companyService = new self;
-    $companyService->companyRepository = CompanyRepository::make();
-    $companyService->companyData = $companyData;
-    return $companyService;
+    return new self(CompanyRepository::make(), $companyData);
   }
 
   public function execute(): array
