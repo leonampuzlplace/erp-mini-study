@@ -82,33 +82,55 @@ abstract class BaseRepository
     return $this;
   }
 
-  public function paginateOptionsValidated(array $paginateOptions = []): array
+  public function pageOptionsValidated(array $pageOptions = []): array
   {
     return [
-      'perPage' => $paginateOptions['perPage'] ?? 10,
-      'page' => $paginateOptions['page'] ?? 1,
-      'paginateType' => intval($paginateOptions['paginateType'] ?? 0),
-      'columns' => $paginateOptions['columns'] ?? ['*'],
-      'cursor' => $paginateOptions['cursor'] ?? null,
-      'onlyData' => $paginateOptions['onlyData'] ?? 0,
+      'perPage' => $pageOptions['perPage'] ?? 10,
+      'page' => $pageOptions['page'] ?? 1,
+      'paginateType' => intval($pageOptions['paginateType'] ?? 0),
+      'columns' => $pageOptions['columns'] ?? ['*'],
+      'cursor' => $pageOptions['cursor'] ?? null,
+      'onlyData' => $pageOptions['onlyData'] ?? 0,
     ];
   }
   
   public function filterValidated(array $filter = []): array
   {
-    return [
-      'orderBy' => $filter['orderBy'] ?? '',
+    $filter = [
+      'orderBy' => $filter['orderBy'] ?? [''],
       'searchField' => $filter['searchField'] ?? '',
       'searchValue' => $filter['searchValue'] ?? '',
       'searchType' => intval($filter['searchType'] ?? 0),
       'customSearchValue' => $filter['customSearchValue'] ?? [''],
       'searchValueAndType' => match (intval($filter['searchType'] ?? 0)) {
-        0 => $filter['searchValue'] ?? ''.'%',     // Inicio
-        1 => '%'.$filter['searchValue'] ?? '',     // Fim      
-        2 => '%'.$filter['searchValue'] ?? ''.'%', // Qualquer Parte
-        3 => $filter['searchValue'] ?? '',         // Igual
+        0 => $filter['searchValue'] ?? '' . '%',       // Inicio
+        1 => '%' . $filter['searchValue'] ?? '',       // Fim      
+        2 => '%' . $filter['searchValue'] ?? '' . '%', // Qualquer Parte
+        3 => $filter['searchValue'] ?? '',             // Igual
       },
     ];
-  }  
+
+    // Ordenação
+    foreach ($filter['orderBy'] as $key => $value) {
+      if (!$value) {
+        continue;
+      }
+      // Ordenação Default
+      $orderByColumn = trim(str_replace(' asc', '', $value));
+      $orderByDirection = 'asc';
+
+      // Ordenação Contrária
+      if (str_contains($value, ' desc')) {
+        $orderByColumn = trim(str_replace(' desc', '', $value));
+        $orderByDirection = 'desc';
+      }
+      $filter['orderBy'][$key] = [
+        'column' => $orderByColumn,
+        'direction' => $orderByDirection
+      ];
+    }
+
+    return  $filter;
+  }
 }
 

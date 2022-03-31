@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
 
+use function PHPSTORM_META\map;
+
 // HTTP_OK = (200) Requisição foi bem sucedida com retorno no corpo da mensagem.
 // HTTP_CREATED = (201) Requisição foi bem sucedida e um novo recurso foi criado e retornado no corpo da mensagem.
 // HTTP_NO_CONTENT = (204) Requisição foi bem sucedida e não tem corpo de mensagem.
@@ -53,31 +55,16 @@ class Controller extends BaseController
 
     public function queryParamsValidated(Request $request): array
     {
-        $paginateOptions = [
-            'perPage' => $request->query('perPage'),
-            'page' => $request->query('page'),
-            'paginateType' => $request->query('paginateType'),
-            'columns' => $request->query('columns')
-                ? explode(";", $request->query('columns'))
-                : '*',
-            'cursor' => $request->query('cursor'),
-            'onlyData' => $request->query('onlyData'),
-        ];
-        
-        $filter = [
-            'orderBy' => $request->query('orderBy'),
-            'searchField' => $request->query('searchField'),
-            'searchValue' => $request->query('searchValue'),
-            'searchType' => $request->query('searchType'),
-            'customSearchValue' => $request->query('customSearchValue')
-                ? explode(";", $request->query('customSearchValue'))
-                : '',
-        ];
+        $pageOptions = $request->only(['perPage', 'page', 'paginateType', 'cursor', 'onlyData']);
+        $pageOptions['columns'] = explode(',', $request->query('columns', '*'));
+
+        $filter = $request->query('filter');
+        $filter['orderBy'] = explode(',', $request->query('filter', [])['orderBy'] ?? '');
+        $filter['customSearchValue'] = explode(',', $request->query('filter', [])['customSearchValue'] ?? '');
 
         return [
-            'paginateOptions' => $paginateOptions, 
-            'filter' => $filter,
+            'pageOptions' => $pageOptions, 
+            'filter' => $filter
         ];
     }
-
 }

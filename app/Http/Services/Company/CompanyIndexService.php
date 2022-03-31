@@ -7,27 +7,27 @@ use App\Http\Repositories\Company\CompanyRepository;
 class CompanyIndexService
 {
   private CompanyRepository $companyRepository;
-  private array $paginateOptions;
+  private array $pageOptions;
   private array $filter;
 
-  private function __construct(CompanyRepository $companyRepository, array $paginateOptions = [], array $filter = [])
+  private function __construct(CompanyRepository $companyRepository, array $pageOptions = [], array $filter = [])
   {
     $this->companyRepository = $companyRepository;
-    $this->paginateOptions = $paginateOptions;
+    $this->pageOptions = $pageOptions;
     $this->filter = $filter;
   }
 
-  public static function make(array $paginateOptions = [], array $filter = []): CompanyIndexService
+  public static function make(array $pageOptions = [], array $filter = []): CompanyIndexService
   {
     return new self(
-      CompanyRepository::make(), 
-      $paginateOptions, 
+      CompanyRepository::make(),
+      $pageOptions,
       $filter
     );  
   }
 
   public function execute(): array
   {
-    return $this->companyRepository->index($this->paginateOptions, $this->filter);
+    return $this->companyRepository->index($this->pageOptions, $this->filter);
   }
 }
