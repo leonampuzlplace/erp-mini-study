@@ -12,17 +12,15 @@ class Company extends Model
     use SoftDeletes;
 
     protected $table = 'company';
-    protected $primaryKey = 'company_id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 
     protected $hidden = [
         'deleted_at',
-        'created_at',
-        'updated_at',
     ];
 
     protected $fillable = [
-        'company_id',
+        'id',
         'business_name',
         'alias_name',
         'company_ein',

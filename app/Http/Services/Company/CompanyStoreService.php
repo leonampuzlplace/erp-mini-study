@@ -2,26 +2,27 @@
 
 namespace App\Http\Services\Company;
 
+use App\Http\Dto\Company\CompanyDto;
 use App\Http\Repositories\Company\CompanyRepository;
 
 class CompanyStoreService
 {
-  private array $companyData;
+  private CompanyDto $companyDto;
   private CompanyRepository $companyRepository;
 
-  private function __construct(CompanyRepository $companyRepository, array $companyData)
+  private function __construct(CompanyRepository $companyRepository, CompanyDto $companyDto)
   {
     $this->companyRepository = $companyRepository;
-    $this->companyData = $companyData;
+    $this->companyDto = $companyDto;
   }
 
-  public static function make(array $companyData): CompanyStoreService
+  public static function make(CompanyDto $companyDto): Self
   {
-    return new self(CompanyRepository::make(), $companyData);
+    return new self(CompanyRepository::make(), $companyDto);
   }
 
-  public function execute(): array
+  public function execute(): CompanyDto
   {
-    return $this->companyRepository->store($this->companyData);
+    return $this->companyRepository->store($this->companyDto);
   }
 }

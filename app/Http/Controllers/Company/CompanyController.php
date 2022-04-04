@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
+use App\Http\Dto\Company\CompanyAddressDto;
 use App\Http\Dto\Company\CompanyDto;
 use App\Http\Requests\Company\CompanyRequest;
 use App\Http\Services\Company\CompanyDestroyService;
@@ -16,10 +17,10 @@ use Illuminate\Http\Response;
 
 class CompanyController extends Controller
 {
-  public function destroy(int $companyId): JsonResponse
+  public function destroy(int $id): JsonResponse
   {
     try {
-      CompanyDestroyService::make($companyId)->execute();
+      CompanyDestroyService::make($id)->execute();
     } catch (\Exception $ex) {
       return $this->responseError($ex->getMessage(), Response::HTTP_NOT_FOUND);
     }
@@ -28,8 +29,9 @@ class CompanyController extends Controller
 
   public function index(Request $request): JsonResponse
   {
-    $queryParams = $this->queryParamsValidated($request);
     try {
+      $queryParams = $this->queryParamsValidated($request);
+
       $data = CompanyIndexService::make(
         $queryParams['pageOptions'],
         $queryParams['filter'],
@@ -40,51 +42,33 @@ class CompanyController extends Controller
     return $this->responseSuccess($data);
   }
 
-  public function show(int $companyId): JsonResponse
+  public function show(int $id): JsonResponse
   {
     try {
-      $data = CompanyShowService::make($companyId)->execute();
+      $companyDto = CompanyShowService::make($id)->execute();
     } catch (\Exception $ex) {
     return $this->responseError($ex->getMessage(), Response::HTTP_NOT_FOUND);
     }
-    return $this->responseSuccess($data);
+    return $this->responseSuccess($companyDto->toArray());
   }
 
-  // public function store(CompanyRequest $request): JsonResponse
-  // {
-  //   $companyDto = CompanyDto::make()->fromArray(
-  //     $request->validated()
-  //   );
-  //   // dd($companyDto);    
-
-  //   // try {
-  //   //   $data = CompanyStoreService::make($companyData)->execute();
-  //   // } catch (\Exception $ex) {
-  //   //   return $this->responseError($ex->getMessage());
-  //   // }
-  //   return $this->responseSuccess($data, Response::HTTP_CREATED);
-  // }
-
-  public function store(CompanyRequest $request): JsonResponse
+  public function store(CompanyDto $companyDto): JsonResponse
   {
-    $companyData = $request->validated();
-
     try {
-      $data = CompanyStoreService::make($companyData)->execute();
+      $companyDto = CompanyStoreService::make($companyDto)->execute();
     } catch (\Exception $ex) {
       return $this->responseError($ex->getMessage());
     }
-    return $this->responseSuccess($data, Response::HTTP_CREATED);
+    return $this->responseSuccess($companyDto->toArray(), Response::HTTP_CREATED);
   }
 
-  public function update(Request $request, int $companyId): JsonResponse
+  public function update(CompanyDto $companyDto, int $id): JsonResponse
   {
     try {
-      $companyData = $request->all();
-      $data = CompanyUpdateService::make($companyId, $companyData)->execute();
+      $companyDto = CompanyUpdateService::make($id, $companyDto)->execute();
     } catch (\Exception $ex) {
       return $this->responseError($ex->getMessage(), Response::HTTP_NOT_FOUND);
     }
-    return $this->responseSuccess($data);
-  }  
+    return $this->responseSuccess($companyDto->toArray());
+  }
 }

@@ -6,22 +6,22 @@ use App\Http\Repositories\Company\CompanyRepository;
 
 class CompanyDestroyService
 {
-  private int $companyId;
+  private int $id;
   private CompanyRepository $companyRepository;
 
-  private function __construct(CompanyRepository $companyRepository, int $companyId)
+  private function __construct(CompanyRepository $companyRepository, int $id)
   {
     $this->companyRepository = $companyRepository;
-    $this->companyId = $companyId;
+    $this->id = $id;
   }
 
-  public static function make(int $companyId): CompanyDestroyService
+  public static function make(int $id): Self
   {
-    return new self(CompanyRepository::make(), $companyId);
+    return new self(CompanyRepository::make(), $id);
   }
 
   public function execute(): bool
   {
-    return $this->companyRepository->destroy($this->companyId);
+    return $this->companyRepository->destroy($this->id);
   }
 }

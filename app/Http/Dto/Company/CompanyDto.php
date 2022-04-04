@@ -2,56 +2,85 @@
 
 namespace App\Http\Dto\Company;
 
-use App\Http\Dto\BaseDto;
+use Illuminate\Validation\Rule as ValidationRule;
+use Illuminate\Validation\Validator;
+use Spatie\LaravelData\Attributes\Validation\Rule;
+use Spatie\LaravelData\Data;
+use Spatie\LaravelData\DataCollection;
 
-class CompanyDto extends BaseDto
+class CompanyDto extends Data
 {
-  private int $company_id;
-  private string $business_name;
-  private string $alias_name;
-  private string $company_ein;
-  private string $state_registration;
-  private int $icms_taxpayer;
-  private string $municipal_registration;
-  private string $note_general;
-  private string $internet_page;
+  public static function authorize(): bool
+  {
+    return true;
+  }  
 
-  private function __construct()
-  {
-  } 
-  
-  public static function make()
-  {
-    return new self();
+  public function __construct(
+    #[Rule('nullable|integer')]
+    public ?int $id,
+    
+    #[Rule('required|string|max:80')]
+    public string $business_name = '',
+    
+    #[Rule('required|string|max:80')]
+    public string $alias_name = '',
+
+    public string $company_ein = '',
+
+    #[Rule('nullable|string|max:20')]
+    public string $state_registration = '',
+
+    #[Rule('nullable|integer|in:0,1')]
+    public int $icms_taxpayer = 0,
+    
+    #[Rule('nullable|string|max:20')]
+    public string $municipal_registration = '',
+
+    #[Rule('nullable|string')]
+    public string $note_general = '',
+    
+    #[Rule('nullable|string|max:255')]
+    public string $internet_page = '',
+
+    #[Rule('nullable|string|min:10')]
+    public ?string $created_at,
+
+    #[Rule('nullable|string|min:10')]
+    public ?string $updated_at,
+    
+    /** @var CompanyAddressDto[] */
+    public ?DataCollection $company_address_dto,
+  ) {
   }
 
-  public function fromArray(array $data = [])
-  {
-    $this->company_id = $data['company_id'] ?? 0;
-    $this->business_name = $data['business_name'] ?? '';
-    $this->alias_name = $data['alias_name'] ?? '';
-    $this->company_ein = $data['company_ein'] ?? '';
-    $this->state_registration = $data['state_registration'] ?? '';
-    $this->icms_taxpayer = $data['icms_taxpayer'] ?? 0;
-    $this->municipal_registration = $data['municipal_registration'] ?? '';
-    $this->note_general = $data['note_general'] ?? '';
-    $this->internet_page = $data['internet_page'] ?? '';
-
-    return $this;
-  }
-
-  public function toArray(): array
+  public static function rules(): array
   {
     return [
-      'company_id' => $this->company_id,
-      'business_name' => $this->business_name,
-      'alias_name' => $this->alias_name,
-      'company_ein' => $this->company_ein,
-      'state_registration' => $this->state_registration,
-      'icms_taxpayer' => $this->icms_taxpayer,
-      'municipal_registration' => $this->municipal_registration,
-      'note_general' => $this->note_general,
-      'internet_page' => $this->internet_page,
+      'company_ein' => [
+        'required', 
+        'string',
+        'max:20',
+        ValidationRule::unique('company', 'company_ein')->ignore(intVal(request()->route('company'))),
+      ],
     ];
+  }  
+
+  public static function withValidator(Validator $validator): void
+  {
+    // Validar CPF ou CNPJ
+    $validator->after(function ($validator) {
+      $company_ein = request()->get('company_ein');
+      if (!cpfOrCnpjIsValid($company_ein)) {
+        $validator->errors()->add('company_ein', 'Document ('. $company_ein .') is not valid!');
+      }      
+    });
   }
+  
+  // public static function messages(): array
+  // {
+  //   return [
+  //     'business_name.required' => 'A business_name is required',
+  //     'alias_name.required' => 'An alias_name is required',
+  //   ];
+  // }
 }

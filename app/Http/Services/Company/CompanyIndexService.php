@@ -17,12 +17,12 @@ class CompanyIndexService
     $this->filter = $filter;
   }
 
-  public static function make(array $pageOptions = [], array $filter = []): CompanyIndexService
+  public static function make(array $pageOptions = [], array $filter = []): Self
   {
     return new self(
       CompanyRepository::make(),
       $pageOptions,
-      $filter
+      $filter,
     );  
   }
 
