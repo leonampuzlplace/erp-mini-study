@@ -84,7 +84,6 @@ abstract class BaseRepository
       ]);
     }
 
-
     // Filtro de registros apagados
     if (intVal($this->filter['onlyTrashed']) === 1) {
       $queryBuilder->onlyTrashed();

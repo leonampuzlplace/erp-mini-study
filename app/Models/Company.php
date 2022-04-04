@@ -13,7 +13,7 @@ class Company extends Model
 
     protected $table = 'company';
     protected $primaryKey = 'id';
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at'];    
 
     protected $hidden = [
         'deleted_at',
