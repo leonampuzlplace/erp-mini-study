@@ -17,54 +17,35 @@ class CompanyController extends Controller
 {
   public function destroy(int $id): JsonResponse
   {
-    try {
-      CompanyDestroyService::make($id)->execute();
-    } catch (\Exception $ex) {
-      return $this->responseError($ex->getMessage(), Response::HTTP_NOT_FOUND);
-    }
+    CompanyDestroyService::make($id)->execute();
     return $this->responseSuccess([], Response::HTTP_NO_CONTENT);
   }
 
   public function index(Request $request): JsonResponse
   {
-    try {
-      $data = CompanyIndexService::make(
-        $request->input('pageOption') ?? [],
-        $request->input('filter') ?? [],
-      )->execute();
-    } catch (\Exception $ex) {
-      return $this->responseError($ex->getMessage());
-    }
+    $data = CompanyIndexService::make(
+      $request->input('pageOption') ?? [],
+      $request->input('filter') ?? [],
+    )->execute();
+   
     return $this->responseSuccess($data);
   }
 
   public function show(int $id): JsonResponse
   {
-    try {
-      $companyDto = CompanyShowService::make($id)->execute();
-    } catch (\Exception $ex) {
-    return $this->responseError($ex->getMessage(), Response::HTTP_NOT_FOUND);
-    }
+    $companyDto = CompanyShowService::make($id)->execute();
     return $this->responseSuccess($companyDto->toArray());
   }
 
   public function store(CompanyDto $companyDto): JsonResponse
   {
-    try {
-      $companyDto = CompanyStoreService::make($companyDto)->execute();
-    } catch (\Exception $ex) {
-      return $this->responseError($ex->getMessage());
-    }
+    $companyDto = CompanyStoreService::make($companyDto)->execute();
     return $this->responseSuccess($companyDto->toArray(), Response::HTTP_CREATED);
   }
 
   public function update(CompanyDto $companyDto, int $id): JsonResponse
   {
-    try {
-      $companyDto = CompanyUpdateService::make($id, $companyDto)->execute();
-    } catch (\Exception $ex) {
-      return $this->responseError($ex->getMessage(), Response::HTTP_NOT_FOUND);
-    }
+    $companyDto = CompanyUpdateService::make($id, $companyDto)->execute();
     return $this->responseSuccess($companyDto->toArray());
   }
 }

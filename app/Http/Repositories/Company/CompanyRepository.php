@@ -2,6 +2,8 @@
 
 namespace App\Http\Repositories\Company;
 
+use App\Exceptions\CustomValidationException;
+use App\Exceptions\ModelNotFoundException;
 use App\Http\Repositories\BaseRepository;
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Builder;
@@ -65,7 +67,15 @@ class CompanyRepository extends BaseRepository
       ->with('companyAddress.city.state')
       ->first();
 
-    throw_if(!$modelFound, new \Exception('No query results for $id = ' . $id));
+    // throw_if(!$modelFound, new \Exception('No query results for $id = ' . $id));
+
+    throw_if(
+      !$modelFound,
+      new ModelNotFoundException(
+        'No query results for $id = ' . $id,
+      )
+    );
+
     return $modelFound->getData();
   }
 
@@ -78,6 +88,8 @@ class CompanyRepository extends BaseRepository
    */
   public function store(Data $dto): Data
   {
+    $this->beforeSave($dto, 0);
+    
     $dto->id = null;
     $data = $dto->toArray();
     $executeStore = function ($data) {
@@ -96,6 +108,30 @@ class CompanyRepository extends BaseRepository
       ),
       false => $executeStore($data),
     };
+  }
+
+  public function beforeSave(Data $dto, int $store0_update1)
+  {
+    $error = '';
+
+    // Endereço deve conter um único registro como padrão. is_default = 1
+    $filtered = array_filter(
+      $dto->company_address->toArray(),
+      function ($item) {
+        return $item['is_default'] == 1;
+      }
+    );
+    if (count($filtered) !== 1) {
+      $error .= 'company_address: The company address must have a single record with field is_default = 1. ';
+    }
+
+    // Disparar exceção se houver erros
+    throw_if(
+      $error,
+      new CustomValidationException(
+        ['company_address' => ['The company address must have a single record with field is_default = 1']]
+      )
+    );
   }
 
   /**

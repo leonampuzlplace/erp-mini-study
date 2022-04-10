@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
@@ -53,22 +54,66 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        $responseErrorExecuted = false;
+        $exceptionName = (new \ReflectionClass($exception))->getShortName(); 
+
         if ($request->is("api/*")) {
-            // Falha na validação dos dados
+            // Validação dos dados
             if ($exception instanceof ValidationException) {
                 responseError(
-                    $exception->errors(), 
-                    $exception->status, 
-                    'ValidationException'
+                    $exception->errors(),
+                    $exception->status,
+                    $exceptionName,
                 );
+                $responseErrorExecuted = true;
+            }
+
+            // Validação dos dados (Customizada)
+            if ($exception instanceof CustomValidationException) {
+                responseError(
+                    $exception->errors(),
+                    $exception->status(),
+                    $exceptionName,
+                );
+                $responseErrorExecuted = true;
+            }
+
+            // Model não encontrado
+            if ($exception instanceof ModelNotFoundException) {
+                responseError(
+                    $exception->errors(),
+                    $exception->status(),
+                    $exceptionName,
+                );
+                $responseErrorExecuted = true;
+            }
+
+            // Model não encontrado
+            if ($exception instanceof QueryException) {
+                responseError(
+                    $exception->getMessage(),
+                    Response::HTTP_BAD_REQUEST,
+                    $exceptionName,
+                );
+                $responseErrorExecuted = true;
             }
 
             // Rota não encontrada
             if ($exception instanceof NotFoundHttpException) {
                 responseError(
-                    [],
+                    'Server could not find the route requested.',
                     Response::HTTP_NOT_FOUND,
-                    'Server could not find the route requested.'
+                    $exceptionName,
+                );
+                $responseErrorExecuted = true;
+            }
+
+            // Caso nenhuma exceção seja executada acima.
+            if (!$responseErrorExecuted) {
+                responseError(
+                    $exception->getMessage(),
+                    Response::HTTP_BAD_REQUEST,
+                    'Unexpected exception'
                 );
             }
         }
