@@ -6,11 +6,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller as BaseController;
-
-use function PHPSTORM_META\map;
 
 // HTTP_OK = (200) Requisição foi bem sucedida com retorno no corpo da mensagem.
 // HTTP_CREATED = (201) Requisição foi bem sucedida e um novo recurso foi criado e retornado no corpo da mensagem.
@@ -22,34 +19,13 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    private $baseResponse = [
-        'code' => '',
-        'error' => false,
-        'message' => '',
-        'result' => [],
-    ];
-
-    public function responseSuccess(array $data, int $code = Response::HTTP_OK, string $msg = ''): JsonResponse
+    public function responseSuccess(mixed $result, int $code = Response::HTTP_OK, string $msg = ''): JsonResponse
     {
-        $this->baseResponse['code'] = $code;
-        $this->baseResponse['error'] = false;
-        $this->baseResponse['message'] = $msg;
-        $this->baseResponse['result'] = $data;
-
-        return response()
-            ->json($this->baseResponse, $code)
-            ->send();
+        return responseSuccess($result, $code, $msg);
     }
 
-    public function responseError(string $msg = '', int $code = Response::HTTP_BAD_REQUEST): JsonResponse
+    public function responseError(mixed $result, int $code = Response::HTTP_BAD_REQUEST, string $msg = ''): JsonResponse
     {
-        $this->baseResponse['code'] = $code;
-        $this->baseResponse['error'] = true;
-        $this->baseResponse['message'] = $msg;
-        $this->baseResponse['result'] = [];
-
-        return response()
-            ->json($this->baseResponse, $code)
-            ->send();
+        return responseError($result, $code, $msg);
     }
 }

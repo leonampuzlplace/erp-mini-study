@@ -3,7 +3,9 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -52,13 +54,22 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if ($request->is("api/*")) {
+            // Falha na validação dos dados
             if ($exception instanceof ValidationException) {
-                return response()->json([
-                    'code' => $exception->status,
-                    'error' => true,
-                    'message' => 'ValidationException',
-                    'result' => $exception->errors(),
-                ]);
+                responseError(
+                    $exception->errors(), 
+                    $exception->status, 
+                    'ValidationException'
+                );
+            }
+
+            // Rota não encontrada
+            if ($exception instanceof NotFoundHttpException) {
+                responseError(
+                    [],
+                    Response::HTTP_NOT_FOUND,
+                    'Server could not find the route requested.'
+                );
             }
         }
 

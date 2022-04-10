@@ -307,6 +307,9 @@ abstract class BaseRepository
     $data = $dto->toArray();
     $executeUpdate = function ($id, $data) {
       $modelFound = $this->model->findOrFail($id);
+      
+      // Atualizar
+      tap($modelFound)->update($data);      
       return $modelFound->getData();
     };
 
