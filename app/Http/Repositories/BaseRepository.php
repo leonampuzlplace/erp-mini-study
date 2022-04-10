@@ -2,6 +2,7 @@
 
 namespace App\Http\Repositories;
 
+use App\Exceptions\CustomValidationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -30,9 +31,7 @@ abstract class BaseRepository
   public function destroy(int $id): bool
   {
     $executeDestroy = function ($id) {
-      $modelFound = $this->model
-        ->where('id', $id)
-        ->first();
+      $modelFound = $this->model->find($id);
       
       // Apagar registro permanentemente (delete trashed)
       if (!$modelFound) {
@@ -248,9 +247,7 @@ abstract class BaseRepository
    */
   public function show(int $id): Data
   {
-    $modelFound = $this->model
-      ->where('id', $id)
-      ->first();
+    $modelFound = $this->model->find($id);
     
     throw_if(!$modelFound, new \Exception('No query results for $id = ' . $id));
     return $modelFound->getData();
@@ -269,6 +266,7 @@ abstract class BaseRepository
    */
   public function store(Data $dto): Data
   {
+    $this->beforeSave($dto, 0);
     $dto->id = null;
     $data = $dto->toArray();
     $executeStore = function ($data) {
@@ -303,6 +301,7 @@ abstract class BaseRepository
    */
   public function update(int $id, Data $dto): Data
   {
+    $this->beforeSave($dto, 1);
     $dto->id = $id;
     $data = $dto->toArray();
     $executeUpdate = function ($id, $data) {
@@ -362,6 +361,19 @@ abstract class BaseRepository
       'cursor' => $this->pageOption['cursor'] ?? null,
       'onlyData' => $this->pageOption['onlyData'] ?? 0,
     ];
+  }
+
+  /**
+   * Executar método antes de salvar registro
+   *
+   * @param Data $dto
+   * @param integer $store0_update1
+   * @return void
+   */
+  public function beforeSave(Data $dto, int $store0_update1): void
+  {
+    // Validar dados e disparar exceção se necessário
+    // Formatar dados antes de salvar
   }
 }
 

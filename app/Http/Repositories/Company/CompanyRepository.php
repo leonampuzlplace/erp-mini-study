@@ -37,18 +37,18 @@ class CompanyRepository extends BaseRepository
         ->leftJoin('city', 'city.id', 'company_address.city_id')
         ->leftJoin('state', 'state.id', 'city.state_id')
         ->where('company_address.is_default', '1'),
-      'company.*, ' .
-        'company_address.is_default, ' .
-        'company_address.zipcode, ' .
-        'company_address.address, ' .
-        'company_address.address_number, ' .
-        'company_address.complement, ' .
-        'company_address.district, ' .
-        'company_address.city_id, ' .
-        'company_address.reference_point, ' .
-        'city.city_name, ' .
-        'city.ibge_code, ' .
-        'state.state_name, ' .
+        'company.*, '.
+        'company_address.is_default, '.
+        'company_address.zipcode, '.
+        'company_address.address, '.
+        'company_address.address_number, '.
+        'company_address.complement, '.
+        'company_address.district, '.
+        'company_address.city_id, '.
+        'company_address.reference_point, '.
+        'city.city_name, '.
+        'city.ibge_code, '.
+        'state.state_name, '.
         'state.state_abbreviation'
     ];
   }
@@ -67,15 +67,7 @@ class CompanyRepository extends BaseRepository
       ->with('companyAddress.city.state')
       ->first();
 
-    // throw_if(!$modelFound, new \Exception('No query results for $id = ' . $id));
-
-    throw_if(
-      !$modelFound,
-      new ModelNotFoundException(
-        'No query results for $id = ' . $id,
-      )
-    );
-
+    throw_if(!$modelFound, new ModelNotFoundException('No query results for $id = ' . $id));
     return $modelFound->getData();
   }
 
@@ -89,15 +81,14 @@ class CompanyRepository extends BaseRepository
   public function store(Data $dto): Data
   {
     $this->beforeSave($dto, 0);
-    
     $dto->id = null;
     $data = $dto->toArray();
     $executeStore = function ($data) {
-      $companyModel = $this->model->create($data);
-      $companyModel->companyAddress()
+      $modelFound = $this->model->create($data);
+      $modelFound->companyAddress()
         ->createMany($data['company_address']);
 
-      return $this->show($companyModel->id);
+      return $this->show($modelFound->id);
     };
 
     return match ($this->getWithTransaction()) {
@@ -110,30 +101,6 @@ class CompanyRepository extends BaseRepository
     };
   }
 
-  public function beforeSave(Data $dto, int $store0_update1)
-  {
-    $error = '';
-
-    // Endereço deve conter um único registro como padrão. is_default = 1
-    $filtered = array_filter(
-      $dto->company_address->toArray(),
-      function ($item) {
-        return $item['is_default'] == 1;
-      }
-    );
-    if (count($filtered) !== 1) {
-      $error .= 'company_address: The company address must have a single record with field is_default = 1. ';
-    }
-
-    // Disparar exceção se houver erros
-    throw_if(
-      $error,
-      new CustomValidationException(
-        ['company_address' => ['The company address must have a single record with field is_default = 1']]
-      )
-    );
-  }
-
   /**
    * Atualizar Registro e retorna DTO atualizado
    *
@@ -143,22 +110,23 @@ class CompanyRepository extends BaseRepository
    */
   public function update(int $id, Data $dto): Data
   {
+    $this->beforeSave($dto, 1);
     $dto->id = $id;
     $data = $dto->toArray();
     $executeUpdate = function ($id, $data) {
-      $companyModel = $this->model->findOrFail($id);
+      $modelFound = $this->model->findOrFail($id);
 
       // Atualizar Company
-      tap($companyModel)->update($data);
+      tap($modelFound)->update($data);
 
       // Atualizar CompanyAddress
-      $companyModel->companyAddress()->where('company_address.company_id', $id)->delete();
-      $companyModel->companyAddress()->createMany($data['company_address']);
+      $modelFound->companyAddress()->where('company_address.company_id', $id)->delete();
+      $modelFound->companyAddress()->createMany($data['company_address']);
 
       // Carregar relacionamentos
-      $companyModel->load('companyAddress');
+      $modelFound->load('companyAddress');
       
-      return $companyModel->getData();
+      return $modelFound->getData();
     };
 
     return match ($this->getWithTransaction()) {
@@ -169,5 +137,59 @@ class CompanyRepository extends BaseRepository
       ),
       false => $executeUpdate($id, $data),
     };
-  }  
+  }
+
+  /**
+   * Executar método antes de salvar registro
+   *
+   * @param Data $dto
+   * @param integer $store0_update1
+   * @return void
+   */
+  public function beforeSave(Data $dto, int $store0_update1): void
+  {
+    // Disparar exceção se houver erros
+    $errors = $this->validateData($dto, $store0_update1);
+    throw_if((count($errors) > 0), new CustomValidationException($errors));
+
+    // Formatar dados antes de salvar
+    $this->formatData($dto, $store0_update1);
+  }
+
+  /**
+   * Validar dados se necessário
+   *
+   * @param Data $dto
+   * @param integer $store0_update1
+   * @return array
+   */
+  public function validateData(Data $dto, int $store0_update1): array
+  {
+    $errors = [];
+
+    // Endereço deve conter um único registro como padrão. is_default = 1
+    $filtered = array_filter(
+      $dto->company_address->toArray(),
+      function ($item) {
+        return $item['is_default'] == 1;
+      }
+    );
+    if (count($filtered) !== 1) {
+      $errors['company_address'] = 'The company address must have a single record with field is_default = 1.';
+    }
+
+    return $errors;
+  }
+
+  /**
+   * Formatar dados se necessário
+   *
+   * @param Data $dto
+   * @param integer $store0_update1
+   * @return void
+   */
+  public function formatData(Data $dto, int $store0_update1): void
+  {
+    $dto->company_ein = formatCpfCnpj($dto->company_ein);
+  }
 }

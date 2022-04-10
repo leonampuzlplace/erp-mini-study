@@ -2,8 +2,10 @@
 
 namespace App\Http\Repositories\City;
 
+use App\Exceptions\ModelNotFoundException;
 use App\Http\Repositories\BaseRepository;
 use App\Models\City;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\LaravelData\Data;
 
 class CityRepository extends BaseRepository
@@ -18,22 +20,30 @@ class CityRepository extends BaseRepository
     return new self(new City);
   }
 
-  public function index(array $pageOption = [], array $filter = []): array
+  /**
+   * Método executado dentro de BaseRepository.index()
+   * Adicionar join de tabelas e mostrar colunas específicas
+   *
+   * @param Builder $queryBuilder
+   * @return array
+   */
+  public function indexInside(Builder $queryBuilder): array
   {
-    $this->pageOption = $pageOption;
-    $this->filter = $filter;
-    $queryBuilder = $this->indexBuilder();
-
-    // Campos com join
-    $queryBuilder->leftJoin('state', 'state.id', 'city.state_id');
-    $selectRaw = 'city.*, ' .
-                 'state.state_name, ' .
-                 'state.state_abbreviation';
-
-    // Paginação e Retorno dos dados
-    return $this->indexGetAndPaginate($queryBuilder, $selectRaw);
+    return [
+      $queryBuilder->leftJoin('state', 'state.id', 'city.state_id'),
+      'city.*, '.
+      'state.state_name, '.
+      'state.state_abbreviation'
+    ];
   }
 
+  /**
+   * Localizar um único registro por ID
+   * Acrescenta with para mostrar relacionamentos
+   *
+   * @param integer $id
+   * @return Data
+   */
   public function show(int $id): Data
   {
     $modelFound = $this->model
@@ -41,7 +51,7 @@ class CityRepository extends BaseRepository
       ->with('state')
       ->first();
 
-    throw_if(!$modelFound, new \Exception('No query results for $id = '. $id));
+    throw_if(!$modelFound, new ModelNotFoundException('No query results for $id = ' . $id));
     return $modelFound->getData();
   }
 }
