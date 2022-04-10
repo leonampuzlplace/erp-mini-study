@@ -6,11 +6,12 @@ use App\Exceptions\ModelNotFoundException;
 use App\Http\Repositories\BaseRepository;
 use App\Models\City;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\Data;
 
 class CityRepository extends BaseRepository
 {
-  private function __construct(City $city)
+  public function __construct(City $city)
   {
     parent::__construct($city);
   }
@@ -31,8 +32,8 @@ class CityRepository extends BaseRepository
   {
     return [
       $queryBuilder->leftJoin('state', 'state.id', 'city.state_id'),
-      'city.*, '.
-      'state.state_name, '.
+      'city.*, ' .
+      'state.state_name, ' .
       'state.state_abbreviation'
     ];
   }

@@ -16,7 +16,7 @@ function baseResponse(): array
   ];
 }
 
-function responseSuccess(mixed $result, int $code = Response::HTTP_OK, string $msg = ''): JsonResponse
+function responseSuccess(mixed $result = [], int $code = Response::HTTP_OK, string $msg = ''): JsonResponse
 {
     // Quando nenhuma mensagem informado, seta um default
     if (!$msg){
@@ -42,7 +42,7 @@ function responseSuccess(mixed $result, int $code = Response::HTTP_OK, string $m
         ->send();
 }
 
-function responseError(mixed $result, int $code = Response::HTTP_BAD_REQUEST, string $msg = ''): JsonResponse
+function responseError(mixed $result = [], int $code = Response::HTTP_BAD_REQUEST, string $msg = ''): JsonResponse
 {
     // Configurar resposta
     $baseResponse = baseResponse();

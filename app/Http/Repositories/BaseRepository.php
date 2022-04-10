@@ -2,7 +2,6 @@
 
 namespace App\Http\Repositories;
 
-use App\Exceptions\CustomValidationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +11,7 @@ abstract class BaseRepository
 {
   private $withTransaction = false;
   protected $model;
-  public array $pageOption = [];
+  public array $page = [];
   public array $filter = [];
   public array $filterEx = [];
 
@@ -60,14 +59,14 @@ abstract class BaseRepository
   }
 
   /**
-   * Obter registros a partir de pageOption e Filter
+   * Obter registros a partir de page e Filter
    *
-   * @param array $pageOption
+   * @param array $page
    * Configuração da paginação   
-   * pageOption = [
-   *   'perPage' => 10,     // Quantidade de Registros por página
-   *   'page' => 1,         // Página Setada
-   *   'paginateType' => 0, // Tipo de Paginação [0-paginate,1-simplePaginate,2-cursorPaginate,3-semPaginacao]
+   * page = [
+   *   'limit' => 10,       // Limite de registros por página
+   *   'current' => 1,      // Página atual, setada!
+   *   'paginate' => 0,     // Tipo de Paginação [0-paginate,1-simplePaginate,2-cursorPaginate,3-semPaginacao]
    *   'columns' => '*',    // Colunas retornadas no array. Ex: customer.id, customer.name, customer_address.address
    *   'cursor' => '',      // Paginação com cursor. Geralmente utilizado com scroll infinito no frontend
    *   'onlyData' => 0,     // [0-false,1-true] Não retorna informações da paginação. Retorna array somente com os dados.
@@ -102,9 +101,9 @@ abstract class BaseRepository
    * 
    * @return array
    */
-  public function index(array $pageOption = [], array $filter = [], array $filterEx = []): array
+  public function index(array $page = [], array $filter = [], array $filterEx = []): array
   {
-    $this->pageOption = $pageOption;
+    $this->page = $page;
     $this->filter = $filter;
     $this->filterEx = $filterEx;
     $queryBuilder = $this->indexBuilder();
@@ -115,26 +114,13 @@ abstract class BaseRepository
   }
 
   /**
-   * Este método é chamado dentro do index. Utilizado para alterar queryBuilder e colunas a serem exibidas.
-   * Retorna array com $queryBuilder e selectRaw de colunas a serem exibidas para o método Index()
-   * FilterEx pode ser implementado no override desse metodo na classe que extende BaseRepository
-   *
-   * @param Builder $queryBuilder
-   * @return array
-   */
-  public function indexInside(Builder $queryBuilder): array
-  {
-    return [$queryBuilder, $this->model->getTable().'.*'];
-  }
-
-  /**
    * Inicialização do queryBuilder e filtro padrão aplicado
    *
    * @return Builder
    */
   public function indexBuilder(): Builder
   {
-    $this->pageOptionValidated();
+    $this->pageValidated();
     $queryBuilder = $this->model->query();
     
     // Condição where e orWhere
@@ -186,32 +172,22 @@ abstract class BaseRepository
     return $queryBuilder;
   }
 
+
   /**
-   * Formatar Operador e Valor do Campo de Pesquisa/filtro
-   * Retorna array com sinal do operador e campo de pesquisa
+   * Este método é chamado dentro do index. Utilizado para alterar queryBuilder e colunas a serem exibidas.
+   * Retorna array com $queryBuilder e selectRaw de colunas a serem exibidas para o método Index()
+   * FilterEx pode ser implementado no override desse metodo na classe que extende BaseRepository
    *
-   * @param string $operator
-   * @param string $fieldValue
+   * @param Builder $queryBuilder
    * @return array
    */
-  private function formatOperatorAndFieldValue(string $operator, string $fieldValue): array
+  public function indexInside(Builder $queryBuilder): array
   {
-    return match (strtolower($operator)) {
-      'equal' => ['=', $fieldValue],
-      'greater' => ['>', $fieldValue],
-      'less' => ['<', $fieldValue],
-      'greaterorequal' => ['>=', $fieldValue],
-      'lessorequal' => ['<=', $fieldValue],
-      'different' => ['<>', $fieldValue],
-      'likeinitial' => ['like', $fieldValue . '%'],
-      'likefinal' => ['like', '%' . $fieldValue],
-      'likeanywhere' => ['like', '%' . $fieldValue . '%'],
-      'likeequal' => ['like', $fieldValue],
-    };
+    return [$queryBuilder, $this->model->getTable() . '.*'];
   }
 
   /**
-   * Paginação do index baseado em pageOption e exibição das colunas
+   * Paginação do index baseado em page e exibição das colunas
    * Retorna resultado em array
    *
    * @param Builder $queryBuilder
@@ -221,23 +197,23 @@ abstract class BaseRepository
   public function indexGetAndPaginate(Builder $queryBuilder, String $selectRaw = '*'): array
   {
     // Campos a serem exibidos (Necessário se houver join)
-    (($this->pageOption['columns'][0] === '*') && (count($this->pageOption['columns']) === 1))
+    (($this->page['columns'][0] === '*') && (count($this->page['columns']) === 1))
       ? $queryBuilder->selectRaw($selectRaw)
-      : $queryBuilder->selectRaw($this->pageOption['columns']);
+      : $queryBuilder->selectRaw($this->page['columns']);
 
     // Paginação
-    $queryBuilder = match ($this->pageOption['paginateType']) {
-      0 => $queryBuilder->paginate($this->pageOption['perPage'], null, 'page', $this->pageOption['page']),
-      1 => $queryBuilder->simplePaginate($this->pageOption['perPage'], null, 'page', $this->pageOption['page']),
-      2 => $queryBuilder->cursorPaginate($this->pageOption['perPage'], null, 'cursor', $this->pageOption['cursor']),
+    $queryBuilder = match ($this->page['paginate']) {
+      0 => $queryBuilder->paginate($this->page['limit'], null, 'page', $this->page['current']),
+      1 => $queryBuilder->simplePaginate($this->page['limit'], null, 'page', $this->page['current']),
+      2 => $queryBuilder->cursorPaginate($this->page['limit'], null, 'cursor', $this->page['cursor']),
       default => $queryBuilder->get(), // Sem Paginação
     };
 
     // Resultado
-    return (($this->pageOption['onlyData'] == 1) && ($this->pageOption['paginateType'] <= 2))
+    return (($this->page['onlyData'] == 1) && ($this->page['paginate'] <= 2))
       ? $queryBuilder->toArray()['data']
       : $queryBuilder->toArray();
-  }
+  }  
 
   /**
    * Localizar um único registro por ID
@@ -248,7 +224,7 @@ abstract class BaseRepository
   public function show(int $id): Data
   {
     $modelFound = $this->model->find($id);
-    
+
     throw_if(!$modelFound, new \Exception('No query results for $id = ' . $id));
     return $modelFound->getData();
   }
@@ -266,7 +242,6 @@ abstract class BaseRepository
    */
   public function store(Data $dto): Data
   {
-    $this->beforeSave($dto, 0);
     $dto->id = null;
     $data = $dto->toArray();
     $executeStore = function ($data) {
@@ -301,14 +276,13 @@ abstract class BaseRepository
    */
   public function update(int $id, Data $dto): Data
   {
-    $this->beforeSave($dto, 1);
     $dto->id = $id;
     $data = $dto->toArray();
     $executeUpdate = function ($id, $data) {
       $modelFound = $this->model->findOrFail($id);
-      
+
       // Atualizar
-      tap($modelFound)->update($data);      
+      tap($modelFound)->update($data);
       return $modelFound->getData();
     };
 
@@ -322,6 +296,29 @@ abstract class BaseRepository
     };
   }    
 
+  /**
+   * Formatar Operador e Valor do Campo de Pesquisa/filtro
+   * Retorna array com sinal do operador e campo de pesquisa
+   *
+   * @param string $operator
+   * @param string $fieldValue
+   * @return array
+   */
+  private function formatOperatorAndFieldValue(string $operator, string $fieldValue): array
+  {
+    return match (strtolower($operator)) {
+      'equal' => ['=', $fieldValue],
+      'greater' => ['>', $fieldValue],
+      'less' => ['<', $fieldValue],
+      'greaterorequal' => ['>=', $fieldValue],
+      'lessorequal' => ['<=', $fieldValue],
+      'different' => ['<>', $fieldValue],
+      'likeinitial' => ['like', $fieldValue . '%'],
+      'likefinal' => ['like', '%' . $fieldValue],
+      'likeanywhere' => ['like', '%' . $fieldValue . '%'],
+      'likeequal' => ['like', $fieldValue],
+    };
+  }
 
   /**
    * Alterar flag de controle de transação dos dados
@@ -346,34 +343,21 @@ abstract class BaseRepository
   }
 
   /**
-   * Validar pageOption
+   * Validar page
    * Se valores não preenchidos, será retornado um padrão
    *
    * @return void
    */
-  public function pageOptionValidated(): void
+  public function pageValidated(): void
   {
-    $this->pageOption = [
-      'perPage' => $this->pageOption['perPage'] ?? 10,
-      'page' => $this->pageOption['page'] ?? 1,
-      'paginateType' => intval($this->pageOption['paginateType'] ?? 0),
-      'columns' => $this->pageOption['columns'] ?? ['*'],
-      'cursor' => $this->pageOption['cursor'] ?? null,
-      'onlyData' => $this->pageOption['onlyData'] ?? 0,
+    $this->page = [
+      'limit' => $this->page['limit'] ?? 10,
+      'current' => $this->page['current'] ?? 1,
+      'paginate' => intval($this->page['paginate'] ?? 0),
+      'columns' => $this->page['columns'] ?? ['*'],
+      'cursor' => $this->page['cursor'] ?? null,
+      'onlyData' => $this->page['onlyData'] ?? 0,
     ];
-  }
-
-  /**
-   * Executar método antes de salvar registro
-   *
-   * @param Data $dto
-   * @param integer $store0_update1
-   * @return void
-   */
-  public function beforeSave(Data $dto, int $store0_update1): void
-  {
-    // Validar dados e disparar exceção se necessário
-    // Formatar dados antes de salvar
   }
 }
 

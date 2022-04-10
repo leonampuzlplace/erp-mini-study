@@ -2,7 +2,6 @@
 
 namespace App\Http\Repositories\Company;
 
-use App\Exceptions\CustomValidationException;
 use App\Exceptions\ModelNotFoundException;
 use App\Http\Repositories\BaseRepository;
 use App\Models\Company;
@@ -12,7 +11,7 @@ use Spatie\LaravelData\Data;
 
 class CompanyRepository extends BaseRepository
 {
-  private function __construct(Company $company)
+  public function __construct(Company $company)
   {
     parent::__construct($company);
   }
@@ -80,7 +79,6 @@ class CompanyRepository extends BaseRepository
    */
   public function store(Data $dto): Data
   {
-    $this->beforeSave($dto, 0);
     $dto->id = null;
     $data = $dto->toArray();
     $executeStore = function ($data) {
@@ -110,7 +108,6 @@ class CompanyRepository extends BaseRepository
    */
   public function update(int $id, Data $dto): Data
   {
-    $this->beforeSave($dto, 1);
     $dto->id = $id;
     $data = $dto->toArray();
     $executeUpdate = function ($id, $data) {
@@ -137,59 +134,5 @@ class CompanyRepository extends BaseRepository
       ),
       false => $executeUpdate($id, $data),
     };
-  }
-
-  /**
-   * Executar método antes de salvar registro
-   *
-   * @param Data $dto
-   * @param integer $store0_update1
-   * @return void
-   */
-  public function beforeSave(Data $dto, int $store0_update1): void
-  {
-    // Disparar exceção se houver erros
-    $errors = $this->validateData($dto, $store0_update1);
-    throw_if((count($errors) > 0), new CustomValidationException($errors));
-
-    // Formatar dados antes de salvar
-    $this->formatData($dto, $store0_update1);
-  }
-
-  /**
-   * Validar dados se necessário
-   *
-   * @param Data $dto
-   * @param integer $store0_update1
-   * @return array
-   */
-  public function validateData(Data $dto, int $store0_update1): array
-  {
-    $errors = [];
-
-    // Endereço deve conter um único registro como padrão. is_default = 1
-    $filtered = array_filter(
-      $dto->company_address->toArray(),
-      function ($item) {
-        return $item['is_default'] == 1;
-      }
-    );
-    if (count($filtered) !== 1) {
-      $errors['company_address'] = 'The company address must have a single record with field is_default = 1.';
-    }
-
-    return $errors;
-  }
-
-  /**
-   * Formatar dados se necessário
-   *
-   * @param Data $dto
-   * @param integer $store0_update1
-   * @return void
-   */
-  public function formatData(Data $dto, int $store0_update1): void
-  {
-    $dto->company_ein = formatCpfCnpj($dto->company_ein);
   }
 }

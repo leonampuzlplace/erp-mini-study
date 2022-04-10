@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services\Company;
+namespace App\Http\Services\OldService\Company;
 
 use App\Http\Dto\Company\CompanyDto;
 use App\Http\Repositories\Company\CompanyRepository;

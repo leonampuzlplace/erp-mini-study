@@ -19,12 +19,12 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function responseSuccess(mixed $result, int $code = Response::HTTP_OK, string $msg = ''): JsonResponse
+    public function responseSuccess(mixed $result = [], int $code = Response::HTTP_OK, string $msg = ''): JsonResponse
     {
         return responseSuccess($result, $code, $msg);
     }
 
-    public function responseError(mixed $result, int $code = Response::HTTP_BAD_REQUEST, string $msg = ''): JsonResponse
+    public function responseError(mixed $result = [], int $code = Response::HTTP_BAD_REQUEST, string $msg = ''): JsonResponse
     {
         return responseError($result, $code, $msg);
     }
