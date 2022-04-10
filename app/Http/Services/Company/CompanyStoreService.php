@@ -23,6 +23,6 @@ class CompanyStoreService
 
   public function execute(): CompanyDto
   {
-    return $this->companyRepository->store($this->companyDto);
+    return $this->companyRepository->setWithTransaction(true)->store($this->companyDto);
   }
 }

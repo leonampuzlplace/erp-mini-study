@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
-use App\Http\Dto\Company\CompanyAddressDto;
 use App\Http\Dto\Company\CompanyDto;
-use App\Http\Requests\Company\CompanyRequest;
 use App\Http\Services\Company\CompanyDestroyService;
 use App\Http\Services\Company\CompanyIndexService;
 use App\Http\Services\Company\CompanyShowService;
@@ -30,11 +28,9 @@ class CompanyController extends Controller
   public function index(Request $request): JsonResponse
   {
     try {
-      $queryParams = $this->queryParamsValidated($request);
-
       $data = CompanyIndexService::make(
-        $queryParams['pageOptions'],
-        $queryParams['filter'],
+        $request->input('pageOption') ?? [],
+        $request->input('filter') ?? [],
       )->execute();
     } catch (\Exception $ex) {
       return $this->responseError($ex->getMessage());

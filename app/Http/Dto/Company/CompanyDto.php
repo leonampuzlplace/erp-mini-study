@@ -20,36 +20,36 @@ class CompanyDto extends Data
     public ?int $id,
     
     #[Rule('required|string|max:80')]
-    public string $business_name = '',
-    
-    #[Rule('required|string|max:80')]
-    public string $alias_name = '',
+    public string $alias_name,
 
-    public string $company_ein = '',
+    #[Rule('required|string|max:80')]
+    public string $business_name,
+
+    public string $company_ein,
 
     #[Rule('nullable|string|max:20')]
-    public string $state_registration = '',
+    public ?string $state_registration,
 
     #[Rule('nullable|integer|in:0,1')]
-    public int $icms_taxpayer = 0,
+    public ?int $icms_taxpayer,
     
     #[Rule('nullable|string|max:20')]
-    public string $municipal_registration = '',
+    public ?string $municipal_registration,
 
     #[Rule('nullable|string')]
-    public string $note_general = '',
+    public ?string $note_general,
     
     #[Rule('nullable|string|max:255')]
-    public string $internet_page = '',
+    public ?string $internet_page,
 
     #[Rule('nullable|string|min:10')]
     public ?string $created_at,
 
     #[Rule('nullable|string|min:10')]
     public ?string $updated_at,
-    
+
     /** @var CompanyAddressDto[] */
-    public ?DataCollection $company_address_dto,
+    public DataCollection $company_address,
   ) {
   }
 
@@ -67,12 +67,18 @@ class CompanyDto extends Data
 
   public static function withValidator(Validator $validator): void
   {
-    // Validar CPF ou CNPJ
     $validator->after(function ($validator) {
+      // Validar CPF ou CNPJ
       $company_ein = request()->get('company_ein');
       if (!cpfOrCnpjIsValid($company_ein)) {
-        $validator->errors()->add('company_ein', 'Document ('. $company_ein .') is not valid!');
-      }      
+        $validator->errors()->add('company_ein', 'The document ('. $company_ein .') is not valid!');
+      }
+
+      // Endereço não pode ser nulo
+      $company_address = request()->get('company_address');
+      if (!$company_address) {
+        $validator->errors()->add('company_address', 'The company address (null) can not be null.');
+      }
     });
   }
   

@@ -18,7 +18,7 @@ class CompanyShowService
 
   public static function make(int $id): Self
   {
-    return new self(CompanyRepository::make(), $id);
+    return new self(CompanyRepository::make(), $id);    
   }
 
   public function execute(): CompanyDto

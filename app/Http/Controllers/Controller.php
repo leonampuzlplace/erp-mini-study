@@ -52,19 +52,4 @@ class Controller extends BaseController
             ->json($this->baseResponse, $code)
             ->send();
     }
-
-    public function queryParamsValidated(Request $request): array
-    {
-        $pageOptions = $request->only(['perPage', 'page', 'paginateType', 'cursor', 'onlyData']);
-        $pageOptions['columns'] = explode(',', $request->query('columns', '*'));
-
-        $filter = $request->query('filter');
-        $filter['orderBy'] = explode(',', $request->query('filter', [])['orderBy'] ?? '');
-        $filter['customSearchValue'] = explode(',', $request->query('filter', [])['customSearchValue'] ?? '');
-
-        return [
-            'pageOptions' => $pageOptions, 
-            'filter' => $filter
-        ];
-    }
 }

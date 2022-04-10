@@ -29,12 +29,10 @@ function formatDate(string $value, string $format = 'Y-m-d H:i:s', bool $startOf
   if ($startOfDay) {
     $result = $result->startOfDay();
   }
-
   // Horário de final de dia
   if ($endOfDay) {
     $result = $result->endOfDay();
   }
-
   // Formatar
   $result = $result->format($format);
   return $result;
@@ -42,7 +40,7 @@ function formatDate(string $value, string $format = 'Y-m-d H:i:s', bool $startOf
 
 
 // Validar CPF
-function cpfIsValid($value): bool
+function cpfIsValid(string $value): bool
 {
   $c = preg_replace('/\D/', '', $value);
   if (strlen($c) != 11 || preg_match("/^{$c[0]}{11}$/", $c)) {
@@ -63,7 +61,7 @@ function cpfIsValid($value): bool
 }
 
 // Validar CNPJ
-function cnpjIsValid($value): bool
+function cnpjIsValid(string $value): bool
 {
   $c = preg_replace('/\D/', '', $value);
   $b = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
@@ -88,7 +86,7 @@ function cnpjIsValid($value): bool
 }
 
 // Validar CPF ou CNPJ
-function cpfOrCnpjIsValid($value): bool
+function cpfOrCnpjIsValid(string $value): bool
 {
   return strlen(onlyNumbers($value)) === 11
     ? cpfIsValid($value)
@@ -96,7 +94,7 @@ function cpfOrCnpjIsValid($value): bool
 }
 
 // Formatar CPF ou CNPJ
-function formatCpfCnpj($value)
+function formatCpfCnpj(string $value): string
 {
   return strlen(onlyNumbers($value)) === 11
     ? preg_replace("/(\d{3})(\d{3})(\d{3})(\d{2})/", "\$1.\$2.\$3-\$4", $value)
