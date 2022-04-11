@@ -36,19 +36,19 @@ class CompanyRepository extends BaseRepository
         ->leftJoin('city', 'city.id', 'company_address.city_id')
         ->leftJoin('state', 'state.id', 'city.state_id')
         ->where('company_address.is_default', '1'),
-        'company.*, '.
-        'company_address.is_default, '.
-        'company_address.zipcode, '.
-        'company_address.address, '.
-        'company_address.address_number, '.
-        'company_address.complement, '.
-        'company_address.district, '.
-        'company_address.city_id, '.
-        'company_address.reference_point, '.
-        'city.city_name, '.
-        'city.ibge_code, '.
-        'state.state_name, '.
-        'state.state_abbreviation'
+      'company.*, '.
+      'company_address.is_default, '.
+      'company_address.zipcode, '.
+      'company_address.address, '.
+      'company_address.address_number, '.
+      'company_address.complement, '.
+      'company_address.district, '.
+      'company_address.city_id, '.
+      'company_address.reference_point, '.
+      'city.city_name, '.
+      'city.ibge_code, '.
+      'state.state_name, '.
+      'state.state_abbreviation'
     ];
   }
 
