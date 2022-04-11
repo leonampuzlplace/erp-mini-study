@@ -28,7 +28,7 @@ class CompanyController extends Controller
       $this->companyService->index(
         $request->input('page') ?? [],
         $request->input('filter') ?? [],
-      )      
+      )
     );
   }
 

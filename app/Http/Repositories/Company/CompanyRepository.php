@@ -27,6 +27,7 @@ class CompanyRepository extends BaseRepository
    *
    * @param Builder $queryBuilder
    * @return array
+   * Retornar um array contendo queryBuilder e string de colunas a serem exibidas
    */
   public function indexInside(Builder $queryBuilder): array
   {
@@ -66,7 +67,7 @@ class CompanyRepository extends BaseRepository
       ->with('companyAddress.city.state')
       ->first();
 
-    throw_if(!$modelFound, new ModelNotFoundException('No query results for $id = ' . $id));
+    throw_if(!$modelFound, new ModelNotFoundException(__('message_lang.model_not_found') . ' id: ' . $id));
     return $modelFound->getData();
   }
 

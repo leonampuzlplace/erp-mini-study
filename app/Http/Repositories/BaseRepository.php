@@ -2,6 +2,7 @@
 
 namespace App\Http\Repositories;
 
+use App\Exceptions\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -39,10 +40,10 @@ abstract class BaseRepository
           ->onlyTrashed()
           ->first();
 
-        throw_if(!$modelFound, new \Exception('No query results for trashed $id = ' . $id));
+        throw_if(!$modelFound, new ModelNotFoundException(__('message_lang.model_not_found') . ' Trashed id: ' . $id));
         return $modelFound->forceDelete();
       }
-      throw_if(!$modelFound, new \Exception('No query results for $id = ' . $id));
+      throw_if(!$modelFound, new ModelNotFoundException(__('message_lang.model_not_found') . ' id: ' . $id));
 
       // Apagar registro (alterar para trashed. Não exclui permanentemente)
       return $modelFound->delete();
@@ -193,6 +194,7 @@ abstract class BaseRepository
    * @param Builder $queryBuilder
    * @param string $selectRaw
    * @return array
+   * Retornar um array contendo queryBuilder e string de colunas a serem exibidas
    */
   public function indexGetAndPaginate(Builder $queryBuilder, String $selectRaw = '*'): array
   {
@@ -225,7 +227,7 @@ abstract class BaseRepository
   {
     $modelFound = $this->model->find($id);
 
-    throw_if(!$modelFound, new \Exception('No query results for $id = ' . $id));
+    throw_if(!$modelFound, new ModelNotFoundException(__('message_lang.model_not_found') . ' id: ' . $id));
     return $modelFound->getData();
   }
 

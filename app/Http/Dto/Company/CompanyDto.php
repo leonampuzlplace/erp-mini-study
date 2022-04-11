@@ -67,18 +67,32 @@ class CompanyDto extends Data
 
   public static function withValidator(Validator $validator): void
   {
-    $validator->after(function ($validator) {
+    // Formatar CPF/CNPJ
+    $company_ein = formatCpfCnpj(request()->get('company_ein', ''));
+    request()->merge(['company_ein' => $company_ein]);
+    
+    $validator->after(function ($validator) use ($company_ein) {
       // Validar CPF ou CNPJ
-      $company_ein = request()->get('company_ein');
       if (!cpfOrCnpjIsValid($company_ein)) {
-        $validator->errors()->add('company_ein', 'The document ('. $company_ein .') is not valid!');
+        $validator->errors()->add('company_ein', __('company_lang.ein_is_not_valid', ['value' => $company_ein]));
       }
 
       // Endereço não pode ser nulo
       $company_address = request()->get('company_address');
       if (!$company_address) {
-        $validator->errors()->add('company_address', 'The company address (null) can not be null.');
-      }
+        $validator->errors()->add('company_address', __('company_lang.company_address_can_not_be_null'));
+      } else {
+        // Endereço deve conter um único registro como padrão.
+        $address_filtered = array_filter(
+          $company_address ?? [],
+          function ($item) {
+            return $item['is_default'] == 1;
+          }
+        );
+        if (count($address_filtered) !== 1) {
+          $validator->errors()->add('company_address', __('company_lang.company_address_must_have_single_record_default'));
+        }
+      }      
     });
   }
   

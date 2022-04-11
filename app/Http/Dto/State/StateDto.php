@@ -2,7 +2,6 @@
 
 namespace App\Http\Dto\State;
 
-use Illuminate\Validation\Validator;
 use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
 

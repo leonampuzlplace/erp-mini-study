@@ -6,7 +6,6 @@ use App\Exceptions\ModelNotFoundException;
 use App\Http\Repositories\BaseRepository;
 use App\Models\City;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\Data;
 
 class CityRepository extends BaseRepository
@@ -52,7 +51,7 @@ class CityRepository extends BaseRepository
       ->with('state')
       ->first();
 
-    throw_if(!$modelFound, new ModelNotFoundException('No query results for $id = ' . $id));
+    throw_if(!$modelFound, new ModelNotFoundException(__('message_lang.model_not_found').' id: '.$id));
     return $modelFound->getData();
   }
 }

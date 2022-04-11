@@ -2,7 +2,6 @@
 
 namespace App\Http\Dto\Company;
 
-use App\Http\Dto\City\CityDto;
 use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
 

@@ -21,10 +21,10 @@ function responseSuccess(mixed $result = [], int $code = Response::HTTP_OK, stri
     // Quando nenhuma mensagem informado, seta um default
     if (!$msg){
         $msg = match ($code) {
-            Response::HTTP_OK => 'Request was successful.',
-            Response::HTTP_CREATED => 'Request was successful and a new resource was created.',
-            Response::HTTP_BAD_REQUEST => 'Server cannot process request due to server failure.',
-            Response::HTTP_NOT_FOUND => 'Server could not find the requested resource.',
+            Response::HTTP_OK => __('message_lang.http_ok'),
+            Response::HTTP_CREATED => __('message_lang.http_created'),
+            Response::HTTP_BAD_REQUEST => __('message_lang.http_bad_request'),
+            Response::HTTP_NOT_FOUND => __('message_lang.http_not_found'),
             default => '',
         };
     }
