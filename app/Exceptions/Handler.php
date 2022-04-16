@@ -8,6 +8,10 @@ use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class Handler extends ExceptionHandler
 {
@@ -58,8 +62,48 @@ class Handler extends ExceptionHandler
         $exceptionName = (new \ReflectionClass($exception))->getShortName(); 
 
         if ($request->is("api/*")) {
+            // Token não pode ser utilizado
+            if ($exceptionName === 'TokenBlacklistedException') {
+                responseError(
+                    trans('auth_lang.token_cant_used'),
+                    Response::HTTP_BAD_REQUEST,
+                    $exceptionName,
+                );
+                $responseErrorExecuted = true;
+            }
+
+            // Token inválido
+            if ($exceptionName === 'TokenInvalidException') {
+                responseError(
+                    trans('auth_lang.token_is_invalid'),
+                    Response::HTTP_BAD_REQUEST,
+                    $exceptionName,
+                );
+                $responseErrorExecuted = true;
+            }
+
+            // Token expirado
+            if ($exceptionName === 'TokenExpiredException') {
+                responseError(
+                    trans('auth_lang.token_is_expired'),
+                    Response::HTTP_BAD_REQUEST,
+                    $exceptionName,
+                );
+                $responseErrorExecuted = true;
+            }
+
+            // Token não informado
+            if ($exceptionName === 'JWTException') {
+                responseError(
+                    trans('auth_lang.token_not_provided'),
+                    Response::HTTP_BAD_REQUEST,
+                    $exceptionName,
+                );
+                $responseErrorExecuted = true;
+            }
+
             // Validação dos dados
-            if ($exception instanceof ValidationException) {
+            if ($exceptionName === 'ValidationException') {
                 responseError(
                     $exception->errors(),
                     $exception->status,
@@ -69,7 +113,7 @@ class Handler extends ExceptionHandler
             }
 
             // Validação dos dados (Customizada)
-            if ($exception instanceof CustomValidationException) {
+            if ($exceptionName === 'CustomValidationException') {
                 responseError(
                     $exception->errors(),
                     $exception->status(),
@@ -79,7 +123,7 @@ class Handler extends ExceptionHandler
             }
 
             // Model não encontrado
-            if ($exception instanceof ModelNotFoundException) {
+            if ($exceptionName === 'ModelNotFoundException') {
                 responseError(
                     $exception->errors(),
                     $exception->status(),
@@ -89,7 +133,7 @@ class Handler extends ExceptionHandler
             }
 
             // Model não encontrado
-            if ($exception instanceof QueryException) {
+            if ($exceptionName === 'QueryException') {
                 responseError(
                     $exception->getMessage(),
                     Response::HTTP_BAD_REQUEST,
@@ -99,7 +143,7 @@ class Handler extends ExceptionHandler
             }
 
             // Rota não encontrada
-            if ($exception instanceof NotFoundHttpException) {
+            if ($exceptionName === 'NotFoundHttpException') {
                 responseError(
                     trans('message_lang.not_found_route_http'),
                     Response::HTTP_NOT_FOUND,
@@ -119,5 +163,7 @@ class Handler extends ExceptionHandler
         }
 
         return parent::render($request, $exception);
-    }    
+    }
+
+    public function responseErrorFromAuth(){}
 }

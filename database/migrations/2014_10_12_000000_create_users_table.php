@@ -34,6 +34,7 @@ return new class extends Migration
                 'email_verified_at' => now(),
                 'password' => bcrypt('erp-8aa73d34'),
                 'remember_token' => \Illuminate\Support\Str::random(10),
+                'created_at' => now(),
             ],
             [
                 'id' => 2,
@@ -43,6 +44,7 @@ return new class extends Migration
                 'email_verified_at' => now(),
                 'password' => bcrypt('erp-fb484e7d'),
                 'remember_token' => \Illuminate\Support\Str::random(10),
+                'created_at' => now(),
             ],
         ]);        
     }
