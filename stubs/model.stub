@@ -2,10 +2,10 @@
 
 namespace {{ namespace }};
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Traits\TenantableTrait;
 
 class {{ class }} extends Model
 {
-    use TenantableTrait;
+    use HasFactory;
 }
