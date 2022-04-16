@@ -31,7 +31,7 @@ class Person extends Model
         'company_id',
         'business_name',
         'alias_name',
-        'person_ein',
+        'ein',
         'state_registration',
         'icms_taxpayer',
         'municipal_registration',

@@ -75,7 +75,7 @@ class CompanyDto extends Data
       // Company - CPF/CNPJ
       $ein = request()->get('ein', '');
       if (!cpfOrCnpjIsValid($ein)) {
-        $validator->errors()->add('ein', trans('company_lang.ein_is_not_valid', ['value' => $ein]));
+        $validator->errors()->add('ein', trans('request_validation_lang.field_is_not_valid', ['value' => $ein]));
       }
 
       // CompanyAddress[]
@@ -83,11 +83,11 @@ class CompanyDto extends Data
       if ($addresses) {
         // Endereço deve conter um único registro como padrão.
         if (count(array_filter($addresses ?? [], fn ($i) => ($i['is_default'] ?? 0) == 1)) !== 1) {
-          $validator->errors()->add('company_address', trans('company_lang.company_address_must_have_single_record_default'));
+          $validator->errors()->add('company_address', trans('request_validation_lan.array_must_have_single_record_default'));
         }
       } else {
         // Endereço não pode ser nulo
-        $validator->errors()->add('company_address', trans('company_lang.company_address_can_not_be_null'));
+        $validator->errors()->add('company_address', trans('request_validation_lang.array_can_not_be_null'));
       }
 
       // CompanyContact[]
@@ -101,13 +101,13 @@ class CompanyDto extends Data
           if ((!($value['name'] ?? ''))
           &&  (!($value['phone'] ?? ''))
           &&  (!($value['email'] ?? ''))) {
-            $validator->errors()->add($fieldName.'ein|phone|email', 'Um dos três campos precisa estar preenchido.');
+            $validator->errors()->add($fieldName.'name|phone|email', trans('request_validation_lang.at_least_one_field_must_be_filled'));
           }
 
           // Validar CPF/CNPJ
           $ein = $value['ein'] ?? '';
           if (!cpfOrCnpjIsValid($ein)) {
-            $validator->errors()->add($fieldName . 'ein', trans('company_lang.ein_is_not_valid', ['value' => $ein]));
+            $validator->errors()->add($fieldName . 'ein', trans('request_validation_lang.field_is_not_valid', ['value' => $ein]));
           }
 
           // Contagem de registros com campo is_default=true
@@ -118,11 +118,11 @@ class CompanyDto extends Data
 
         // Contato deve conter um único registro como padrão.
         if ($contactsCountDefault <> 1) {
-          $validator->errors()->add('company_contact', trans('company_lang.company_contact_must_have_single_record_default'));
+          $validator->errors()->add('company_contact', trans('request_validation_lan.array_must_have_single_record_default'));
         }
       } else {
         // Contato não pode ser nulo
-        $validator->errors()->add('company_contact', trans('company_lang.company_contact_can_not_be_null'));
+        $validator->errors()->add('company_contact', trans('request_validation_lang.array_can_not_be_null'));
       }
     });
   }
