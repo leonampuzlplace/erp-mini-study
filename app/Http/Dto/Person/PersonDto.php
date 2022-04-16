@@ -19,8 +19,8 @@ class PersonDto extends Data
     #[Rule('nullable|integer')]
     public ?int $id,
 
-    #[Rule('required|integer|exists:company,id')]
-    public int $company_id,
+    #[Rule('required|integer|exists:tenant,id')]
+    public int $tenant_id,
 
     #[Rule('nullable|string|max:80')]
     public ?string $business_name,
@@ -70,7 +70,7 @@ class PersonDto extends Data
         ValidationRule::unique('person', 'ein')
           ->ignore(request()->route('person'))
           ->where(function ($query) {
-            return $query->where('company_id', '=', request()->input('company_id'));
+            return $query->where('tenant_id', '=', request()->input('tenant_id'));
           }),
       ],
     ];

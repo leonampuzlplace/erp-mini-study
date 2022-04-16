@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Http\Controllers\Company;
+namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
-use App\Http\Dto\Company\CompanyDto;
-use App\Http\Services\Company\CompanyService;
+use App\Http\Dto\Tenant\TenantDto;
+use App\Http\Services\Tenant\TenantService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class CompanyController extends Controller
+class TenantController extends Controller
 {
   public function __construct( 
-    protected CompanyService $companyService
+    protected TenantService $tenantService
   ) {
   }
 
   public function destroy(int $id): JsonResponse
   {
-    $this->companyService->destroy($id);
+    $this->tenantService->destroy($id);
     return $this->responseSuccess(code: Response::HTTP_NO_CONTENT);
   }
 
   public function index(Request $request): JsonResponse
   {
     return $this->responseSuccess(
-      $this->companyService->index(
+      $this->tenantService->index(
         $request->input('page') ?? [],
         $request->input('filter') ?? [],
       )
@@ -35,22 +35,22 @@ class CompanyController extends Controller
   public function show(int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->companyService->show($id)
+      $this->tenantService->show($id)
     );
   }
 
-  public function store(CompanyDto $companyDto): JsonResponse
+  public function store(TenantDto $tenantDto): JsonResponse
   {
     return $this->responseSuccess(
-      $this->companyService->store($companyDto)->toArray(), 
+      $this->tenantService->store($tenantDto)->toArray(), 
       Response::HTTP_CREATED
     );
   }
 
-  public function update(CompanyDto $companyDto, int $id): JsonResponse
+  public function update(TenantDto $tenantDto, int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->companyService->update($id, $companyDto)
+      $this->tenantService->update($id, $tenantDto)
     );
   }
 }

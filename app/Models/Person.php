@@ -28,7 +28,7 @@ class Person extends Model
     ];
 
     protected $fillable = [
-        'company_id',
+        'tenant_id',
         'business_name',
         'alias_name',
         'ein',

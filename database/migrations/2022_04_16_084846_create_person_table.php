@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('person', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id')
-                ->constrained('company')
+            $table->foreignId('tenant_id')
+                ->constrained('tenant')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string('business_name', 80)->index();

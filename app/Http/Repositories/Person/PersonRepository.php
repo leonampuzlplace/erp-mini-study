@@ -135,7 +135,7 @@ class PersonRepository extends BaseRepository
 
       // Carregar relacionamentos
       $modelFound
-        ->load('personAddress')
+        ->load('personAddress.city.state')
         ->load('personContact');
 
       return $modelFound->getData();

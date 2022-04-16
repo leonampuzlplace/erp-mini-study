@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Dto\Company;
+namespace App\Http\Dto\Tenant;
 
 use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
 
-class CompanyAddressDto extends Data
+class TenantAddressDto extends Data
 {
   public static function authorize(): bool
   {
@@ -17,7 +17,7 @@ class CompanyAddressDto extends Data
     public ?int $id,
 
     #[Rule('nullable|integer')]
-    public ?int $company_id,
+    public ?int $tenant_id,
 
     #[Rule('required|boolean')]
     public bool $is_default,

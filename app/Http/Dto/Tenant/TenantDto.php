@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Dto\Company;
+namespace App\Http\Dto\Tenant;
 
 use Illuminate\Validation\Rule as ValidationRule;
 use Illuminate\Validation\Validator;
@@ -8,7 +8,7 @@ use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
 
-class CompanyDto extends Data
+class TenantDto extends Data
 {
   public static function authorize(): bool
   {
@@ -48,11 +48,11 @@ class CompanyDto extends Data
     #[Rule('nullable|string|min:10')]
     public ?string $updated_at,
 
-    /** @var CompanyAddressDto[] */
-    public DataCollection $company_address,
+    /** @var TenantAddressDto[] */
+    public DataCollection $tenant_address,
 
-    /** @var CompanyContactDto[] */
-    public DataCollection $company_contact,
+    /** @var TenantContactDto[] */
+    public DataCollection $tenant_contact,
   ){
   }
 
@@ -64,7 +64,7 @@ class CompanyDto extends Data
         'required', 
         'string',
         'max:20',
-        ValidationRule::unique('company', 'ein')->ignore(request()->route('company')),
+        ValidationRule::unique('tenant', 'ein')->ignore(request()->route('tenant')),
       ],
     ];
   }  
@@ -72,30 +72,30 @@ class CompanyDto extends Data
   public static function withValidator(Validator $validator): void
   {
     $validator->after(function ($validator) {
-      // Company - CPF/CNPJ
+      // Tenant - CPF/CNPJ
       $ein = request()->get('ein', '');
       if (!cpfOrCnpjIsValid($ein)) {
         $validator->errors()->add('ein', trans('request_validation_lang.field_is_not_valid', ['value' => $ein]));
       }
 
-      // CompanyAddress[]
-      $addresses = request()->get('company_address');
+      // TenantAddress[]
+      $addresses = request()->get('tenant_address');
       if ($addresses) {
         // Endereço deve conter um único registro como padrão.
         if (count(array_filter($addresses ?? [], fn ($i) => ($i['is_default'] ?? 0) == 1)) !== 1) {
-          $validator->errors()->add('company_address', trans('request_validation_lan.array_must_have_single_record_default'));
+          $validator->errors()->add('tenant_address', trans('request_validation_lan.array_must_have_single_record_default'));
         }
       } else {
         // Endereço não pode ser nulo
-        $validator->errors()->add('company_address', trans('request_validation_lang.array_can_not_be_null'));
+        $validator->errors()->add('tenant_address', trans('request_validation_lang.array_can_not_be_null'));
       }
 
-      // CompanyContact[]
-      $contacts = request()->get('company_contact');
+      // TenantContact[]
+      $contacts = request()->get('tenant_contact');
       if ($contacts) {
         $contactsCountDefault = 0;
         foreach ($contacts as $key => $value) {
-          $fieldName = 'company_contact.'.$key.'.';
+          $fieldName = 'tenant_contact.'.$key.'.';
 
           // Documento ou Telefone ou Email precisa estar preenchido
           if ((!($value['name'] ?? ''))
@@ -118,44 +118,44 @@ class CompanyDto extends Data
 
         // Contato deve conter um único registro como padrão.
         if ($contactsCountDefault <> 1) {
-          $validator->errors()->add('company_contact', trans('request_validation_lan.array_must_have_single_record_default'));
+          $validator->errors()->add('tenant_contact', trans('request_validation_lan.array_must_have_single_record_default'));
         }
       } else {
         // Contato não pode ser nulo
-        $validator->errors()->add('company_contact', trans('request_validation_lang.array_can_not_be_null'));
+        $validator->errors()->add('tenant_contact', trans('request_validation_lang.array_can_not_be_null'));
       }
     });
   }
 
   public static function formatRequestInput(): void
   {
-    static::formatRequestInputCompany();
-    static::formatRequestInputCompanyContact();
+    static::formatRequestInputTenant();
+    static::formatRequestInputTenantContact();
   }
 
-  public static function formatRequestInputCompany(): void
+  public static function formatRequestInputTenant(): void
   {
-    // Company - CPF/CNPJ
+    // Tenant - CPF/CNPJ
     request()->merge([
       'ein' => formatCpfCnpj(request()->get('ein', ''))
     ]);
   }
 
-  public static function formatRequestInputCompanyContact(): void
+  public static function formatRequestInputTenantContact(): void
   {
-    // CompanyContact[] - CPF/CNPJ
-    $company_contact = request()->get('company_contact');
-    if ($company_contact) {
-      $companyContactFormated = array_map(
+    // TenantContact[] - CPF/CNPJ
+    $tenant_contact = request()->get('tenant_contact');
+    if ($tenant_contact) {
+      $tenantContactFormated = array_map(
         function ($item) {
           $item['ein'] = formatCpfCnpj($item['ein'] ?? '');
           return $item;
         },
-        $company_contact
+        $tenant_contact
       );
 
       request()->merge([
-        'company_contact' => $companyContactFormated
+        'tenant_contact' => $tenantContactFormated
       ]);
     }
   }

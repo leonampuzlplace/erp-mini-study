@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Http\Repositories\Company;
+namespace App\Http\Repositories\Tenant;
 
 use App\Exceptions\ModelNotFoundException;
 use App\Http\Repositories\BaseRepository;
-use App\Models\Company;
+use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\Data;
 
-class CompanyRepository extends BaseRepository
+class TenantRepository extends BaseRepository
 {
-  public function __construct(Company $company)
+  public function __construct(Tenant $tenant)
   {
-    parent::__construct($company);
+    parent::__construct($tenant);
   }
 
   public static function make(): Self
   {
-    return new self(new Company);
+    return new self(new Tenant);
   }
 
   /**
@@ -33,30 +33,30 @@ class CompanyRepository extends BaseRepository
   {
     return [
       $queryBuilder
-        ->leftJoin('company_address', 'company_address.company_id', 'company.id')
-        ->leftJoin('company_contact', 'company_contact.company_id', 'company.id')
-        ->leftJoin('city', 'city.id', 'company_address.city_id')
+        ->leftJoin('tenant_address', 'tenant_address.tenant_id', 'tenant.id')
+        ->leftJoin('tenant_contact', 'tenant_contact.tenant_id', 'tenant.id')
+        ->leftJoin('city', 'city.id', 'tenant_address.city_id')
         ->leftJoin('state', 'state.id', 'city.state_id')
-        ->where('company_address.is_default', '1')
-        ->where('company_contact.is_default', '1'),
-      'company.*, '.
-      'company_address.zipcode         as company_address_zipcode, '.
-      'company_address.address         as company_address_address, ' .
-      'company_address.address_number  as company_address_address_number, ' .
-      'company_address.complement      as company_address_complement, ' .
-      'company_address.district        as company_address_district, ' .
-      'company_address.reference_point as company_address_reference_point, ' .
-      'company_contact.name            as company_contact_name, ' .
-      'company_contact.ein             as company_contact_ein, ' .
-      'company_contact.type            as company_contact_type, ' .
-      'company_contact.note            as company_contact_note, ' .
-      'company_contact.phone           as company_contact_phone, ' .
-      'company_contact.email           as company_contact_email, ' .
-      'city.id                         as city_id, ' .
-      'city.name                       as city_name, ' .
-      'city.ibge_code                  as city_ibge_code, ' .
-      'state.name                      as state_name, ' .
-      'state.abbreviation              as state_abbreviation'
+        ->where('tenant_address.is_default', '1')
+        ->where('tenant_contact.is_default', '1'),
+      'tenant.*, '.
+      'tenant_address.zipcode         as tenant_address_zipcode, '.
+      'tenant_address.address         as tenant_address_address, ' .
+      'tenant_address.address_number  as tenant_address_address_number, ' .
+      'tenant_address.complement      as tenant_address_complement, ' .
+      'tenant_address.district        as tenant_address_district, ' .
+      'tenant_address.reference_point as tenant_address_reference_point, ' .
+      'tenant_contact.name            as tenant_contact_name, ' .
+      'tenant_contact.ein             as tenant_contact_ein, ' .
+      'tenant_contact.type            as tenant_contact_type, ' .
+      'tenant_contact.note            as tenant_contact_note, ' .
+      'tenant_contact.phone           as tenant_contact_phone, ' .
+      'tenant_contact.email           as tenant_contact_email, ' .
+      'city.id                        as city_id, ' .
+      'city.name                      as city_name, ' .
+      'city.ibge_code                 as city_ibge_code, ' .
+      'state.name                     as state_name, ' .
+      'state.abbreviation             as state_abbreviation'
     ];
   }
 
@@ -71,8 +71,8 @@ class CompanyRepository extends BaseRepository
   {
     $modelFound = $this->model
       ->where('id', $id)
-      ->with('companyAddress.city.state')
-      ->with('companyContact')
+      ->with('tenantAddress.city.state')
+      ->with('tenantContact')
       ->first();
 
     throw_if(!$modelFound, new ModelNotFoundException(trans('message_lang.model_not_found') . ' id: ' . $id));
@@ -92,8 +92,8 @@ class CompanyRepository extends BaseRepository
     $data = $dto->toArray();
     $executeStore = function ($data) {
       $modelFound = $this->model->create($data);
-      $modelFound->companyAddress()->createMany($data['company_address']);
-      $modelFound->companyContact()->createMany($data['company_contact']);
+      $modelFound->tenantAddress()->createMany($data['tenant_address']);
+      $modelFound->tenantContact()->createMany($data['tenant_contact']);
 
       return $this->show($modelFound->id);
     };
@@ -122,21 +122,21 @@ class CompanyRepository extends BaseRepository
     $executeUpdate = function ($id, $data) {
       $modelFound = $this->model->findOrFail($id);
 
-      // Atualizar Company
+      // Atualizar Tenant
       tap($modelFound)->update($data);
 
-      // Atualizar CompanyAddress
-      $modelFound->companyAddress()->where('company_address.company_id', $id)->delete();
-      $modelFound->companyAddress()->createMany($data['company_address']);
+      // Atualizar TenantAddress
+      $modelFound->tenantAddress()->where('tenant_address.tenant_id', $id)->delete();
+      $modelFound->tenantAddress()->createMany($data['tenant_address']);
 
-      // Atualizar CompanyContact
-      $modelFound->companyContact()->where('company_contact.company_id', $id)->delete();
-      $modelFound->companyContact()->createMany($data['company_contact']);
+      // Atualizar TenantContact
+      $modelFound->tenantContact()->where('tenant_contact.tenant_id', $id)->delete();
+      $modelFound->tenantContact()->createMany($data['tenant_contact']);
 
       // Carregar relacionamentos
       $modelFound
-        ->load('companyAddress')
-        ->load('companyContact');
+        ->load('tenantAddress.city.state')
+        ->load('tenantContact');
       
       return $modelFound->getData();
     };

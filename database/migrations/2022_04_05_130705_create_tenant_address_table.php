@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('company_address', function (Blueprint $table) {
+        Schema::create('tenant_address', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id')
-                ->constrained('company')
+            $table->foreignId('tenant_id')
+                ->constrained('tenant')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->integer('is_default')->default(0)->comment('[0=false, 1=true]');
@@ -40,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('company_address');
+        Schema::dropIfExists('tenant_address');
     }
 };

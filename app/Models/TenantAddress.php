@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CompanyAddress extends Model
+class TenantAddress extends Model
 {
     use HasFactory;
 
-    protected $table = 'company_address';
+    protected $table = 'tenant_address';
     public $timestamps = false;
 
     protected $casts = [

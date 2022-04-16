@@ -220,7 +220,7 @@ abstract class BaseRepository
    * 
    * Exemplo para salvar outros relacionamentos na classe que extende BaseRepository
    * $modelStored = $this->model->create($data);
-   * $modelStored->companyAddress()->createMany($data['company_address']);
+   * $modelStored->tenantAddress()->createMany($data['tenant_address']);
    * return $this->show($modelStored->id);
    *
    * @param Data $dto
@@ -251,9 +251,9 @@ abstract class BaseRepository
    * Exemplo para atualizar outros relacionamentos na classe que extende BaseRepository
    *   $modelFound = $this->model->findOrFail($id);
    *   tap($modelFound)->update($data);
-   *   $modelFound->companyAddress()->where('company_address.company_id', $id)->delete();
-   *   $modelFound->companyAddress()->createMany($data['company_address']);
-   *   $modelFound->load('companyAddress');
+   *   $modelFound->tenantAddress()->where('tenant_address.tenant_id', $id)->delete();
+   *   $modelFound->tenantAddress()->createMany($data['tenant_address']);
+   *   $modelFound->load('tenantAddress');
    *   return $modelFound->getData();
    * 
    * @param integer $id

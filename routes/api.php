@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\City\CityController;
-use App\Http\Controllers\Company\CompanyController;
+use App\Http\Controllers\Tenant\TenantController;
 use App\Http\Controllers\Person\PersonController;
 use App\Http\Controllers\State\StateController;
 use App\Http\Controllers\Person\PersonTypeController;
@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('/company', CompanyController::class);
+Route::apiResource('/tenant', TenantController::class);
 Route::apiResource('/city', CityController::class);
 Route::apiResource('/state', StateController::class);
 Route::apiResource('/person-type', PersonTypeController::class);

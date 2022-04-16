@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use App\Http\Dto\Company\CompanyDto;
+use App\Http\Dto\Tenant\TenantDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\WithData;
 
-class Company extends Model
+class Tenant extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use WithData;
 
-    protected $table = 'company';
+    protected $table = 'tenant';
     protected $dates = ['deleted_at'];
-    protected $dataClass = CompanyDto::class;
+    protected $dataClass = TenantDto::class;
     public $timestamps = true;
 
     protected $hidden = [
@@ -38,13 +38,13 @@ class Company extends Model
         'internet_page',
     ];
 
-    public function companyAddress()
+    public function tenantAddress()
     {
-        return $this->hasMany(CompanyAddress::class);
+        return $this->hasMany(TenantAddress::class);
     }
 
-    public function companyContact()
+    public function tenantContact()
     {
-        return $this->hasMany(CompanyContact::class);
+        return $this->hasMany(TenantContact::class);
     }
 }
