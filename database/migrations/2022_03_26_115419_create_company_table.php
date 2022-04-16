@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('state_registration', 20)->nullable();
             $table->integer('icms_taxpayer')->default(0)->comment('[0=false, 1=true]');
             $table->string('municipal_registration', 20)->nullable();
-            $table->text('note_general')->nullable();
+            $table->text('company_note')->nullable();
             $table->string('internet_page', 255)->nullable();
             $table->softDeletes();
             $table->timestamps();

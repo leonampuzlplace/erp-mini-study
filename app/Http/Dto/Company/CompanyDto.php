@@ -37,7 +37,7 @@ class CompanyDto extends Data
     public ?string $municipal_registration,
 
     #[Rule('nullable|string')]
-    public ?string $note_general,
+    public ?string $company_note,
     
     #[Rule('nullable|string|max:255')]
     public ?string $internet_page,

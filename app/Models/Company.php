@@ -34,7 +34,7 @@ class Company extends Model
         'state_registration',
         'icms_taxpayer',
         'municipal_registration',
-        'note_general',
+        'company_note',
         'internet_page',
     ];
 

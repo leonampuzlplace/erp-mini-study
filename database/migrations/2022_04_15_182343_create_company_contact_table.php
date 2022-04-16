@@ -22,10 +22,10 @@ return new class extends Migration
             $table->integer('is_default')->default(0)->comment('[0=false, 1=true]');
             $table->string('contact_name', 60)->nullable();
             $table->string('contact_ein', 20)->nullable();
-            $table->string('type', 60)->nullable();
+            $table->string('contact_type', 60)->nullable();
+            $table->text('contact_note')->nullable();
             $table->string('phone', 30)->nullable();
             $table->string('email', 100)->nullable();
-            $table->text('note')->nullable();
         });
     }
 

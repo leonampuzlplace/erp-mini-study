@@ -20,9 +20,9 @@ class CompanyContact extends Model
         'is_default',
         'contact_name',
         'contact_ein',
-        'type',
+        'contact_type',
+        'contact_note',
         'phone',
         'email',
-        'note',
     ];
 }

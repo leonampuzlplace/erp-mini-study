@@ -29,16 +29,16 @@ class CompanyContactDto extends Data
     public ?string $contact_ein,
 
     #[Rule('nullable|string|max:100')]
-    public ?string $type,
+    public ?string $contact_type,
+
+    #[Rule('nullable|string')]
+    public ?string $contact_note,
 
     #[Rule('nullable|string|max:30')]
     public ?string $phone,
 
     #[Rule('nullable|string|email|max:100')]
     public ?string $email,
-
-    #[Rule('nullable|string')]
-    public ?string $note,
   ) {
   }
 }
