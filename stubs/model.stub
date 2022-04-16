@@ -1,0 +1,11 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Traits\TenantableTrait;
+
+class {{ class }} extends Model
+{
+    use TenantableTrait;
+}
