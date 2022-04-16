@@ -32,8 +32,8 @@ class CityRepository extends BaseRepository
     return [
       $queryBuilder->leftJoin('state', 'state.id', 'city.state_id'),
       'city.*, ' .
-      'state.state_name, ' .
-      'state.state_abbreviation'
+      'state.name         as state_name,' .
+      'state.abbreviation as state_abbreviation'
     ];
   }
 

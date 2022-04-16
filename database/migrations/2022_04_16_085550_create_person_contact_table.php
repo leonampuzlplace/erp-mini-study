@@ -20,10 +20,10 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->integer('is_default')->default(0)->comment('[0=false, 1=true]');
-            $table->string('person_contact_name', 60)->nullable();
-            $table->string('person_contact_ein', 20)->nullable();
-            $table->string('person_contact_type', 60)->nullable();
-            $table->text('person_contact_note')->nullable();
+            $table->string('name', 60)->nullable();
+            $table->string('ein', 20)->nullable();
+            $table->string('type', 60)->nullable();
+            $table->text('note')->nullable();
             $table->string('phone', 30)->nullable();
             $table->string('email', 100)->nullable();
         });

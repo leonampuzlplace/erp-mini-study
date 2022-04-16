@@ -21,11 +21,11 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->string('business_name', 80)->index();
             $table->string('alias_name', 80)->nullable()->index();
-            $table->string('person_ein', 20)->nullable()->index();
+            $table->string('ein', 20)->nullable()->index();
             $table->string('state_registration', 20)->nullable();
             $table->integer('icms_taxpayer')->nullable()->comment('[0=false, 1=true]');
             $table->string('municipal_registration', 20)->nullable();
-            $table->text('person_note')->nullable();
+            $table->text('note')->nullable();
             $table->string('internet_page', 255)->nullable();
             $table->softDeletes();
             $table->timestamps();

@@ -16,20 +16,20 @@ return new class extends Migration
     {
         Schema::create('person_type', function (Blueprint $table) {
             $table->id();
-            $table->string('person_type_name', 60)->index();
+            $table->string('name', 60)->index();
             $table->softDeletes();
             $table->timestamps();
         });
 
         DB::table('person_type')->truncate();
         DB::table('person_type')->insert([
-            ['id' => 1, 'person_type_name' => 'Cliente'],
-            ['id' => 2, 'person_type_name' => 'Fornecedor'],
-            ['id' => 3, 'person_type_name' => 'Funcionário'],
-            ['id' => 4, 'person_type_name' => 'Outros'],
-            ['id' => 5, 'person_type_name' => 'Técnico'],
-            ['id' => 6, 'person_type_name' => 'Transportador'],
-            ['id' => 7, 'person_type_name' => 'Vendedor'],
+            ['id' => 1, 'name' => 'Cliente'],
+            ['id' => 2, 'name' => 'Fornecedor'],
+            ['id' => 3, 'name' => 'Funcionário'],
+            ['id' => 4, 'name' => 'Outros'],
+            ['id' => 5, 'name' => 'Técnico'],
+            ['id' => 6, 'name' => 'Transportador'],
+            ['id' => 7, 'name' => 'Vendedor'],
         ]);        
     }
 

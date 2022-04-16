@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use App\Http\Dto\Company\CompanyDto;
+use App\Http\Dto\Person\PersonDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\WithData;
 
-class Company extends Model
+class Person extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use WithData;
 
-    protected $table = 'company';
+    protected $table = 'person';
     protected $dates = ['deleted_at'];
-    protected $dataClass = CompanyDto::class;
+    protected $dataClass = PersonDto::class;
     public $timestamps = true;
 
     protected $hidden = [
@@ -28,9 +28,10 @@ class Company extends Model
     ];
 
     protected $fillable = [
+        'company_id',
         'business_name',
         'alias_name',
-        'ein',
+        'person_ein',
         'state_registration',
         'icms_taxpayer',
         'municipal_registration',
@@ -38,13 +39,13 @@ class Company extends Model
         'internet_page',
     ];
 
-    public function companyAddress()
+    public function personAddress()
     {
-        return $this->hasMany(CompanyAddress::class);
+        return $this->hasMany(PersonAddress::class);
     }
 
-    public function companyContact()
+    public function personContact()
     {
-        return $this->hasMany(CompanyContact::class);
+        return $this->hasMany(PersonContact::class);
     }
 }

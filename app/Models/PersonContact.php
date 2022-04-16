@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CompanyContact extends Model
+class PersonContact extends Model
 {
     use HasFactory;
 
-    protected $table = 'company_contact';
+    protected $table = 'person_contact';
     public $timestamps = false;
 
     protected $casts = [

@@ -17,10 +17,10 @@ class StateDto extends Data
     public ?int $id,
 
     #[Rule('required|string|max:50')]
-    public string $state_name,
+    public string $name,
 
     #[Rule('required|string|max:2')]
-    public string $state_abbreviation,
+    public string $abbreviation,
   ) {
   }
 

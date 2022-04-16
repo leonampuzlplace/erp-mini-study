@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Dto\Company;
+namespace App\Http\Dto\Person;
 
-use Illuminate\Validation\Rule as ValidationRule;
 use Illuminate\Validation\Validator;
 use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
 
-class CompanyDto extends Data
+class PersonDto extends Data
 {
   public static function authorize(): bool
   {
@@ -19,26 +18,30 @@ class CompanyDto extends Data
     #[Rule('nullable|integer')]
     public ?int $id,
 
-    #[Rule('required|string|max:80')]
-    public string $business_name,
+    #[Rule('required|integer|exists:company,id')]
+    public int $company_id,
+
+    #[Rule('nullable|string|max:80')]
+    public ?string $business_name,
 
     #[Rule('required|string|max:80')]
     public string $alias_name,
 
-    public string $ein,
+    #[Rule('required|string|max:20')]
+    public ?string $ein,
 
     #[Rule('nullable|string|max:20')]
     public ?string $state_registration,
 
     #[Rule('nullable|boolean')]
     public ?bool $icms_taxpayer,
-    
+
     #[Rule('nullable|string|max:20')]
     public ?string $municipal_registration,
 
     #[Rule('nullable|string')]
     public ?string $note,
-    
+
     #[Rule('nullable|string|max:255')]
     public ?string $internet_page,
 
@@ -48,65 +51,60 @@ class CompanyDto extends Data
     #[Rule('nullable|string|min:10')]
     public ?string $updated_at,
 
-    /** @var CompanyAddressDto[] */
-    public DataCollection $company_address,
+    /** @var PersonAddressDto[] */
+    public DataCollection $person_address,
 
-    /** @var CompanyContactDto[] */
-    public DataCollection $company_contact,
-  ){
+    /** @var PersonContactDto[] */
+    public DataCollection $person_contact,
+  ) {
   }
 
   public static function rules(): array
   {
-    Static::formatRequestInput();
+    static::formatRequestInput();
     return [
-      'ein' => [
-        'required', 
-        'string',
-        'max:20',
-        ValidationRule::unique('company', 'ein')->ignore(request()->route('company')),
-      ],
     ];
-  }  
+  }
 
   public static function withValidator(Validator $validator): void
   {
     $validator->after(function ($validator) {
-      // Company - CPF/CNPJ
+      // Person - CPF/CNPJ
       $ein = request()->get('ein', '');
-      if (!cpfOrCnpjIsValid($ein)) {
+      if (($ein) && (!cpfOrCnpjIsValid($ein))) {
         $validator->errors()->add('ein', trans('company_lang.ein_is_not_valid', ['value' => $ein]));
       }
 
-      // CompanyAddress[]
-      $addresses = request()->get('company_address');
+      // PersonAddress[]
+      $addresses = request()->get('person_address');
       if ($addresses) {
         // Endereço deve conter um único registro como padrão.
         if (count(array_filter($addresses ?? [], fn ($i) => ($i['is_default'] ?? 0) == 1)) !== 1) {
-          $validator->errors()->add('company_address', trans('company_lang.company_address_must_have_single_record_default'));
+          $validator->errors()->add('person_address', trans('company_lang.company_address_must_have_single_record_default'));
         }
       } else {
         // Endereço não pode ser nulo
-        $validator->errors()->add('company_address', trans('company_lang.company_address_can_not_be_null'));
+        $validator->errors()->add('person_address', trans('company_lang.company_address_can_not_be_null'));
       }
 
-      // CompanyContact[]
-      $contacts = request()->get('company_contact');
+      // PersonContact[]
+      $contacts = request()->get('person_contact');
       if ($contacts) {
         $contactsCountDefault = 0;
         foreach ($contacts as $key => $value) {
-          $fieldName = 'company_contact.'.$key.'.';
+          $fieldName = 'person_contact.' . $key . '.';
 
           // Documento ou Telefone ou Email precisa estar preenchido
           if ((!($value['name'] ?? ''))
-          &&  (!($value['phone'] ?? ''))
-          &&  (!($value['email'] ?? ''))) {
-            $validator->errors()->add($fieldName.'ein|phone|email', 'Um dos três campos precisa estar preenchido.');
+            &&  (!($value['phone'] ?? ''))
+            &&  (!($value['email'] ?? ''))
+          ) {
+            $validator->errors()->add($fieldName . 'ein|phone|email', 'Um dos três campos precisa estar preenchido.');
           }
 
           // Validar CPF/CNPJ
           $ein = $value['ein'] ?? '';
-          if (!cpfOrCnpjIsValid($ein)) {
+          if (($ein) && (!cpfOrCnpjIsValid($ein))) {
             $validator->errors()->add($fieldName . 'ein', trans('company_lang.ein_is_not_valid', ['value' => $ein]));
           }
 
@@ -118,45 +116,25 @@ class CompanyDto extends Data
 
         // Contato deve conter um único registro como padrão.
         if ($contactsCountDefault <> 1) {
-          $validator->errors()->add('company_contact', trans('company_lang.company_contact_must_have_single_record_default'));
+          $validator->errors()->add('person_contact', trans('company_lang.company_contact_must_have_single_record_default'));
         }
       } else {
         // Contato não pode ser nulo
-        $validator->errors()->add('company_contact', trans('company_lang.company_contact_can_not_be_null'));
-      }
+        $validator->errors()->add('person_contact', trans('company_lang.company_contact_can_not_be_null'));
+      }      
     });
   }
 
   public static function formatRequestInput(): void
   {
-    static::formatRequestInputCompany();
-    static::formatRequestInputCompanyContact();
+    static::formatRequestInputPerson();
   }
 
-  public static function formatRequestInputCompany(): void
+  public static function formatRequestInputPerson(): void
   {
-    // Company - CPF/CNPJ
+    // Person - CPF/CNPJ
     request()->merge([
       'ein' => formatCpfCnpj(request()->get('ein', ''))
     ]);
-  }
-
-  public static function formatRequestInputCompanyContact(): void
-  {
-    // CompanyContact[] - CPF/CNPJ
-    $company_contact = request()->get('company_contact');
-    if ($company_contact) {
-      $companyContactFormated = array_map(
-        function ($item) {
-          $item['ein'] = formatCpfCnpj($item['ein'] ?? '');
-          return $item;
-        },
-        $company_contact
-      );
-
-      request()->merge([
-        'company_contact' => $companyContactFormated
-      ]);
-    }
   }
 }

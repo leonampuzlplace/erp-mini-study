@@ -26,7 +26,7 @@ class State extends Model
     ];
 
     protected $fillable = [
-        'state_name',
-        'state_abbreviation',
+        'name',
+        'abbreviation',
     ];
 }

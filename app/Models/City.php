@@ -26,7 +26,7 @@ class City extends Model
     ];
 
     protected $fillable = [
-        'city_name',
+        'name',
         'ibge_code',
         'state_id',
     ];

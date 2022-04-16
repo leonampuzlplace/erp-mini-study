@@ -17,27 +17,7 @@ class PersonTypeDto extends Data
     public ?int $id,
 
     #[Rule('required|string|max:60')]
-    public string $person_type_name,
+    public string $name,
   ) {
   }
-
-  // public static function rules(): array
-  // {
-  //   return [];
-  // }
-
-  // public static function withValidator(Validator $validator): void
-  // {
-  //   // $validator->after(function ($validator) {
-  //   //   $field = request()->get('field');
-  //   //   if ($field) {
-  //   //     $validator->errors()->add('field', 'Field ('. $field .') is not valid!');
-  //   //   }      
-  //   // });
-  // }
-
-  // public static function messages(): array
-  // {
-  //   return [];
-  // }
 }
