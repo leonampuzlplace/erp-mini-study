@@ -3,6 +3,7 @@
 use App\Http\Controllers\City\CityController;
 use App\Http\Controllers\Company\CompanyController;
 use App\Http\Controllers\State\StateController;
+use App\Http\Controllers\Person\PersonTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +25,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('/company', CompanyController::class);
 Route::apiResource('/city', CityController::class);
 Route::apiResource('/state', StateController::class);
+Route::apiResource('/person-type', PersonTypeController::class);

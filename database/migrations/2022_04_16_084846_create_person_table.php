@@ -13,15 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('company', function (Blueprint $table) {
+        Schema::create('person', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('company_id')
+                ->constrained('company')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('business_name', 80)->index();
-            $table->string('alias_name', 80)->index();
-            $table->string('company_ein', 20)->unique()->index();
+            $table->string('alias_name', 80)->nullable()->index();
+            $table->string('person_ein', 20)->nullable()->index();
             $table->string('state_registration', 20)->nullable();
             $table->integer('icms_taxpayer')->nullable()->comment('[0=false, 1=true]');
             $table->string('municipal_registration', 20)->nullable();
-            $table->text('company_note')->nullable();
+            $table->text('person_note')->nullable();
             $table->string('internet_page', 255)->nullable();
             $table->softDeletes();
             $table->timestamps();
@@ -35,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('company');
+        Schema::dropIfExists('person');
     }
 };
