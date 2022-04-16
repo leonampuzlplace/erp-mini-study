@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\City\CityController;
 use App\Http\Controllers\Tenant\TenantController;
 use App\Http\Controllers\Person\PersonController;
 use App\Http\Controllers\State\StateController;
 use App\Http\Controllers\Person\PersonTypeController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,8 +20,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+Route::post('auth/login', [AuthController::class, 'login']);
+
+Route::group([
+  'middleware' => ['apiJwt']
+], function(){
+  Route::apiResource('/user', UserController::class);
 });
 
 Route::apiResource('/tenant', TenantController::class);
