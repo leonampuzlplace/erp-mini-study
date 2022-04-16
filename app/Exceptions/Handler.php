@@ -125,8 +125,8 @@ class Handler extends ExceptionHandler
             // Model não encontrado
             if ($exceptionName === 'ModelNotFoundException') {
                 responseError(
-                    $exception->errors(),
-                    $exception->status(),
+                    $exception->getMessage(),
+                    Response::HTTP_BAD_REQUEST,
                     $exceptionName,
                 );
                 $responseErrorExecuted = true;
@@ -146,6 +146,16 @@ class Handler extends ExceptionHandler
             if ($exceptionName === 'NotFoundHttpException') {
                 responseError(
                     trans('message_lang.not_found_route_http'),
+                    Response::HTTP_NOT_FOUND,
+                    $exceptionName,
+                );
+                $responseErrorExecuted = true;
+            }
+
+            // Rota não encontrada
+            if ($exceptionName === 'RouteNotFoundException') {
+                responseError(
+                    trans('message_lang.route_not_found_or_token_invalid'),
                     Response::HTTP_NOT_FOUND,
                     $exceptionName,
                 );
