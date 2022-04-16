@@ -19,8 +19,8 @@ class CompanyAddressDto extends Data
     #[Rule('nullable|integer')]
     public ?int $company_id,
 
-    #[Rule('nullable|integer|in:0,1')]
-    public ?int $is_default,
+    #[Rule('required|boolean')]
+    public bool $is_default,
 
     #[Rule('nullable|string|max:10')]
     public ?string $zipcode,
@@ -47,4 +47,15 @@ class CompanyAddressDto extends Data
     public object|array|null $city,
   ) {
   }
+
+  public static function rules(): array
+  {
+    // // Formatar CPF/CNPJ
+    // request()->merge([
+    //   'company_ein' => formatCpfCnpj(request()->get('company_ein', ''))
+    // ]);
+
+    return [
+    ];
+  }    
 }

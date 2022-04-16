@@ -13,23 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('company_address', function (Blueprint $table) {
+        Schema::create('company_contact', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id')
                 ->constrained('company')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->integer('is_default')->default(0)->comment('[0=false, 1=true]');
-            $table->string('zipcode', 10)->nullable();
-            $table->string('address', 100)->index();
-            $table->string('address_number', 15)->nullable();
-            $table->string('complement', 100)->nullable();
-            $table->string('district', 100)->nullable();
-            $table->foreignId('city_id')
-                ->constrained('city')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-            $table->string('reference_point', 100)->nullable();
+            $table->string('contact_name', 60)->nullable();
+            $table->string('contact_ein', 20)->nullable();
+            $table->string('type', 60)->nullable();
+            $table->string('phone', 30)->nullable();
+            $table->string('email', 100)->nullable();
+            $table->text('note')->nullable();
         });
     }
 
@@ -40,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('company_address');
+        Schema::dropIfExists('company_contact');
     }
 };

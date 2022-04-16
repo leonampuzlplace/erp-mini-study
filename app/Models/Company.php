@@ -23,8 +23,11 @@ class Company extends Model
         'deleted_at',
     ];
 
+    protected $casts = [
+        'icms_taxpayer' => 'boolean',
+    ];
+
     protected $fillable = [
-        'id',
         'business_name',
         'alias_name',
         'company_ein',
@@ -37,6 +40,11 @@ class Company extends Model
 
     public function companyAddress()
     {
-        return $this->hasMany(CompanyAddress::class, 'company_id', 'id');
-    }    
+        return $this->hasMany(CompanyAddress::class);
+    }
+
+    public function companyContact()
+    {
+        return $this->hasMany(CompanyContact::class);
+    }
 }

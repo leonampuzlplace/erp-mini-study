@@ -51,7 +51,7 @@ class CityRepository extends BaseRepository
       ->with('state')
       ->first();
 
-    throw_if(!$modelFound, new ModelNotFoundException(__('message_lang.model_not_found').' id: '.$id));
+    throw_if(!$modelFound, new ModelNotFoundException(trans('message_lang.model_not_found').' id: '.$id));
     return $modelFound->getData();
   }
 }

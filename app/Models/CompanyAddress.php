@@ -12,9 +12,11 @@ class CompanyAddress extends Model
     protected $table = 'company_address';
     public $timestamps = false;
 
+    protected $casts = [
+        'is_default' => 'boolean',
+    ];
+
     protected $fillable = [
-        'id',
-        'company_id',
         'is_default',
         'zipcode',
         'address',
@@ -27,6 +29,6 @@ class CompanyAddress extends Model
 
     public function city()
     {
-        return $this->hasOne(City::class, 'id', 'city_id');
+        return $this->belongsTo(City::class);
     }
 }

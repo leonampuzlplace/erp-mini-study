@@ -26,13 +26,13 @@ class City extends Model
     ];
 
     protected $fillable = [
-        'id',
-        'state_name',
-        'state_abbreviation',
+        'city_name',
+        'ibge_code',
+        'state_id',
     ];
 
     public function state()
     {
-        return $this->hasOne(State::class, 'id', 'state_id');
+        return $this->belongsTo(State::class);
     }
 }

@@ -34,9 +34,11 @@ class CompanyRepository extends BaseRepository
     return [
       $queryBuilder
         ->leftJoin('company_address', 'company_address.company_id', 'company.id')
+        ->leftJoin('company_contact', 'company_contact.company_id', 'company.id')
         ->leftJoin('city', 'city.id', 'company_address.city_id')
         ->leftJoin('state', 'state.id', 'city.state_id')
-        ->where('company_address.is_default', '1'),
+        ->where('company_address.is_default', '1')
+        ->where('company_contact.is_default', '1'),
       'company.*, '.
       'company_address.is_default, '.
       'company_address.zipcode, '.
@@ -45,10 +47,17 @@ class CompanyRepository extends BaseRepository
       'company_address.complement, '.
       'company_address.district, '.
       'company_address.city_id, '.
-      'company_address.reference_point, '.
-      'city.city_name, '.
-      'city.ibge_code, '.
-      'state.state_name, '.
+      'company_address.reference_point, ' .
+      'company_contact.is_default, ' .
+      'company_contact.contact_name, ' .
+      'company_contact.contact_ein, ' .
+      'company_contact.type, ' .
+      'company_contact.phone, ' .
+      'company_contact.email, ' .
+      'company_contact.note, ' .
+      'city.city_name, ' .
+      'city.ibge_code, ' .
+      'state.state_name, ' .
       'state.state_abbreviation'
     ];
   }
@@ -65,9 +74,10 @@ class CompanyRepository extends BaseRepository
     $modelFound = $this->model
       ->where('id', $id)
       ->with('companyAddress.city.state')
+      ->with('companyContact')
       ->first();
 
-    throw_if(!$modelFound, new ModelNotFoundException(__('message_lang.model_not_found') . ' id: ' . $id));
+    throw_if(!$modelFound, new ModelNotFoundException(trans('message_lang.model_not_found') . ' id: ' . $id));
     return $modelFound->getData();
   }
 
@@ -84,8 +94,8 @@ class CompanyRepository extends BaseRepository
     $data = $dto->toArray();
     $executeStore = function ($data) {
       $modelFound = $this->model->create($data);
-      $modelFound->companyAddress()
-        ->createMany($data['company_address']);
+      $modelFound->companyAddress()->createMany($data['company_address']);
+      $modelFound->companyContact()->createMany($data['company_contact']);
 
       return $this->show($modelFound->id);
     };
@@ -121,8 +131,14 @@ class CompanyRepository extends BaseRepository
       $modelFound->companyAddress()->where('company_address.company_id', $id)->delete();
       $modelFound->companyAddress()->createMany($data['company_address']);
 
+      // Atualizar CompanyContact
+      $modelFound->companyContact()->where('company_contact.company_id', $id)->delete();
+      $modelFound->companyContact()->createMany($data['company_contact']);
+
       // Carregar relacionamentos
-      $modelFound->load('companyAddress');
+      $modelFound
+        ->load('companyAddress')
+        ->load('companyContact');
       
       return $modelFound->getData();
     };

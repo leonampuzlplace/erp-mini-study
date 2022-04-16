@@ -101,7 +101,7 @@ class Handler extends ExceptionHandler
             // Rota não encontrada
             if ($exception instanceof NotFoundHttpException) {
                 responseError(
-                    __('message_lang.not_found_route_http'),
+                    trans('message_lang.not_found_route_http'),
                     Response::HTTP_NOT_FOUND,
                     $exceptionName,
                 );

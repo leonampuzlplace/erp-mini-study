@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('city', function (Blueprint $table) {
             $table->id();
             $table->string('city_name')->index();
-            $table->string('ibge_code', 20);
+            $table->string('ibge_code', 20)->index();
             $table->bigInteger('state_id');
             $table->foreign('state_id', 'state_id_fk')
                 ->references('id')

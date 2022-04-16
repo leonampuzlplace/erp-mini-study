@@ -40,10 +40,10 @@ abstract class BaseRepository
           ->onlyTrashed()
           ->first();
 
-        throw_if(!$modelFound, new ModelNotFoundException(__('message_lang.model_not_found') . ' Trashed id: ' . $id));
+        throw_if(!$modelFound, new ModelNotFoundException(trans('message_lang.model_not_found') . ' Trashed id: ' . $id));
         return $modelFound->forceDelete();
       }
-      throw_if(!$modelFound, new ModelNotFoundException(__('message_lang.model_not_found') . ' id: ' . $id));
+      throw_if(!$modelFound, new ModelNotFoundException(trans('message_lang.model_not_found') . ' id: ' . $id));
 
       // Apagar registro (alterar para trashed. Não exclui permanentemente)
       return $modelFound->delete();
@@ -75,27 +75,11 @@ abstract class BaseRepository
    * 
    * @param array $filter
    * Configuração de filtro de dados
-   * filter = [ 
-   *   where = [                 // [where, orWhere]
-   *     tableName.FieldName = [ // [tableName.FieldName] Exemplo: company.alias_name
-   *       equal = [             // [equal, greater, less, greaterOrEqual, lessOrEqual, different, likeInitial, likeFinal, likeAnyWhere, likeEqual]
-   *         value               // [] Conteúdo da busca
-   *       ]
-   *     ],
-   *     [], [], ...
-   *   ],
-   *   orderBy = 'tableName.FieldName', // Ordenar campos. Exemplo: company.id desc ou company.id, company.alias_name desc
-   *   onlyTrashed = 1                  // [0,1] Registros apagados
-   * ],
-   * 
-   * Exemplos de queryParams
-   *  filter[orWhere][company.business_name][likeAnyWhere]=Leonam
-   *  filter[orWhere][company.alias_name][likeAnyWhere]=Leonam
-   *  filter[where][company.id][equal]=1
-   *  filter[where][company.created_at][greaterOrEqual]=2022-04-07 00:00:00
-   *  filter[where][company.created_at][lessOrEqual]=2022-04-07 00:00:00
-   *  filter[orderBy]=company.id desc
-   *  filter[onlyTrashed]=1
+   * Exemplos em formato de queryParams
+   * filter[where][tableName.fieldName][operator]
+   * filter[orWhere][tableName.fieldName][operator]
+   * filter[orderBy]
+   * filter[onlyTrashed]   
    * 
    * @param array $filterEx
    * Filtro extra para utilizar da forma que desejar dentro da classe que extende BaseRepository
@@ -227,7 +211,7 @@ abstract class BaseRepository
   {
     $modelFound = $this->model->find($id);
 
-    throw_if(!$modelFound, new ModelNotFoundException(__('message_lang.model_not_found') . ' id: ' . $id));
+    throw_if(!$modelFound, new ModelNotFoundException(trans('message_lang.model_not_found') . ' id: ' . $id));
     return $modelFound->getData();
   }
 
