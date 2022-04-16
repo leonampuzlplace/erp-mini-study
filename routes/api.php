@@ -20,19 +20,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-Route::post('auth/login', [AuthController::class, 'login']);
-
 Route::group([
-  'middleware' => ['apiJwt']
-], function(){
-  Route::apiResource('/user', UserController::class);
+  'prefix' => 'auth',
+], function () {
+  Route::post('login', [AuthController::class, 'login']);
+  Route::post('logout', [AuthController::class, 'logout']);
+  Route::post('refresh', [AuthController::class, 'refresh']);
+  Route::post('me', [AuthController::class, 'me']);  
 });
 
-Route::apiResource('/tenant', TenantController::class);
-Route::apiResource('/city', CityController::class);
-Route::apiResource('/state', StateController::class);
-Route::apiResource('/person-type', PersonTypeController::class);
-Route::apiResource('/person', PersonController::class);
+Route::group([
+  'middleware' => ['api', 'apiJwt', 'cors', 'localization'],
+], function(){
+  Route::apiResource('/user', UserController::class);
+  Route::apiResource('/tenant', TenantController::class);
+  Route::apiResource('/city', CityController::class);
+  Route::apiResource('/state', StateController::class);
+  Route::apiResource('/person-type', PersonTypeController::class);
+  Route::apiResource('/person', PersonController::class);
+});
+

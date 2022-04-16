@@ -7,14 +7,15 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
+/**
+ * TODO-Falta implementar usuário corretamente
+ */
 class UserController extends Controller
 {
-    // public function destroy(int $id): JsonResponse
-    // {
-    //     $this->tenantService->destroy($id);
-    //     return $this->responseSuccess(code: Response::HTTP_NO_CONTENT);
-    // }
+    public function destroy(int $id): JsonResponse
+    {
+        return $this->responseSuccess('Recurso não implementado!');
+    }
 
     public function index(Request $request): JsonResponse
     {
@@ -23,25 +24,20 @@ class UserController extends Controller
         );
     }
 
-    // public function show(int $id): JsonResponse
-    // {
-    //     return $this->responseSuccess(
-    //         $this->tenantService->show($id)
-    //     );
-    // }
+    public function show(int $id): JsonResponse
+    {
+        return $this->responseSuccess(
+            User::findOrFail($id)
+        );
+    }
 
-    // public function store(Request $request): JsonResponse
-    // {
-    //     return $this->responseSuccess(
-    //         $this->tenantService->store($tenantDto)->toArray(),
-    //         Response::HTTP_CREATED
-    //     );
-    // }
+    public function store(Request $request): JsonResponse
+    {
+        return $this->responseSuccess('Recurso não implementado!');
+    }
 
-    // public function update(Request $request, int $id): JsonResponse
-    // {
-    //     return $this->responseSuccess(
-    //         $this->tenantService->update($id, $tenantDto)
-    //     );
-    // }
+    public function update(Request $request, int $id): JsonResponse
+    {
+        return $this->responseSuccess('Recurso não implementado!');
+    }
 }

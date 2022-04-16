@@ -34,16 +34,6 @@ class AuthController extends Controller
     }
 
     /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function me()
-    {
-        return response()->json(auth()->user());
-    }
-
-    /**
      * Log the user out (Invalidate the token).
      *
      * @return \Illuminate\Http\JsonResponse
@@ -65,6 +55,16 @@ class AuthController extends Controller
     }
 
     /**
+     * Get the authenticated User.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function me()
+    {
+        return $this->responseSuccess((auth()->user()));
+    }
+
+    /**
      * Get the token array structure.
      *
      * @param  string $token
@@ -73,7 +73,7 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
-        return response()->json([
+        return $this->responseSuccess([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60
