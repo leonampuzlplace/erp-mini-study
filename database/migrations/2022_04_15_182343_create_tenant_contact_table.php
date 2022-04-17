@@ -29,27 +29,43 @@ return new class extends Migration
             $table->string('email', 100)->nullable();
         });
 
-        DB::table('tenant')->insert([
-            [
+        DB::table('tenant')->insert([[
                 'id' => 1,
                 'business_name' => 'Company 1',
                 'alias_name' => 'Company 1',
                 'ein' => '95.857.276/0001-05',
-            ]
-        ]);
-        DB::table('tenant_address')->insert([
+            ],
             [
+                'id' => 2,
+                'business_name' => 'Company 2',
+                'alias_name' => 'Company 2',
+                'ein' => '56.611.459/0001-86',
+            ],
+        ]);
+        DB::table('tenant_address')->insert([[
                 'id' => 1,
                 'tenant_id' => 1,
                 'is_default' => 1,
                 'address' => 'no address',
                 'city_id' => 1,
             ],
-        ]);
-        DB::table('tenant_contact')->insert([
             [
+                'id' => 2,
+                'tenant_id' => 2,
+                'is_default' => 1,
+                'address' => 'no address',
+                'city_id' => 1,
+            ],
+        ]);
+        DB::table('tenant_contact')->insert([[
                 'id' => 1,
                 'tenant_id' => 1,
+                'is_default' => 1,
+                'name' => 'no name',
+            ],
+            [
+                'id' => 2,
+                'tenant_id' => 2,
                 'is_default' => 1,
                 'name' => 'no name',
             ],

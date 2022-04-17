@@ -7,13 +7,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
-// Verificar existência de TenantId na Session
-if (!function_exists('tenantIdExistsInSession')) {
-  function tenantIdExistsInSession(){
-    return (session()->has('tenant_id') && !is_null(session('tenant_id')));      
-  }
-}
-
 // Criar uma conexao de apenas leitura no banco de dados
 if (!function_exists('query')) {
   function query(string $table): Builder
