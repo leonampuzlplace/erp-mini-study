@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('tenant_contact', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('tenant_id')
+            $table->foreignId('tenant_id')
                 ->constrained('tenant')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
@@ -30,13 +30,13 @@ return new class extends Migration
         });
 
         DB::table('tenant')->insert([[
-                'id' => 'd4dba6f9-d941-4af6-bf8f-093b149bb99f',
+                'id' => 1,
                 'business_name' => 'Company 1',
                 'alias_name' => 'Company 1',
                 'ein' => '95.857.276/0001-05',
             ],
             [
-                'id' => '1ee9b1bc-bdb9-4ad0-8eeb-ff986ad4febc',
+                'id' => 2,
                 'business_name' => 'Company 2',
                 'alias_name' => 'Company 2',
                 'ein' => '56.611.459/0001-86',
@@ -44,14 +44,14 @@ return new class extends Migration
         ]);
         DB::table('tenant_address')->insert([[
                 'id' => 1,
-                'tenant_id' => 'd4dba6f9-d941-4af6-bf8f-093b149bb99f',
+                'tenant_id' => 1,
                 'is_default' => 1,
                 'address' => 'no address',
                 'city_id' => 1,
             ],
             [
                 'id' => 2,
-                'tenant_id' => '1ee9b1bc-bdb9-4ad0-8eeb-ff986ad4febc',
+                'tenant_id' => 2,
                 'is_default' => 1,
                 'address' => 'no address',
                 'city_id' => 1,
@@ -59,13 +59,13 @@ return new class extends Migration
         ]);
         DB::table('tenant_contact')->insert([[
                 'id' => 1,
-                'tenant_id' => 'd4dba6f9-d941-4af6-bf8f-093b149bb99f',
+                'tenant_id' => 1,
                 'is_default' => 1,
                 'name' => 'no name',
             ],
             [
                 'id' => 2,
-                'tenant_id' => '1ee9b1bc-bdb9-4ad0-8eeb-ff986ad4febc',
+                'tenant_id' => 2,
                 'is_default' => 1,
                 'name' => 'no name',
             ],
