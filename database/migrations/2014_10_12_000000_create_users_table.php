@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tenant_id')->nullable()->index();
+            $table->uuid('tenant_id')->nullable()->index();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -28,7 +28,7 @@ return new class extends Migration
         DB::table('users')->truncate();
         DB::table('users')->insert([
             [   'id' => 1,
-                'tenant_id' => 1,
+                'tenant_id' => 'd4dba6f9-d941-4af6-bf8f-093b149bb99f',
                 'name' => 'adm',
                 'email' => 'adm@gmail.com',
                 'email_verified_at' => now(),
@@ -37,7 +37,7 @@ return new class extends Migration
                 'created_at' => now(),
             ],[
                 'id' => 2,
-                'tenant_id' => 2,
+                'tenant_id' => '1ee9b1bc-bdb9-4ad0-8eeb-ff986ad4febc',
                 'name' => 'user',
                 'email' => 'user@gmail.com',
                 'email_verified_at' => now(),

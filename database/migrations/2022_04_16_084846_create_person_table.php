@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('person', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tenant_id')
+            $table->foreignUuid('tenant_id')
                 ->constrained('tenant')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
