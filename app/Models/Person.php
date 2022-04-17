@@ -13,7 +13,7 @@ class Person extends Model
     use HasFactory;
     use SoftDeletes;
     use WithData;
-
+        
     protected $table = 'person';
     protected $dates = ['deleted_at'];
     protected $dataClass = PersonDto::class;
