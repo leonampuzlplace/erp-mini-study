@@ -7,6 +7,13 @@ use Carbon\Carbon;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
+// Verificar existência de TenantId em AuthUser
+if (!function_exists('tenantIdInAuthUser')) {
+  function tenantIdInAuthUser(){
+    return auth()->user()->tenant_id;
+  }
+}
+
 // Criar uma conexao de apenas leitura no banco de dados
 if (!function_exists('query')) {
   function query(string $table): Builder
