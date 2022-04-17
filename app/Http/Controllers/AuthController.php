@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-
 class AuthController extends Controller
 {
     /**
@@ -28,7 +26,6 @@ class AuthController extends Controller
             $token = auth('api')->attempt($credentials);
             
             throw_if(!$token, new \Exception('auth.not_authorized'));
-
         } catch (\Exception $exception) {
             return $this->responseError($exception->getMessage());
         }
@@ -75,7 +72,7 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
-        $user = Auth::user();
+        $user = auth()->user();
         return $this->responseSuccess([
             'access_token' => $token,
             'token_type' => 'bearer',

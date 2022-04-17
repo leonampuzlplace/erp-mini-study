@@ -28,7 +28,7 @@ return new class extends Migration
         DB::table('users')->truncate();
         DB::table('users')->insert([
             [   'id' => 1,
-                'tenant_id' => 'd4dba6f9-d941-4af6-bf8f-093b149bb99f',
+                'tenant_id' => 1,
                 'name' => 'adm',
                 'email' => 'adm@gmail.com',
                 'email_verified_at' => now(),
@@ -37,7 +37,7 @@ return new class extends Migration
                 'created_at' => now(),
             ],[
                 'id' => 2,
-                'tenant_id' => '1ee9b1bc-bdb9-4ad0-8eeb-ff986ad4febc',
+                'tenant_id' => 2,
                 'name' => 'user',
                 'email' => 'user@gmail.com',
                 'email_verified_at' => now(),
