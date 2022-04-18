@@ -26,7 +26,26 @@ class Product extends Model
     ];
 
     protected $casts = [
+        'cost_price' => 'float',
+        'sale_price' => 'float',
+        'minimum_quantity' => 'float',
+        'current_quantity' => 'float',
     ];
 
     protected $guarded = ['id'];
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+    
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
 }
