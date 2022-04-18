@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Cache;
+
 class AuthController extends Controller
 {
     /**
@@ -24,8 +26,10 @@ class AuthController extends Controller
         try {
             $credentials = request(['email', 'password']);
             $token = auth('api')->attempt($credentials);
-            
             throw_if(!$token, new \Exception('auth.not_authorized'));
+
+            // Salvar usuário em cache
+            Cache::put($token, auth()->user()->toArray(), (env('JWT_TTL', 240)*60));
         } catch (\Exception $exception) {
             return $this->responseError($exception->getMessage());
         }

@@ -28,8 +28,10 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Helpers/functions.php",
-            "app/Helpers/customResponse.php"
+            "app/Helpers/customFunctions.php",
+            "app/Helpers/customResponse.php",
+            "app/Helpers/dbFunctions.php",
+            "app/Helpers/requestFunctions.php"
         ]    
     },
     "autoload-dev": {

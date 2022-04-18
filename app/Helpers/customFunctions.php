@@ -4,17 +4,6 @@
 // Depois rodar comando composer dump-autoload -o
 
 use Carbon\Carbon;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\DB;
-
-// Criar uma conexao de apenas leitura no banco de dados
-if (!function_exists('query')) {
-  function query(string $table): Builder
-  {
-    return tap(DB::table($table))
-      ->useWritePdo();
-  }
-}
 
 // Extrair apenas números de uma string
 if (!function_exists('onlyNumbers')) {

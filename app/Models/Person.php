@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Http\Dto\Person\PersonDto;
-use App\Traits\Tenantable;
+use App\Traits\TenantAbleTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,7 +14,7 @@ class Person extends Model
     use HasFactory;
     use SoftDeletes;
     use WithData;
-    use Tenantable;
+    use TenantAbleTrait;
         
     protected $table = 'person';
     protected $dates = ['deleted_at'];

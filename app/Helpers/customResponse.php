@@ -1,7 +1,7 @@
 <?php
 // Como configurar arquivo helper? 
 // Adicione o caminho em composer.json na seção autoload, files. 
-// Depois rodar comando composer dump-autoload
+// Depois rodar comando composer dump-autoload -o
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
