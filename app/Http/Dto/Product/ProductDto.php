@@ -2,8 +2,7 @@
 
 namespace App\Http\Dto\Product;
 
-use PhpParser\Node\Expr\Cast\Double;
-use Spatie\LaravelData\Attributes\Validation\Numeric;
+use Illuminate\Validation\Rule as ValidationRule;
 use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
 
@@ -54,11 +53,39 @@ class ProductDto extends Data
     #[Rule('required|integer|exists:unit,id')]
     public int $unit_id,
 
-    #[Rule('nullable|integer')] // Verificar existencia no tenant TODO
+    #[Rule('nullable')]
+    public object|array|null $unit,
+
     public ?int $category_id,
 
-    #[Rule('nullable|integer')] // Verificar existencia no tenant TODO
+    #[Rule('nullable')]
+    public object|array|null $category,
+
+    #[Rule('nullable|integer')]
     public ?int $brand_id,
+
+    #[Rule('nullable')]
+    public object|array|null $brand,
   ) {
   }
+
+  public static function rules(): array
+  {
+    return [
+      'category_id' => [
+        'nullable',
+        'integer',
+        ValidationRule::exists('category', 'id')->where(function ($query) {
+          return $query->where('tenant_id', currentTenantId());
+        }),
+      ],
+      'brand_id' => [
+        'nullable',
+        'integer',
+        ValidationRule::exists('brand', 'id')->where(function ($query) {
+          return $query->where('tenant_id', currentTenantId());
+        }),
+      ],
+    ];
+  }     
 }
