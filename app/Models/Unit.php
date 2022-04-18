@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use App\Http\Dto\Person\PersonTypeDto;
+use App\Http\Dto\Unit\UnitDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\WithData;
 
-class PersonType extends Model
+class Unit extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use WithData;
+    use WithData;    
 
-    protected $table = 'person_type';
-    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
-    protected $dataClass = PersonTypeDto::class;
+    protected $table = 'unit';
+    protected $dates = ['deleted_at'];
+    protected $dataClass = UnitDto::class;
     public $timestamps = true;
 
     protected $hidden = [
@@ -25,7 +25,9 @@ class PersonType extends Model
         'updated_at'
     ];
 
-    protected $fillable = [
-        'name',
+    protected $casts = [
     ];
+
+    protected $guarded = ['id'];
+
 }

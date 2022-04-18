@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('{{ table }}', function (Blueprint $table) {
+        Schema::create('category', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tenant_id')->constrained('tenant')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('name', 60)->index();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('{{ table }}');
+        Schema::dropIfExists('category');
     }
 };

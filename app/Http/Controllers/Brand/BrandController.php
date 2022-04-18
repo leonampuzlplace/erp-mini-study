@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Http\Controllers\Person;
+namespace App\Http\Controllers\Brand;
 
 use App\Http\Controllers\Controller;
-use App\Http\Dto\Person\PersonDto;
-use App\Http\Services\Person\PersonService;
+use App\Http\Dto\Brand\BrandDto;
+use App\Http\Services\Brand\BrandService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class PersonController extends Controller
+class BrandController extends Controller
 {
   public function __construct(
-    protected PersonService $personService
+    protected BrandService $brandService
   ) {
   }
 
   public function destroy(int $id): JsonResponse
   {
-    $this->personService->destroy($id);
+    $this->brandService->destroy($id);
     return $this->responseSuccess(code: Response::HTTP_NO_CONTENT);
   }
 
   public function index(Request $request): JsonResponse
   {
     return $this->responseSuccess(
-      $this->personService->index(
+      $this->brandService->index(
         $request->input('page') ?? [],
         $request->input('filter') ?? [],
       )
@@ -35,22 +35,22 @@ class PersonController extends Controller
   public function show(int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->personService->show($id)
+      $this->brandService->show($id)
     );
   }
 
-  public function store(PersonDto $personDto): JsonResponse
+  public function store(BrandDto $brandDto): JsonResponse
   {
     return $this->responseSuccess(
-      $this->personService->store($personDto)->toArray(),
+      $this->brandService->store($brandDto)->toArray(),
       Response::HTTP_CREATED
     );
   }
 
-  public function update(PersonDto $personDto, int $id): JsonResponse
+  public function update(BrandDto $brandDto, int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->personService->update($id, $personDto)
+      $this->brandService->update($id, $brandDto)
     );
   }
 }

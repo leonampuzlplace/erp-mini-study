@@ -8,8 +8,10 @@ trait TenantAbleTrait
 {
   protected static function bootTenantAbleTrait(){
     static::addGlobalScope(new TenantScope);
-    
     static::creating(function ($model) {
+      $model->tenant_id = currentTenantId();
+    });
+    static::updating(function ($model) {
       $model->tenant_id = currentTenantId();
     });
   }

@@ -45,6 +45,27 @@ class PersonDto extends Data
     #[Rule('nullable|string|max:255')]
     public ?string $internet_page,
 
+    #[Rule('nullable|boolean')]
+    public ?bool $is_customer,
+
+    #[Rule('nullable|boolean')]
+    public ?bool $is_seller,
+
+    #[Rule('nullable|boolean')]
+    public ?bool $is_supplier,
+
+    #[Rule('nullable|boolean')]
+    public ?bool $is_carrier,
+
+    #[Rule('nullable|boolean')]
+    public ?bool $is_technician,
+
+    #[Rule('nullable|boolean')]
+    public ?bool $is_employee,
+
+    #[Rule('nullable|boolean')]
+    public ?bool $is_other,
+
     #[Rule('nullable|string|min:10')]
     public ?string $created_at,
 
@@ -70,7 +91,7 @@ class PersonDto extends Data
         ValidationRule::unique('person', 'ein')
           ->ignore(request()->route('person'))
           ->where(function ($query) {
-            return $query->where('tenant_id', '=', auth()->user()->tenant_id ?? null);
+            return $query->where('tenant_id', '=', currentTenantId());
           }),
       ],
     ];
@@ -83,6 +104,18 @@ class PersonDto extends Data
       $ein = request()->get('ein', '');
       if (($ein) && (!cpfOrCnpjIsValid($ein))) {
         $validator->errors()->add('ein', trans('request_validation_lang.field_is_not_valid', ['value' => $ein]));
+      }
+
+      // Person - Tipo de Pessoa é obrigatório
+      if ((!request()->get('is_customer') ?? false)
+      &&  (!request()->get('is_seller') ?? false)
+      &&  (!request()->get('is_supplier') ?? false)
+      &&  (!request()->get('is_carrier') ?? false)
+      &&  (!request()->get('is_technician') ?? false)
+      &&  (!request()->get('is_employee') ?? false)
+      &&  (!request()->get('is_other') ?? false)
+      ){
+        $validator->errors()->add('is_customer|is_seller|is_supplier|...', trans('request_validation_lang.at_least_one_field_must_be_filled'));
       }
 
       // PersonAddress[]
@@ -106,9 +139,9 @@ class PersonDto extends Data
 
           // Documento ou Telefone ou Email precisa estar preenchido
           if ((!($value['name'] ?? ''))
-            &&  (!($value['phone'] ?? ''))
-            &&  (!($value['email'] ?? ''))
-          ) {
+          &&  (!($value['phone'] ?? ''))
+          &&  (!($value['email'] ?? ''))
+          ){
             $validator->errors()->add($fieldName . 'name|phone|email', trans('request_validation_lang.at_least_one_field_must_be_filled'));
           }
 
@@ -138,6 +171,7 @@ class PersonDto extends Data
   public static function formatRequestInput(): void
   {
     static::formatRequestInputPerson();
+    static::formatRequestInputPersonContact();
   }
 
   public static function formatRequestInputPerson(): void
@@ -146,5 +180,24 @@ class PersonDto extends Data
     request()->merge([
       'ein' => formatCpfCnpj(request()->get('ein', ''))
     ]);
+  }
+
+  public static function formatRequestInputPersonContact(): void
+  {
+    // PersonContact[] - CPF/CNPJ
+    $person_contact = request()->get('person_contact');
+    if ($person_contact) {
+      $personContactFormated = array_map(
+        function ($item) {
+          $item['ein'] = formatCpfCnpj($item['ein'] ?? '');
+          return $item;
+        },
+        $person_contact
+      );
+
+      request()->merge([
+        'person_contact' => $personContactFormated
+      ]);
+    }
   }
 }

@@ -25,11 +25,7 @@ class City extends Model
         'updated_at'
     ];
 
-    protected $fillable = [
-        'name',
-        'ibge_code',
-        'state_id',
-    ];
+    protected $guarded = ['id'];
 
     public function state()
     {

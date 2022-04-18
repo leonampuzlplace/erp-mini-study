@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Person;
+namespace App\Http\Controllers\Unit;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\Person\PersonTypeService;
+use App\Http\Services\Unit\UnitService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class PersonTypeController extends Controller
+class UnitController extends Controller
 {
   public function __construct(
-    protected PersonTypeService $personTypeService
+    protected UnitService $unitService
   ) {
   }
 
   public function index(Request $request): JsonResponse
   {
     return $this->responseSuccess(
-      $this->personTypeService->index(
+      $this->unitService->index(
         $request->input('page') ?? [],
         $request->input('filter') ?? [],
       )
@@ -27,7 +27,7 @@ class PersonTypeController extends Controller
   public function show(int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->personTypeService->show($id)
+      $this->unitService->show($id)
     );
   }
 }

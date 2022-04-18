@@ -16,16 +16,7 @@ class PersonAddress extends Model
         'is_default' => 'boolean',
     ];
 
-    protected $fillable = [
-        'is_default',
-        'zipcode',
-        'address',
-        'address_number',
-        'complement',
-        'district',
-        'city_id',
-        'reference_point',
-    ];
+    protected $guarded = ['id'];
 
     public function city()
     {

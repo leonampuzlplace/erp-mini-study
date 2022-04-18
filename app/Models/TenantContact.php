@@ -16,13 +16,5 @@ class TenantContact extends Model
         'is_default' => 'boolean',
     ];
 
-    protected $fillable = [
-        'is_default',
-        'name',
-        'ein',
-        'type',
-        'note',
-        'phone',
-        'email',
-    ];
+    protected $guarded = ['id'];
 }

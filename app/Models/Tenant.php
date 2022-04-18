@@ -27,16 +27,7 @@ class Tenant extends Model
         'icms_taxpayer' => 'boolean',
     ];
 
-    protected $fillable = [
-        'business_name',
-        'alias_name',
-        'ein',
-        'state_registration',
-        'icms_taxpayer',
-        'municipal_registration',
-        'note',
-        'internet_page',
-    ];
+    protected $guarded = ['id'];
 
     public function tenantAddress()
     {

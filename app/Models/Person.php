@@ -27,19 +27,16 @@ class Person extends Model
 
     protected $casts = [
         'icms_taxpayer' => 'boolean',
+        'is_customer' => 'boolean',
+        'is_seller' => 'boolean',
+        'is_supplier' => 'boolean',
+        'is_carrier' => 'boolean',
+        'is_technician' => 'boolean',
+        'is_employee' => 'boolean',
+        'is_other' => 'boolean',
     ];
 
-    protected $fillable = [
-        'tenant_id',
-        'business_name',
-        'alias_name',
-        'ein',
-        'state_registration',
-        'icms_taxpayer',
-        'municipal_registration',
-        'note',
-        'internet_page',
-    ];
+    protected $guarded = ['id'];
 
     public function personAddress()
     {

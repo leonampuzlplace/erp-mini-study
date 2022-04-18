@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('person_type_tagged', function (Blueprint $table) {
+        Schema::create('brand', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('person_type_id')
-                ->constrained('person_type');
-            $table->integer('tagged');
+            $table->foreignId('tenant_id')->constrained('tenant')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('name', 60)->index();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('person_type_tagged');
+        Schema::dropIfExists('brand');
     }
 };
