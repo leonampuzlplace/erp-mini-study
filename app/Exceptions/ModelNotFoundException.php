@@ -5,6 +5,9 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Http\Response;
 
+/**
+ * Registro/Model não localizado.
+ */
 class ModelNotFoundException extends Exception
 {
     protected mixed $errorResult;

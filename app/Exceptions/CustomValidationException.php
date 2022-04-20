@@ -5,6 +5,9 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Http\Response;
 
+/**
+ * Erro na validação dos dados. Validação customizada.
+ */
 class CustomValidationException extends Exception
 {
     protected mixed $errorResult;

@@ -10,7 +10,7 @@ use Spatie\LaravelData\Data;
 
 abstract class BaseRepository
 {
-  private $withTransaction = false;
+  private $isTransaction = false;
   protected $model;
   public array $page = [];
   public array $filter = [];
@@ -50,7 +50,7 @@ abstract class BaseRepository
     };
 
     // Controle de Transação
-    return match ($this->getWithTransaction()) {
+    return match ($this->isTransaction()) {
       true => DB::transaction(fn () => $executeDestroy($id)),
       false => $executeDestroy($id),
     };
@@ -207,7 +207,6 @@ abstract class BaseRepository
   public function show(int $id): Data
   {
     $modelFound = $this->model->find($id);
-
     throw_if(!$modelFound, new ModelNotFoundException(trans('message_lang.model_not_found') . ' id: ' . $id));
     return $modelFound->getData();
   }
@@ -233,7 +232,7 @@ abstract class BaseRepository
     };
 
     // Controle de Transação
-    return match ($this->getWithTransaction()) {
+    return match ($this->isTransaction()) {
       true => DB::transaction(fn () => $executeStore($data)),
       false => $executeStore($data),
     };
@@ -267,7 +266,7 @@ abstract class BaseRepository
     };
 
     // Controle de Transação
-    return match ($this->getWithTransaction()) {
+    return match ($this->isTransaction()) {
       true => DB::transaction(fn () => $executeUpdate($id, $data)),
       false => $executeUpdate($id, $data),
     };
@@ -303,9 +302,9 @@ abstract class BaseRepository
    * @param boolean $active
    * @return self
    */
-  public function setWithTransaction(bool $active): self
+  public function setTransaction(bool $active): self
   {
-    $this->withTransaction = $active;
+    $this->isTransaction = $active;
     return $this;
   }
 
@@ -314,9 +313,9 @@ abstract class BaseRepository
    *
    * @return boolean
    */
-  public function getWithTransaction(): bool
+  public function isTransaction(): bool
   {
-    return $this->withTransaction;
+    return $this->isTransaction;
   }
 
   /**

@@ -32,7 +32,11 @@ class Product extends Model
         'current_quantity' => 'float',
     ];
 
-    protected $guarded = ['id'];
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
 
     public function unit()
     {

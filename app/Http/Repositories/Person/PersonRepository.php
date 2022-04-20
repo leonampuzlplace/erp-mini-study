@@ -99,7 +99,7 @@ class PersonRepository extends BaseRepository
     };
 
     // Controle de Transação
-    return match ($this->getWithTransaction()) {
+    return match ($this->isTransaction()) {
       true => DB::transaction(fn () => $executeStore($data)),
       false => $executeStore($data),
     };
@@ -123,11 +123,11 @@ class PersonRepository extends BaseRepository
       tap($modelFound)->update($data);
 
       // Atualizar PersonAddress
-      $modelFound->personAddress()->where('person_address.person_id', $id)->delete();
+      $modelFound->personAddress()->delete();
       $modelFound->personAddress()->createMany($data['person_address']);
 
       // Atualizar PersonContact
-      $modelFound->personContact()->where('person_contact.person_id', $id)->delete();
+      $modelFound->personContact()->delete();
       $modelFound->personContact()->createMany($data['person_contact']);
 
       // Carregar relacionamentos
@@ -139,7 +139,7 @@ class PersonRepository extends BaseRepository
     };
 
     // Controle de Transação
-    return match ($this->getWithTransaction()) {
+    return match ($this->isTransaction()) {
       true => DB::transaction(fn () => $executeUpdate($id, $data)),
       false => $executeUpdate($id, $data),
     };

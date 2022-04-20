@@ -34,11 +34,11 @@ class CategoryService
 
   public function store(CategoryDto $dto): CategoryDto
   {
-    return $this->categoryRepository->store($dto);
+    return $this->categoryRepository->setTransaction(false)->store($dto);
   }
 
   public function update(int $id, CategoryDto $dto): CategoryDto
   {
-    return $this->categoryRepository->update($id, $dto);
+    return $this->categoryRepository->setTransaction(false)->update($id, $dto);
   }
 }

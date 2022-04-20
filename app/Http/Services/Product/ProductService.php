@@ -34,11 +34,11 @@ class ProductService
 
   public function store(ProductDto $dto): ProductDto
   {
-    return $this->productRepository->store($dto);
+    return $this->productRepository->setTransaction(false)->store($dto);
   }
 
   public function update(int $id, ProductDto $dto): ProductDto
   {
-    return $this->productRepository->update($id, $dto);
+    return $this->productRepository->setTransaction(false)->update($id, $dto);
   }
 }

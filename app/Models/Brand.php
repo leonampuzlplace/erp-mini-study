@@ -28,5 +28,9 @@ class Brand extends Model
     protected $casts = [
     ];
 
-    protected $guarded = ['id'];
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
 }

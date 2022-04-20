@@ -99,7 +99,7 @@ class TenantRepository extends BaseRepository
     };
 
     // Controle de Transação
-    return match ($this->getWithTransaction()) {
+    return match ($this->isTransaction()) {
       true => DB::transaction(fn () => $executeStore($data)),
       false => $executeStore($data),
     };
@@ -123,11 +123,11 @@ class TenantRepository extends BaseRepository
       tap($modelFound)->update($data);
 
       // Atualizar TenantAddress
-      $modelFound->tenantAddress()->where('tenant_address.tenant_id', $id)->delete();
+      $modelFound->tenantAddress()->delete();
       $modelFound->tenantAddress()->createMany($data['tenant_address']);
 
       // Atualizar TenantContact
-      $modelFound->tenantContact()->where('tenant_contact.tenant_id', $id)->delete();
+      $modelFound->tenantContact()->delete();
       $modelFound->tenantContact()->createMany($data['tenant_contact']);
 
       // Carregar relacionamentos
@@ -139,7 +139,7 @@ class TenantRepository extends BaseRepository
     };
 
     // Controle de Transação
-    return match ($this->getWithTransaction()) {
+    return match ($this->isTransaction()) {
       true => DB::transaction(fn () => $executeUpdate($id, $data)),
       false => $executeUpdate($id, $data),
     };

@@ -34,11 +34,11 @@ class PersonService
 
   public function store(PersonDto $dto): PersonDto
   {
-    return $this->personRepository->setWithTransaction(true)->store($dto);
+    return $this->personRepository->setTransaction(true)->store($dto);
   }
 
   public function update(int $id, PersonDto $dto): PersonDto
   {
-    return $this->personRepository->update($id, $dto);
+    return $this->personRepository->setTransaction(true)->update($id, $dto);
   }
 }

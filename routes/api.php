@@ -45,4 +45,3 @@ Route::group([
   Route::apiResource('/brand', BrandController::class);
   Route::apiResource('/product', ProductController::class);
 });
-

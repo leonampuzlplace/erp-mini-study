@@ -34,11 +34,11 @@ class TenantService
 
   public function store(TenantDto $dto): TenantDto
   {
-    return $this->tenantRepository->setWithTransaction(true)->store($dto);
+    return $this->tenantRepository->setTransaction(true)->store($dto);
   }
 
   public function update(int $id, TenantDto $dto): TenantDto
   {
-    return $this->tenantRepository->update($id, $dto);
+    return $this->tenantRepository->setTransaction(true)->update($id, $dto);
   }
 }

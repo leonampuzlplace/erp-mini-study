@@ -16,7 +16,11 @@ class TenantAddress extends Model
         'is_default' => 'boolean',
     ];
 
-    protected $guarded = ['id'];
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
 
     public function city()
     {

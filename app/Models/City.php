@@ -25,7 +25,11 @@ class City extends Model
         'updated_at'
     ];
 
-    protected $guarded = ['id'];
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
 
     public function state()
     {
