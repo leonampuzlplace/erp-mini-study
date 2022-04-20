@@ -8,9 +8,14 @@ use Illuminate\Database\Eloquent\Scope;
 
 class TenantScope implements Scope
 {
+  public function __construct(
+    protected int|null $currentTenantId
+  ) {
+  }
+
   public function apply(Builder $builder, Model $model){
-    if ($tenantId = currentTenantId()) {
-      $builder->where($model->getTable().'.tenant_id', $tenantId);
+    if ($this->currentTenantId) {
+      $builder->where($model->getTable().'.tenant_id', $this->currentTenantId);
     }
   }
 }

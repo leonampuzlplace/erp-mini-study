@@ -49,12 +49,9 @@ abstract class BaseRepository
       return $modelFound->delete();
     };
 
+    // Controle de Transação
     return match ($this->getWithTransaction()) {
-      true => DB::transaction(
-        function () use ($executeDestroy, $id) {
-          return $executeDestroy($id);
-        }
-      ),
+      true => DB::transaction(fn () => $executeDestroy($id)),
       false => $executeDestroy($id),
     };
   }
@@ -235,12 +232,9 @@ abstract class BaseRepository
       return $this->show($modelStored->id);
     };
 
+    // Controle de Transação
     return match ($this->getWithTransaction()) {
-      true => DB::transaction(
-        function () use ($executeStore, $data) {
-          return $executeStore($data);
-        }
-      ),
+      true => DB::transaction(fn () => $executeStore($data)),
       false => $executeStore($data),
     };
   }
@@ -272,12 +266,9 @@ abstract class BaseRepository
       return $modelFound->getData();
     };
 
+    // Controle de Transação
     return match ($this->getWithTransaction()) {
-      true => DB::transaction(
-        function () use ($executeUpdate, $id, $data) {
-          return $executeUpdate($id, $data);
-        }
-      ),
+      true => DB::transaction(fn () => $executeUpdate($id, $data)),
       false => $executeUpdate($id, $data),
     };
   }    

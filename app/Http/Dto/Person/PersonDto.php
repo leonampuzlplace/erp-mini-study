@@ -90,9 +90,7 @@ class PersonDto extends Data
         'max:20',
         ValidationRule::unique('person', 'ein')
           ->ignore(request()->route('person'))
-          ->where(function ($query) {
-            return $query->where('tenant_id', '=', currentTenantId());
-          }),
+          ->where(fn ($query) => $query->where('tenant_id', '=', currentTenantId())),
       ],
     ];
   }   
