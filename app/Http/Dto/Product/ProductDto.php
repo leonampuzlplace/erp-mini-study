@@ -75,16 +75,14 @@ class ProductDto extends Data
       'category_id' => [
         'nullable',
         'integer',
-        ValidationRule::exists('category', 'id')->where(function ($query) {
-          return $query->where('tenant_id', currentTenantId());
-        }),
+        ValidationRule::exists('category', 'id')
+          ->where(fn ($query) => $query->where('tenant_id', currentTenantId())),
       ],
       'brand_id' => [
         'nullable',
         'integer',
-        ValidationRule::exists('brand', 'id')->where(function ($query) {
-          return $query->where('tenant_id', currentTenantId());
-        }),
+        ValidationRule::exists('brand', 'id')
+          ->where(fn ($query) => $query->where('tenant_id', currentTenantId())),
       ],
     ];
   }     

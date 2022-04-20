@@ -23,24 +23,4 @@ class StateDto extends Data
     public string $abbreviation,
   ) {
   }
-
-  // public static function rules(): array
-  // {
-  //   return [];
-  // }
-
-  // public static function withValidator(Validator $validator): void
-  // {
-  //   // $validator->after(function ($validator) {
-  //   //   $field = request()->get('field');
-  //   //   if ($field) {
-  //   //     $validator->errors()->add('field', 'Field ('. $field .') is not valid!');
-  //   //   }      
-  //   // });
-  // }
-
-  // public static function messages(): array
-  // {
-  //   return [];
-  // }
 }

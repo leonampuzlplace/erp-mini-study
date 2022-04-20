@@ -98,12 +98,9 @@ class PersonRepository extends BaseRepository
       return $this->show($modelFound->id);
     };
 
+    // Controle de Transação
     return match ($this->getWithTransaction()) {
-      true => DB::transaction(
-        function () use ($executeStore, $data) {
-          return $executeStore($data);
-        }
-      ),
+      true => DB::transaction(fn () => $executeStore($data)),
       false => $executeStore($data),
     };
   }
@@ -141,12 +138,9 @@ class PersonRepository extends BaseRepository
       return $modelFound->getData();
     };
 
+    // Controle de Transação
     return match ($this->getWithTransaction()) {
-      true => DB::transaction(
-        function () use ($executeUpdate, $id, $data) {
-          return $executeUpdate($id, $data);
-        }
-      ),
+      true => DB::transaction(fn () => $executeUpdate($id, $data)),
       false => $executeUpdate($id, $data),
     };
   }
