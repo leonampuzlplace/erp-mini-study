@@ -34,7 +34,7 @@ class CategoryService
 
   public function store(CategoryDto $dto): CategoryDto
   {
-    return $this->categoryRepository->setWithTransaction(true)->store($dto);
+    return $this->categoryRepository->store($dto);
   }
 
   public function update(int $id, CategoryDto $dto): CategoryDto
