@@ -92,8 +92,6 @@ class Handler extends ExceptionHandler
                 $responseErrorExecuted = true;
             }
 
-            Exception()
-
             // Token não informado
             if ($exceptionName === 'JWTException') {
                 responseError(

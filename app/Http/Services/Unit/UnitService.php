@@ -14,7 +14,7 @@ class UnitService
 
   public static function make(): Self
   {
-    return new self(UnitRepository::make());/*  */
+    return new self(UnitRepository::make());
   }
 
   public function index(array $page = [], array $filter = [], array $filterEx = []): array

@@ -28,7 +28,6 @@ class PersonController extends Controller
       $this->personService->index(
         $request->input('page') ?? [],
         $request->input('filter') ?? [],
-        $request->input('filterEx') ?? [],
       )
     );
   }
