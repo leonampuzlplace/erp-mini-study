@@ -34,7 +34,7 @@ class BrandService
 
   public function store(BrandDto $dto): BrandDto
   {
-    return $this->brandRepository->setWithTransaction(true)->store($dto);
+    return $this->brandRepository->store($dto);
   }
 
   public function update(int $id, BrandDto $dto): BrandDto

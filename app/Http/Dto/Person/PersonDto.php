@@ -123,7 +123,7 @@ class PersonDto extends Data
       if ($addresses) {
         // Endereço deve conter um único registro como padrão.
         if (count(array_filter($addresses ?? [], fn ($i) => ($i['is_default'] ?? 0) == 1)) !== 1) {
-          $validator->errors()->add('person_address', trans('request_validation_lan.array_must_have_single_record_default'));
+          $validator->errors()->add('person_address', trans('request_validation_lang.array_must_have_single_record_default'));
         }
       } else {
         // Endereço não pode ser nulo
@@ -159,7 +159,7 @@ class PersonDto extends Data
 
         // Contato deve conter um único registro como padrão.
         if ($contactsCountDefault <> 1) {
-          $validator->errors()->add('person_contact', trans('request_validation_lan.array_must_have_single_record_default'));
+          $validator->errors()->add('person_contact', trans('request_validation_lang.array_must_have_single_record_default'));
         }
       } else {
         // Contato não pode ser nulo

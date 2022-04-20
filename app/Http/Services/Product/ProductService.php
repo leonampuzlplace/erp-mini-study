@@ -34,7 +34,7 @@ class ProductService
 
   public function store(ProductDto $dto): ProductDto
   {
-    return $this->productRepository->setWithTransaction(true)->store($dto);
+    return $this->productRepository->store($dto);
   }
 
   public function update(int $id, ProductDto $dto): ProductDto
