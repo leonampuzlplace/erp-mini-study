@@ -31,12 +31,14 @@ return new class extends Migration
                 'business_name' => 'Company 1',
                 'alias_name' => 'Company 1',
                 'ein' => '95857276000105',
+                'created_at' => now(),
             ],
             [
                 'id' => 2,
                 'business_name' => 'Company 2',
                 'alias_name' => 'Company 2',
                 'ein' => '56611459000186',
+                'created_at' => now(),
             ],
         ]);
         DB::table('tenant_address')->insert([[

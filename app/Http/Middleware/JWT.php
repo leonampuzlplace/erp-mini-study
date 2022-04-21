@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class ApiProtectedRoute
+class JWT
 {
     /**
      * Handle an incoming request.

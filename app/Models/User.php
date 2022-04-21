@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\TenantAbleTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,7 +12,10 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+    use TenantAbleTrait;
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -43,6 +47,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'is_admin',
     ];
 
     /**
@@ -62,5 +67,11 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_admin' => 'boolean',
     ];
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

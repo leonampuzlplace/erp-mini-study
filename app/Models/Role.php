@@ -1,25 +1,24 @@
 <?php
 
-namespace {{ namespace }};
+namespace App\Models;
 
-use App\Http\Dto\{{ class }}\{{ class }}Dto;
+use App\Http\Dto\User\RoleDto;
 use App\Traits\TenantAbleTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\WithData;
 
-
-class {{ class }} extends Model
+class Role extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use WithData;
     use TenantAbleTrait;
 
-    protected $table = 'classInLowerCase';
+    protected $table = 'role';
     protected $dates = ['deleted_at'];
-    protected $dataClass = {{ class }}Dto::class;
+    protected $dataClass = RoleDto::class;
     public $timestamps = true;
 
     protected $hidden = [
@@ -44,5 +43,10 @@ class {{ class }} extends Model
 
         // Formatar dados antes de recuperar a informação
         static::retrieved(fn ($model) => $model);
+    }
+
+    public function rolePermission()
+    {
+        return $this->hasMany(RolePermission::class);
     }
 }

@@ -11,6 +11,11 @@ use Illuminate\Http\Response;
 
 class BrandController extends Controller
 {
+  /**
+   * Undocumented function
+   *
+   * @param BrandService $brandService
+   */
   public function __construct(
     protected BrandService $brandService
   ) {
@@ -47,6 +52,13 @@ class BrandController extends Controller
     );
   }
 
+  /**
+   * Undocumented function
+   *
+   * @param BrandDto $brandDto
+   * @param integer $id
+   * @return JsonResponse
+   */
   public function update(BrandDto $brandDto, int $id): JsonResponse
   {
     return $this->responseSuccess(
