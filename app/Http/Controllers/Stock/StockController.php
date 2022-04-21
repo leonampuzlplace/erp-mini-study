@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Http\Controllers\Product;
+namespace App\Http\Controllers\Stock;
 
 use App\Http\Controllers\Controller;
-use App\Http\Dto\Product\ProductDto;
-use App\Http\Services\Product\ProductService;
+use App\Http\Dto\Stock\StockDto;
+use App\Http\Services\Stock\StockService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class ProductController extends Controller
+class StockController extends Controller
 {
   public function __construct(
-    protected ProductService $productService
+    protected StockService $stockService
   ) {
   }
 
   public function destroy(int $id): JsonResponse
   {
-    $this->productService->destroy($id);
+    $this->stockService->destroy($id);
     return $this->responseSuccess(code: Response::HTTP_NO_CONTENT);
   }
 
   public function index(Request $request): JsonResponse
   {
     return $this->responseSuccess(
-      $this->productService->index(
+      $this->stockService->index(
         $request->input('page') ?? [],
         $request->input('filter') ?? [],
       )
@@ -35,22 +35,22 @@ class ProductController extends Controller
   public function show(int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->productService->show($id)
+      $this->stockService->show($id)
     );
   }
 
-  public function store(ProductDto $productDto): JsonResponse
+  public function store(StockDto $stockDto): JsonResponse
   {
     return $this->responseSuccess(
-      $this->productService->store($productDto)->toArray(),
+      $this->stockService->store($stockDto)->toArray(),
       Response::HTTP_CREATED
     );
   }
 
-  public function update(ProductDto $productDto, int $id): JsonResponse
+  public function update(StockDto $stockDto, int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->productService->update($id, $productDto)
+      $this->stockService->update($id, $stockDto)
     );
   }
 }

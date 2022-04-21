@@ -30,13 +30,13 @@ return new class extends Migration
                 'id' => 1,
                 'business_name' => 'Company 1',
                 'alias_name' => 'Company 1',
-                'ein' => '95.857.276/0001-05',
+                'ein' => '95857276000105',
             ],
             [
                 'id' => 2,
                 'business_name' => 'Company 2',
                 'alias_name' => 'Company 2',
-                'ein' => '56.611.459/0001-86',
+                'ein' => '56611459000186',
             ],
         ]);
         DB::table('tenant_address')->insert([[

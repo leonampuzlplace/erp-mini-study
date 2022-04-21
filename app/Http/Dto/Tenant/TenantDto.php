@@ -58,41 +58,47 @@ class TenantDto extends Data
 
   public static function rules(): array
   {
-    Static::formatRequestInput();
     return [
       'ein' => [
-        'required', 
+        'required',
         'string',
-        'max:20',
-        ValidationRule::unique('tenant', 'ein')->ignore(request()->route('tenant')),
+        'numeric',
+        ValidationRule::unique('tenant', 'ein')
+        ->ignore(request()->route('tenant')),        
+        fn ($att, $value, $fail) => static::rulesEin($att, $value, $fail),
       ],
     ];
-  }  
+  }
+
+  // Validar CPF/CNPJ
+  public static function rulesEin($att, $value, $fail)
+  {
+    if ($value && (!cpfOrCnpjIsValid($value))) {
+      $fail(trans('request_validation_lang.field_is_not_valid', ['value' => $value]));
+    }
+  }
 
   public static function withValidator(Validator $validator): void
   {
     $validator->after(function ($validator) {
-      // Tenant - CPF/CNPJ
-      $ein = request()->get('ein', '');
-      if (!cpfOrCnpjIsValid($ein)) {
-        $validator->errors()->add('ein', trans('request_validation_lang.field_is_not_valid', ['value' => $ein]));
-      }
-
       // TenantAddress[]
       $addresses = request()->get('tenant_address');
-      if ($addresses) {
+      if (!$addresses) {
+        // Endereço não pode ser nulo
+        $validator->errors()->add('tenant_address', trans('request_validation_lang.array_can_not_be_null'));
+      } else {
         // Endereço deve conter um único registro como padrão.
         if (count(array_filter($addresses ?? [], fn ($i) => ($i['is_default'] ?? 0) == 1)) !== 1) {
           $validator->errors()->add('tenant_address', trans('request_validation_lang.array_must_have_single_record_default'));
         }
-      } else {
-        // Endereço não pode ser nulo
-        $validator->errors()->add('tenant_address', trans('request_validation_lang.array_can_not_be_null'));
       }
 
       // TenantContact[]
       $contacts = request()->get('tenant_contact');
-      if ($contacts) {
+      if (!$contacts) {
+        // Contato não pode ser nulo
+        $validator->errors()->add('tenant_contact', trans('request_validation_lang.array_can_not_be_null'));
+      } else {      
         $contactsCountDefault = 0;
         foreach ($contacts as $key => $value) {
           $fieldName = 'tenant_contact.'.$key.'.';
@@ -102,12 +108,6 @@ class TenantDto extends Data
           &&  (!($value['phone'] ?? ''))
           &&  (!($value['email'] ?? ''))) {
             $validator->errors()->add($fieldName.'name|phone|email', trans('request_validation_lang.at_least_one_field_must_be_filled'));
-          }
-
-          // Validar CPF/CNPJ
-          $ein = $value['ein'] ?? '';
-          if (!cpfOrCnpjIsValid($ein)) {
-            $validator->errors()->add($fieldName . 'ein', trans('request_validation_lang.field_is_not_valid', ['value' => $ein]));
           }
 
           // Contagem de registros com campo is_default=true
@@ -120,43 +120,7 @@ class TenantDto extends Data
         if ($contactsCountDefault <> 1) {
           $validator->errors()->add('tenant_contact', trans('request_validation_lang.array_must_have_single_record_default'));
         }
-      } else {
-        // Contato não pode ser nulo
-        $validator->errors()->add('tenant_contact', trans('request_validation_lang.array_can_not_be_null'));
       }
     });
-  }
-
-  public static function formatRequestInput(): void
-  {
-    static::formatRequestInputTenant();
-    static::formatRequestInputTenantContact();
-  }
-
-  public static function formatRequestInputTenant(): void
-  {
-    // Tenant - CPF/CNPJ
-    request()->merge([
-      'ein' => formatCpfCnpj(request()->get('ein', ''))
-    ]);
-  }
-
-  public static function formatRequestInputTenantContact(): void
-  {
-    // TenantContact[] - CPF/CNPJ
-    $tenant_contact = request()->get('tenant_contact');
-    if ($tenant_contact) {
-      $tenantContactFormated = array_map(
-        function ($item) {
-          $item['ein'] = formatCpfCnpj($item['ein'] ?? '');
-          return $item;
-        },
-        $tenant_contact
-      );
-
-      request()->merge([
-        'tenant_contact' => $tenantContactFormated
-      ]);
-    }
   }
 }

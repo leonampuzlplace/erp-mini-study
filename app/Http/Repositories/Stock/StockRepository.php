@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Http\Repositories\Product;
+namespace App\Http\Repositories\Stock;
 
 use App\Exceptions\ModelNotFoundException;
 use App\Http\Repositories\BaseRepository;
-use App\Models\Product;
+use App\Models\Stock;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\LaravelData\Data;
 
-class ProductRepository extends BaseRepository
+class StockRepository extends BaseRepository
 {
-  public function __construct(Product $product)
+  public function __construct(Stock $stock)
   {
-    parent::__construct($product);
+    parent::__construct($stock);
   }
 
   public static function make(): Self
   {
-    return new self(new Product);
+    return new self(new Stock);
   }
 
   /**
@@ -32,10 +32,10 @@ class ProductRepository extends BaseRepository
   {
     return [
       $queryBuilder
-        ->leftJoin('unit', 'unit.id', 'product.unit_id')
-        ->leftJoin('category', 'category.id', 'product.category_id')
-        ->leftJoin('brand', 'brand.id', 'product.brand_id'),
-      'product.*, ' .
+        ->leftJoin('unit', 'unit.id', 'stock.unit_id')
+        ->leftJoin('category', 'category.id', 'stock.category_id')
+        ->leftJoin('brand', 'brand.id', 'stock.brand_id'),
+      'stock.*, ' .
       'unit.abbreviation as unit_abbreviation, ' .
       'unit.description  as unit_description, ' .
       'category.name     as category_name, ' .

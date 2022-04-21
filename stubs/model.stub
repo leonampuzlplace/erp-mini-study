@@ -15,9 +15,9 @@ class {{ class }} extends Model
     use WithData;
     use TenantAbleTrait;
 
-    protected $table = 'tableName';
+    protected $table = '{{ class }}' <== Coloque em lowercase
     protected $dates = ['deleted_at'];
-    protected $dataClass = tableNameDto::class;
+    protected $dataClass = {{ class }}Dto::class;
     public $timestamps = true;
 
     protected $hidden = [
@@ -32,4 +32,15 @@ class {{ class }} extends Model
         'created_at',
         'updated_at',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Formatar dados antes de salvar a informação
+        static::saving(fn ($model) => $model);
+
+        // Formatar dados antes de recuperar a informação
+        static::retrieved(fn ($model) => $model);
+    }
 }

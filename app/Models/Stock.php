@@ -2,23 +2,23 @@
 
 namespace App\Models;
 
-use App\Http\Dto\Product\ProductDto;
+use App\Http\Dto\Stock\StockDto;
 use App\Traits\TenantAbleTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\WithData;
 
-class Product extends Model
+class Stock extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use WithData;
     use TenantAbleTrait;
 
-    protected $table = 'product';
+    protected $table = 'stock';
     protected $dates = ['deleted_at'];
-    protected $dataClass = ProductDto::class;
+    protected $dataClass = StockDto::class;
     public $timestamps = true;
 
     protected $hidden = [
@@ -26,6 +26,7 @@ class Product extends Model
     ];
 
     protected $casts = [
+        'is_service' => 'boolean',
         'cost_price' => 'float',
         'sale_price' => 'float',
         'minimum_quantity' => 'float',
@@ -37,6 +38,17 @@ class Product extends Model
         'created_at',
         'updated_at',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Formatar dados antes de salvar a informação
+        static::saving(fn ($model) => $model);
+
+        // Formatar dados antes de recuperar a informação
+        static::retrieved(fn ($model) => $model);
+    }
 
     public function unit()
     {

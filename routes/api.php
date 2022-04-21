@@ -6,7 +6,7 @@ use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\City\CityController;
 use App\Http\Controllers\Tenant\TenantController;
 use App\Http\Controllers\Person\PersonController;
-use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Stock\StockController;
 use App\Http\Controllers\State\StateController;
 use App\Http\Controllers\Unit\UnitController;
 use App\Http\Controllers\User\UserController;
@@ -43,5 +43,5 @@ Route::group([
   Route::apiResource('/unit', UnitController::class);
   Route::apiResource('/category', CategoryController::class);
   Route::apiResource('/brand', BrandController::class);
-  Route::apiResource('/product', ProductController::class);
+  Route::apiResource('/stock', StockController::class);
 });

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Dto\Product;
+namespace App\Http\Dto\Stock;
 
 use Illuminate\Validation\Rule as ValidationRule;
 use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
 
-class ProductDto extends Data
+class StockDto extends Data
 {
   public static function authorize(): bool
   {

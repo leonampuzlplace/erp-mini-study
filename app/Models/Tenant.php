@@ -33,6 +33,17 @@ class Tenant extends Model
         'updated_at',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Formatar dados antes de salvar a informação
+        static::saving(fn ($model) => $model->ein = onlyNumbers($model->ein ?? ''));
+
+        // Formatar dados antes de recuperar a informação
+        static::retrieved(fn ($model) => $model->ein = formatCpfCnpj($model->ein ?? ''));
+    }
+
     public function tenantAddress()
     {
         return $this->hasMany(TenantAddress::class);
