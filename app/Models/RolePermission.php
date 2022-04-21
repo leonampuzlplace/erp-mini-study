@@ -1,38 +1,30 @@
 <?php
 
-namespace {{ namespace }};
+namespace App\Models;
 
-use App\Http\Dto\{{ class }}\{{ class }}Dto;
-use App\Traits\TenantAbleTrait;
+use App\Http\Dto\User\RolePermissionDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\WithData;
 
-
-class {{ class }} extends Model
+class RolePermission extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     use WithData;
-    use TenantAbleTrait;
-
-    protected $table = 'classInLowerCase';
-    protected $dates = ['deleted_at'];
-    protected $dataClass = {{ class }}Dto::class;
-    public $timestamps = true;
+    
+    protected $table = 'role_permission';
+    protected $dataClass = RolePermissionDto::class;
+    public $timestamps = false;
 
     protected $hidden = [
-        'deleted_at',
     ];
 
     protected $casts = [
+        'is_allowed' => 'boolean',
     ];
 
     protected $guarded = [
         'id',
-        'created_at',
-        'updated_at',
     ];
 
     protected static function boot()

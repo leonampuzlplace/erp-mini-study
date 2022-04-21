@@ -1,21 +1,23 @@
 <?php
 
-namespace {{ namespace }};
+namespace App\Http\Controllers\User;
 
-use {{ rootNamespace }}Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
+use App\Http\Dto\User\RoleDto;
+use App\Http\Services\User\RoleService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class {{ class }} extends Controller
+class RoleController extends Controller
 {
     /**
     * Constructor
     *
-    * @param {{ class }}Service $classInLowerCaseService
+    * @param RoleService $roleService
     */
     public function __construct(
-        protected {{ class }}Service $classInLowerCaseService
+        protected RoleService $roleService
     ) {
     }
 
@@ -27,7 +29,7 @@ class {{ class }} extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $this->classInLowerCaseService->destroy($id);
+        $this->roleService->destroy($id);
         return $this->responseSuccess(code: Response::HTTP_NO_CONTENT);
     }
 
@@ -39,7 +41,7 @@ class {{ class }} extends Controller
     public function index(Request $request): JsonResponse
     {
         return $this->responseSuccess(
-        $this->classInLowerCaseService->index(
+        $this->roleService->index(
             $request->input('page'),
             $request->input('filter'),
         )
@@ -55,20 +57,20 @@ class {{ class }} extends Controller
     public function show(int $id): JsonResponse 
     {
         return $this->responseSuccess(
-            $this->classInLowerCaseService->show($id)
+            $this->roleService->show($id)
         );
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  {{ class }}Dto $classInLowerCaseDto
+     * @param  RoleDto $roleDto
      * @return \Illuminate\Http\Response
      */
-    public function store({{ class }}Dto $classInLowerCaseDto): JsonResponse
+    public function store(RoleDto $roleDto): JsonResponse
     {
         return $this->responseSuccess(
-            $this->classInLowerCaseService->store($classInLowerCaseDto)->toArray(),
+            $this->roleService->store($roleDto)->toArray(),
             Response::HTTP_CREATED
         );
     }
@@ -76,14 +78,14 @@ class {{ class }} extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  {{ class }}Dto $classInLowerCaseDto
+     * @param  RoleDto $roleDto
      * @param  int  $id
      * @return JsonResponse
      */
-    public function update({{ class }}Dto $classInLowerCaseDto, int $id): JsonResponse
+    public function update(RoleDto $roleDto, int $id): JsonResponse
     {
         return $this->responseSuccess(
-            $this->classInLowerCaseService->update($id, $classInLowerCaseDto)
+            $this->roleService->update($id, $roleDto)
         );
     }    
 }

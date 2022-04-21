@@ -19,7 +19,7 @@ if (!function_exists('tokenFromCurrentRequest')) {
 if (!function_exists('currentUser')) {
   function currentUser(): array
   {
-    return Cache::get(tokenFromCurrentRequest());
+    return Cache::get(tokenFromCurrentRequest()) ?? [];
   }
 }
 

@@ -19,15 +19,16 @@ class UserController extends Controller
 
     public function index(Request $request): JsonResponse
     {
+        $model = new User();
         return $this->responseSuccess(
-            User::all()
+            $model->with('role')->get()
         );
     }
 
     public function show(int $id): JsonResponse
     {
         return $this->responseSuccess(
-            User::findOrFail($id)
+            User::whereId($id)->with('role.rolePermission')->get()
         );
     }
 

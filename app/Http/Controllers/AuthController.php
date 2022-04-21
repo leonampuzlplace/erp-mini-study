@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 
 class AuthController extends Controller
@@ -23,16 +24,9 @@ class AuthController extends Controller
      */
     public function login()
     {
-        try {
-            $credentials = request(['email', 'password']);
-            $token = auth('api')->attempt($credentials);
-            throw_if(!$token, new \Exception('auth.not_authorized'));
-
-            // Salvar usuário em cache
-            Cache::put($token, auth()->user()->toArray(), (env('JWT_TTL', 240)*60));
-        } catch (\Exception $exception) {
-            return $this->responseError($exception->getMessage());
-        }
+        $token = auth('api')->attempt(request(['email', 'password']));
+        throw_if(!$token, new \Exception(trans('auth_lang.not_authorized')));
+        
         return $this->respondWithToken($token);
     }
 
@@ -64,7 +58,7 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return $this->responseSuccess((auth()->user()));
+        return $this->responseSuccess($this->getUserWithPermission());
     }
 
     /**
@@ -76,17 +70,26 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
-        $user = auth()->user();
+        $user = $this->getUserWithPermission();
+        Cache::put($token, $user, (env('JWT_TTL', 240) * 60));
         return $this->responseSuccess([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'tenant_id' => $user->tenant_id,
-                'email' => $user->email,
-            ],
+            'user' => $user,
         ]);
+    }
+
+    /**
+     * Obter dados do usuario logado e retornar permissões de acesso
+     *
+     * @return array
+     */
+    protected function getUserWithPermission(): array
+    {
+        return User::whereId(auth()->user()->id)
+            ->with('role.rolePermission')
+            ->first()
+            ->toArray();
     }
 }

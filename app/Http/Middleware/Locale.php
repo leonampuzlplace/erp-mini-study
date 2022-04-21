@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
-class Localization
+class Locale
 {
     /**
      * Handle an incoming request.
@@ -17,7 +17,7 @@ class Localization
      */
     public function handle(Request $request, Closure $next)
     {
-        App::setLocale($request->header('x-localization', 'en'));
+        App::setLocale($request->header('locale', 'en'));
         return $next($request);
     }
 }
