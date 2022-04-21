@@ -26,8 +26,8 @@ class PersonController extends Controller
   {
     return $this->responseSuccess(
       $this->personService->index(
-        $request->input('page') ?? [],
-        $request->input('filter') ?? [],
+        $request->input('page'),
+        $request->input('filter'),
       )
     );
   }

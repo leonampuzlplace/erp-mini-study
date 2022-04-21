@@ -26,8 +26,8 @@ class CategoryController extends Controller
   {
     return $this->responseSuccess(
       $this->categoryService->index(
-        $request->input('page') ?? [],
-        $request->input('filter') ?? [],
+        $request->input('page'),
+        $request->input('filter'),
       )
     );
   }

@@ -26,8 +26,8 @@ class StockController extends Controller
   {
     return $this->responseSuccess(
       $this->stockService->index(
-        $request->input('page') ?? [],
-        $request->input('filter') ?? [],
+        $request->input('page'),
+        $request->input('filter'),
       )
     );
   }

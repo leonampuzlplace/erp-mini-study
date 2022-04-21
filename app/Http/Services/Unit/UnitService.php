@@ -17,7 +17,7 @@ class UnitService
     return new self(UnitRepository::make());
   }
 
-  public function index(array $page = [], array $filter = [], array $filterEx = []): array
+  public function index(array|null $page = [], array|null $filter = [], array|null $filterEx = []): array
   {
     return $this->unitRepository->index($page, $filter, $filterEx);
   }

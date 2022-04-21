@@ -26,8 +26,8 @@ class TenantController extends Controller
   {
     return $this->responseSuccess(
       $this->tenantService->index(
-        $request->input('page') ?? [],
-        $request->input('filter') ?? [],
+        $request->input('page'),
+        $request->input('filter'),
       )
     );
   }

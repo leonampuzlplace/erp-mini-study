@@ -26,8 +26,8 @@ class BrandController extends Controller
   {
     return $this->responseSuccess(
       $this->brandService->index(
-        $request->input('page') ?? [],
-        $request->input('filter') ?? [],
+        $request->input('page'),
+        $request->input('filter'),
       )
     );
   }

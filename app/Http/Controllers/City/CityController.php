@@ -18,8 +18,8 @@ class CityController extends Controller
   {
     return $this->responseSuccess(
       $this->cityService->index(
-        $request->input('page') ?? [],
-        $request->input('filter') ?? [],
+        $request->input('page'),
+        $request->input('filter'),
       )
     );
   }

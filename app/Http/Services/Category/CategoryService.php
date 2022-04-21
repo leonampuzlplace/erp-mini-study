@@ -22,7 +22,7 @@ class CategoryService
     return $this->categoryRepository->destroy($id);
   }
 
-  public function index(array $page = [], array $filter = [], array $filterEx = []): array
+  public function index(array|null $page = [], array|null $filter = [], array|null $filterEx = []): array
   {
     return $this->categoryRepository->index($page, $filter, $filterEx);
   }

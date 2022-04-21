@@ -83,11 +83,11 @@ abstract class BaseRepository
    * 
    * @return array
    */
-  public function index(array $page = [], array $filter = [], array $filterEx = []): array
+  public function index(array|null $page = [], array|null $filter = [], array|null $filterEx = []): array
   {
-    $this->page = $page;
-    $this->filter = $filter;
-    $this->filterEx = $filterEx;
+    $this->page = $page ?? [];
+    $this->filter = $filter ?? [];
+    $this->filterEx = $filterEx ?? [];
     $queryBuilder = $this->indexBuilder();
     $resultInsideIndex = $this->indexInside($queryBuilder);
 

@@ -17,7 +17,7 @@ class CityService
     return new self(CityRepository::make());
   }
 
-  public function index(array $page = [], array $filter = [], array $filterEx = []): array
+  public function index(array|null $page = [], array|null $filter = [], array|null $filterEx = []): array
   {
     return $this->cityRepository->index($page, $filter, $filterEx);
   }

@@ -18,8 +18,8 @@ class StateController extends Controller
   {
     return $this->responseSuccess(
       $this->stateService->index(
-        $request->input('page') ?? [],
-        $request->input('filter') ?? [],
+        $request->input('page'),
+        $request->input('filter'),
       )
     );
   }
