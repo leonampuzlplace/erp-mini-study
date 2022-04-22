@@ -2,15 +2,11 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
-use Illuminate\Validation\ValidationException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
-use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class Handler extends ExceptionHandler
@@ -21,7 +17,15 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<Throwable>>
      */
     protected $dontReport = [
-        //
+        JWTException::class,
+        TokenBlacklistedException::class,
+        TokenInvalidException::class,
+        TokenExpiredException::class,
+        ValidationException::class,
+        CustomValidationException::class,
+        ModelNotFoundException::class,
+        NotFoundHttpException::class,
+        RouteNotFoundException::class,
     ];
 
     /**
@@ -57,7 +61,7 @@ class Handler extends ExceptionHandler
      * @throws \Throwable
      */
     public function render($request, Throwable $exception)
-    {
+    {    
         $responseErrorExecuted = false;
         $exceptionName = (new \ReflectionClass($exception))->getShortName(); 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
@@ -25,8 +26,8 @@ class AuthController extends Controller
     public function login()
     {
         $token = auth('api')->attempt(request(['email', 'password']));
-        throw_if(!$token, new \Exception(trans('auth_lang.not_authorized')));
-        
+        throw_if(!$token, new JWTException(trans('auth_lang.not_authorized')));
+
         return $this->respondWithToken($token);
     }
 
