@@ -12,20 +12,20 @@ use Illuminate\Http\Response;
 class StockController extends Controller
 {
   public function __construct(
-    protected StockService $stockService
+    protected StockService $service
   ) {
   }
 
   public function destroy(int $id): JsonResponse
   {
-    $this->stockService->destroy($id);
+    $this->service->destroy($id);
     return $this->responseSuccess(code: Response::HTTP_NO_CONTENT);
   }
 
   public function index(Request $request): JsonResponse
   {
     return $this->responseSuccess(
-      $this->stockService->index(
+      $this->service->index(
         $request->input('page'),
         $request->input('filter'),
       )
@@ -35,14 +35,14 @@ class StockController extends Controller
   public function show(int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->stockService->show($id)
+      $this->service->show($id)
     );
   }
 
   public function store(StockDto $stockDto): JsonResponse
   {
     return $this->responseSuccess(
-      $this->stockService->store($stockDto)->toArray(),
+      $this->service->store($stockDto)->toArray(),
       Response::HTTP_CREATED
     );
   }
@@ -50,7 +50,7 @@ class StockController extends Controller
   public function update(StockDto $stockDto, int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->stockService->update($id, $stockDto)
+      $this->service->update($id, $stockDto)
     );
   }
 }

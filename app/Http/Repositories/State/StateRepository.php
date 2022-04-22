@@ -7,9 +7,9 @@ use App\Models\State\State;
 
 class StateRepository extends BaseRepository
 {
-  public function __construct(State $state)
+  public function __construct(State $model)
   {
-    parent::__construct($state);
+    parent::__construct($model);
   }
 
   public static function make(): Self

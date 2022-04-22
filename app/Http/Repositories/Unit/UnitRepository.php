@@ -7,9 +7,9 @@ use App\Models\Unit\Unit;
 
 class UnitRepository extends BaseRepository
 {
-  public function __construct(Unit $unit)
+  public function __construct(Unit $model)
   {
-    parent::__construct($unit);
+    parent::__construct($model);
   }
 
   public static function make(): Self

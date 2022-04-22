@@ -10,9 +10,9 @@ use Spatie\LaravelData\Data;
 
 class RoleRepository extends BaseRepository
 {
-  public function __construct(Role $role)
+  public function __construct(Role $model)
   {
-    parent::__construct($role);
+    parent::__construct($model);
   }
 
   public static function make(): Self

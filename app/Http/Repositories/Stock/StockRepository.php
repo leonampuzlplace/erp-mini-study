@@ -10,9 +10,9 @@ use Spatie\LaravelData\Data;
 
 class StockRepository extends BaseRepository
 {
-  public function __construct(Stock $stock)
+  public function __construct(Stock $model)
   {
-    parent::__construct($stock);
+    parent::__construct($model);
   }
 
   public static function make(): Self

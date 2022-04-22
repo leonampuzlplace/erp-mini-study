@@ -11,9 +11,9 @@ use Spatie\LaravelData\Data;
 
 class TenantRepository extends BaseRepository
 {
-  public function __construct(Tenant $tenant)
+  public function __construct(Tenant $model)
   {
-    parent::__construct($tenant);
+    parent::__construct($model);
   }
 
   public static function make(): Self

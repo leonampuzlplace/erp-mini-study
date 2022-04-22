@@ -10,9 +10,9 @@ use Spatie\LaravelData\Data;
 
 class CityRepository extends BaseRepository
 {
-  public function __construct(City $city)
+  public function __construct(City $model)
   {
-    parent::__construct($city);
+    parent::__construct($model);
   }
 
   public static function make(): Self

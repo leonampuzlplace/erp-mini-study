@@ -10,14 +10,14 @@ use Illuminate\Http\Request;
 class CityController extends Controller
 {
   public function __construct(
-    protected CityService $cityService
+    protected CityService $service
   ) {
   }
 
   public function index(Request $request): JsonResponse
   {
     return $this->responseSuccess(
-      $this->cityService->index(
+      $this->service->index(
         $request->input('page'),
         $request->input('filter'),
       )
@@ -27,7 +27,7 @@ class CityController extends Controller
   public function show(int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->cityService->show($id)
+      $this->service->show($id)
     );
   }
 }

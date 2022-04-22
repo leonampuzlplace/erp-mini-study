@@ -10,14 +10,14 @@ use Illuminate\Http\Request;
 class UnitController extends Controller
 {
   public function __construct(
-    protected UnitService $unitService
+    protected UnitService $service
   ) {
   }
 
   public function index(Request $request): JsonResponse
   {
     return $this->responseSuccess(
-      $this->unitService->index(
+      $this->service->index(
         $request->input('page'),
         $request->input('filter'),
       )
@@ -27,7 +27,7 @@ class UnitController extends Controller
   public function show(int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->unitService->show($id)
+      $this->service->show($id)
     );
   }
 }

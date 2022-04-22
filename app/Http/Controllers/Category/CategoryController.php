@@ -12,20 +12,20 @@ use Illuminate\Http\Response;
 class CategoryController extends Controller
 {
   public function __construct(
-    protected CategoryService $categoryService
+    protected CategoryService $service
   ) {
   }
 
   public function destroy(int $id): JsonResponse
   {
-    $this->categoryService->destroy($id);
+    $this->service->destroy($id);
     return $this->responseSuccess(code: Response::HTTP_NO_CONTENT);
   }
 
   public function index(Request $request): JsonResponse
   {
     return $this->responseSuccess(
-      $this->categoryService->index(
+      $this->service->index(
         $request->input('page'),
         $request->input('filter'),
       )
@@ -35,14 +35,14 @@ class CategoryController extends Controller
   public function show(int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->categoryService->show($id)
+      $this->service->show($id)
     );
   }
 
   public function store(CategoryDto $categoryDto): JsonResponse
   {
     return $this->responseSuccess(
-      $this->categoryService->store($categoryDto)->toArray(),
+      $this->service->store($categoryDto)->toArray(),
       Response::HTTP_CREATED
     );
   }
@@ -50,7 +50,7 @@ class CategoryController extends Controller
   public function update(CategoryDto $categoryDto, int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->categoryService->update($id, $categoryDto)
+      $this->service->update($id, $categoryDto)
     );
   }
 }

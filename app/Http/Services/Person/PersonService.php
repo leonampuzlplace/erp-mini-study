@@ -9,7 +9,7 @@ use App\Http\Services\User\RoleService;
 class PersonService
 {
   public function __construct(
-    protected PersonRepository $personRepository
+    protected PersonRepository $repository
   ) {
   }
 
@@ -20,27 +20,27 @@ class PersonService
 
   public function destroy(int $id): bool
   {
-    return $this->personRepository->destroy($id);
+    return $this->repository->destroy($id);
   }
 
   public function index(array|null $page = [], array|null $filter = [], array|null $filterEx = []): array
   {
-    return $this->personRepository->index($page, $filter, $filterEx);
+    return $this->repository->index($page, $filter, $filterEx);
   }
 
   public function show(int $id): PersonDto
   {
-    return $this->personRepository->show($id);
+    return $this->repository->show($id);
   }
 
   public function store(PersonDto $dto): PersonDto
   {
-    return $this->personRepository->setTransaction(true)->store($dto);
+    return $this->repository->setTransaction(true)->store($dto);
   }
 
   public function update(int $id, PersonDto $dto): PersonDto
   {
-    return $this->personRepository->setTransaction(true)->update($id, $dto);
+    return $this->repository->setTransaction(true)->update($id, $dto);
   }
 
   public static function permissionTemplate(): array

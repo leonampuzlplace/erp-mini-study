@@ -3,6 +3,7 @@
 namespace App\Models\City;
 
 use App\Http\Dto\City\CityDto;
+use App\Models\State\State;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

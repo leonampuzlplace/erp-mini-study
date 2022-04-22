@@ -12,20 +12,20 @@ use Illuminate\Http\Response;
 class TenantController extends Controller
 {
   public function __construct( 
-    protected TenantService $tenantService
+    protected TenantService $service
   ) {
   }
 
   public function destroy(int $id): JsonResponse
   {
-    $this->tenantService->destroy($id);
+    $this->service->destroy($id);
     return $this->responseSuccess(code: Response::HTTP_NO_CONTENT);
   }
 
   public function index(Request $request): JsonResponse
   {
     return $this->responseSuccess(
-      $this->tenantService->index(
+      $this->service->index(
         $request->input('page'),
         $request->input('filter'),
       )
@@ -35,14 +35,14 @@ class TenantController extends Controller
   public function show(int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->tenantService->show($id)
+      $this->service->show($id)
     );
   }
 
   public function store(TenantDto $tenantDto): JsonResponse
   {
     return $this->responseSuccess(
-      $this->tenantService->store($tenantDto)->toArray(), 
+      $this->service->store($tenantDto)->toArray(), 
       Response::HTTP_CREATED
     );
   }
@@ -50,7 +50,7 @@ class TenantController extends Controller
   public function update(TenantDto $tenantDto, int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->tenantService->update($id, $tenantDto)
+      $this->service->update($id, $tenantDto)
     );
   }
 }
