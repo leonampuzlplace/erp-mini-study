@@ -20,7 +20,7 @@ return [
     'token_cant_used' => 'O token não pode ser usado, obtenha um novo',
     'reset_password' => 'Token de redefinição de senha inválido',
     'inactive_user' => 'Usuário inativo, entre em contato com a empresa.',
-    'not_authorized' => 'Não autorizado. Por favor, tente novamente.',
+    'not_authorized' => 'Não autorizado. Por favor, verifique suas credenciais.',
     'token_not_provided' => 'Token não foi informado.',
     'token_is_invalid' => 'Token é inválido.',
     'token_is_expired' => 'Token está expirado',

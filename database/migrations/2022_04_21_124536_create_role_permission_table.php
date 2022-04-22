@@ -23,25 +23,12 @@ return new class extends Migration
             $table->integer('is_allowed')->nullable();
         });
 
-        DB::table('role_permission')->insert([[
-                'role_id' => 1,
-                'action_name' => 'person.destroy',
-                'action_group_description' => 'Pessoas',
-                'action_name_description' => 'Deletar',
-                'is_allowed' => 0,
-            ],
+        DB::table('role_permission')->insert([
             [
                 'role_id' => 1,
-                'action_name' => 'person.index',
+                'action_name' => 'person.formAccess',
                 'action_group_description' => 'Pessoas',
-                'action_name_description' => 'Listar',
-                'is_allowed' => 1,
-            ],
-            [
-                'role_id' => 1,
-                'action_name' => 'person.show',
-                'action_group_description' => 'Pessoas',
-                'action_name_description' => 'Visualizar',
+                'action_name_description' => 'Acesso ao formulário',
                 'is_allowed' => 1,
             ],
             [
@@ -55,11 +42,11 @@ return new class extends Migration
                 'role_id' => 1,
                 'action_name' => 'person.update',
                 'action_group_description' => 'Pessoas',
-                'action_name_description' => 'Atualizar',
+                'action_name_description' => 'Editar',
                 'is_allowed' => 0,
             ],
             [
-                'role_id' => 2,
+                'role_id' => 1,
                 'action_name' => 'person.destroy',
                 'action_group_description' => 'Pessoas',
                 'action_name_description' => 'Deletar',
@@ -67,16 +54,9 @@ return new class extends Migration
             ],
             [
                 'role_id' => 2,
-                'action_name' => 'person.index',
+                'action_name' => 'person.formAccess',
                 'action_group_description' => 'Pessoas',
-                'action_name_description' => 'Listar',
-                'is_allowed' => 1,
-            ],
-            [
-                'role_id' => 2,
-                'action_name' => 'person.show',
-                'action_group_description' => 'Pessoas',
-                'action_name_description' => 'Visualizar',
+                'action_name_description' => 'Acesso ao formulário',
                 'is_allowed' => 1,
             ],
             [
@@ -90,7 +70,14 @@ return new class extends Migration
                 'role_id' => 2,
                 'action_name' => 'person.update',
                 'action_group_description' => 'Pessoas',
-                'action_name_description' => 'Atualizar',
+                'action_name_description' => 'Editar',
+                'is_allowed' => 0,
+            ],
+            [
+                'role_id' => 2,
+                'action_name' => 'person.destroy',
+                'action_group_description' => 'Pessoas',
+                'action_name_description' => 'Deletar',
                 'is_allowed' => 0,
             ],
         ]);

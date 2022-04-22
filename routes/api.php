@@ -33,12 +33,12 @@ Route::group([
   'middleware' => $defaultMiddleware
 ], function () {
   $ctrl = 'App\Http\Controllers\Tenant\TenantController';
-  $uri = 'tenant';
-  Route::get("/${uri}",         "${ctrl}@index")->name("${uri}.index");
-  Route::get("/${uri}/{id}",    "${ctrl}@show")->name("${uri}.show");
-  Route::post("/${uri}",        "${ctrl}@store")->name("${uri}.store");
-  Route::put("/${uri}/{id}",    "${ctrl}@update")->name("${uri}.update");
-  Route::delete("/${uri}/{id}", "${ctrl}@update")->name("${uri}.destroy");
+  $actionName = 'tenant';
+  Route::get("/${actionName}",         "${ctrl}@index")->name("${actionName}.index");
+  Route::get("/${actionName}/{id}",    "${ctrl}@show")->name("${actionName}.show");
+  Route::post("/${actionName}",        "${ctrl}@store")->name("${actionName}.store");
+  Route::put("/${actionName}/{id}",    "${ctrl}@update")->name("${actionName}.update");
+  Route::delete("/${actionName}/{id}", "${ctrl}@update")->name("${actionName}.destroy");
 });
 
 // User (usuários)
@@ -46,12 +46,12 @@ Route::group([
   'middleware' => $defaultMiddleware
 ], function () {
   $ctrl = 'App\Http\Controllers\User\UserController';
-  $uri = 'user';
-  Route::get("/${uri}",         "${ctrl}@index")->name("${uri}.index");
-  Route::get("/${uri}/{id}",    "${ctrl}@show")->name("${uri}.show");
-  Route::post("/${uri}",        "${ctrl}@store")->name("${uri}.store");
-  Route::put("/${uri}/{id}",    "${ctrl}@update")->name("${uri}.update");
-  Route::delete("/${uri}/{id}", "${ctrl}@destroy")->name("${uri}.destroy");
+  $actionName = 'user';
+  Route::get("/${actionName}",         "${ctrl}@index")->name("${actionName}.index");
+  Route::get("/${actionName}/{id}",    "${ctrl}@show")->name("${actionName}.show");
+  Route::post("/${actionName}",        "${ctrl}@store")->name("${actionName}.store");
+  Route::put("/${actionName}/{id}",    "${ctrl}@update")->name("${actionName}.update");
+  Route::delete("/${actionName}/{id}", "${ctrl}@destroy")->name("${actionName}.destroy");
 });
 
 // Role (Perfil de usuário)
@@ -59,12 +59,13 @@ Route::group([
   'middleware' => $defaultMiddleware
 ], function () {
   $ctrl = 'App\Http\Controllers\User\RoleController';
-  $uri = 'role';
-  Route::get("/${uri}",         "${ctrl}@index")->name("${uri}.index");
-  Route::get("/${uri}/{id}",    "${ctrl}@show")->name("${uri}.show");
-  Route::post("/${uri}",        "${ctrl}@store")->name("${uri}.store");
-  Route::put("/${uri}/{id}",    "${ctrl}@update")->name("${uri}.update");
-  Route::delete("/${uri}/{id}", "${ctrl}@destroy")->name("${uri}.destroy");
+  $actionName = 'role';
+  Route::get("/${actionName}/permission-template", "${ctrl}@permissionTemplate")->name("${actionName}.permissionTemplate");
+  Route::get("/${actionName}",                     "${ctrl}@index")->name("${actionName}.index");
+  Route::get("/${actionName}/{id}",                "${ctrl}@show")->name("${actionName}.show");
+  Route::post("/${actionName}",                    "${ctrl}@store")->name("${actionName}.store");
+  Route::put("/${actionName}/{id}",                "${ctrl}@update")->name("${actionName}.update");
+  Route::delete("/${actionName}/{id}",             "${ctrl}@destroy")->name("${actionName}.destroy");
 });
 
 // City (Cidade)
@@ -72,9 +73,9 @@ Route::group([
   'middleware' => $defaultMiddleware
 ], function () {
   $ctrl = 'App\Http\Controllers\City\CityController';
-  $uri = 'city';
-  Route::get("/${uri}",         "${ctrl}@index")->name("${uri}.index");
-  Route::get("/${uri}/{id}",    "${ctrl}@show")->name("${uri}.show");
+  $actionName = 'city';
+  Route::get("/${actionName}",         "${ctrl}@index")->name("${actionName}.index");
+  Route::get("/${actionName}/{id}",    "${ctrl}@show")->name("${actionName}.show");
 });
 
 // State (UF)
@@ -82,9 +83,9 @@ Route::group([
   'middleware' => $defaultMiddleware
 ], function () {
   $ctrl = 'App\Http\Controllers\State\StateController';
-  $uri = 'state';
-  Route::get("/${uri}",         "${ctrl}@index")->name("${uri}.index");
-  Route::get("/${uri}/{id}",    "${ctrl}@show")->name("${uri}.show");
+  $actionName = 'state';
+  Route::get("/${actionName}",         "${ctrl}@index")->name("${actionName}.index");
+  Route::get("/${actionName}/{id}",    "${ctrl}@show")->name("${actionName}.show");
 });
 
 // Unit (Unidade de Medida)
@@ -92,9 +93,9 @@ Route::group([
   'middleware' => $defaultMiddleware
 ], function () {
   $ctrl = 'App\Http\Controllers\Unit\UnitController';
-  $uri = 'unit';
-  Route::get("/${uri}",         "${ctrl}@index")->name("${uri}.index");
-  Route::get("/${uri}/{id}",    "${ctrl}@show")->name("${uri}.show");
+  $actionName = 'unit';
+  Route::get("/${actionName}",         "${ctrl}@index")->name("${actionName}.index");
+  Route::get("/${actionName}/{id}",    "${ctrl}@show")->name("${actionName}.show");
 });
 
 // Person (Pessoas)
@@ -102,12 +103,12 @@ Route::group([
   'middleware' => $defaultMiddleware
 ], function () {
   $ctrl = 'App\Http\Controllers\Person\PersonController';
-  $uri = 'person';
-  Route::get("/${uri}",         "${ctrl}@index")->name("${uri}.index");
-  Route::get("/${uri}/{id}",    "${ctrl}@show")->name("${uri}.show");
-  Route::post("/${uri}",        "${ctrl}@store")->name("${uri}.store");
-  Route::put("/${uri}/{id}",    "${ctrl}@update")->name("${uri}.update");
-  Route::delete("/${uri}/{id}", "${ctrl}@destroy")->name("${uri}.destroy");
+  $actionName = 'person';
+  Route::get("/${actionName}",         "${ctrl}@index")->name("${actionName}.index");
+  Route::get("/${actionName}/{id}",    "${ctrl}@show")->name("${actionName}.show");
+  Route::post("/${actionName}",        "${ctrl}@store")->name("${actionName}.store");
+  Route::put("/${actionName}/{id}",    "${ctrl}@update")->name("${actionName}.update");
+  Route::delete("/${actionName}/{id}", "${ctrl}@destroy")->name("${actionName}.destroy");
 });
 
 // Category (Categoria)
@@ -115,12 +116,12 @@ Route::group([
   'middleware' => $defaultMiddleware
 ], function () {
   $ctrl = 'App\Http\Controllers\Category\CategoryController';
-  $uri = 'category';
-  Route::get("/${uri}",         "${ctrl}@index")->name("${uri}.index");
-  Route::get("/${uri}/{id}",    "${ctrl}@show")->name("${uri}.show");
-  Route::post("/${uri}",        "${ctrl}@store")->name("${uri}.store");
-  Route::put("/${uri}/{id}",    "${ctrl}@update")->name("${uri}.update");
-  Route::delete("/${uri}/{id}", "${ctrl}@destroy")->name("${uri}.destroy");
+  $actionName = 'category';
+  Route::get("/${actionName}",         "${ctrl}@index")->name("${actionName}.index");
+  Route::get("/${actionName}/{id}",    "${ctrl}@show")->name("${actionName}.show");
+  Route::post("/${actionName}",        "${ctrl}@store")->name("${actionName}.store");
+  Route::put("/${actionName}/{id}",    "${ctrl}@update")->name("${actionName}.update");
+  Route::delete("/${actionName}/{id}", "${ctrl}@destroy")->name("${actionName}.destroy");
 });
 
 // Brand (Marcas)
@@ -128,12 +129,12 @@ Route::group([
   'middleware' => $defaultMiddleware
 ], function () {
   $ctrl = 'App\Http\Controllers\Brand\BrandController';
-  $uri = 'brand';
-  Route::get("/${uri}",         "${ctrl}@index")->name("${uri}.index");
-  Route::get("/${uri}/{id}",    "${ctrl}@show")->name("${uri}.show");
-  Route::post("/${uri}",        "${ctrl}@store")->name("${uri}.store");
-  Route::put("/${uri}/{id}",    "${ctrl}@update")->name("${uri}.update");
-  Route::delete("/${uri}/{id}", "${ctrl}@destroy")->name("${uri}.destroy");
+  $actionName = 'brand';
+  Route::get("/${actionName}",         "${ctrl}@index")->name("${actionName}.index");
+  Route::get("/${actionName}/{id}",    "${ctrl}@show")->name("${actionName}.show");
+  Route::post("/${actionName}",        "${ctrl}@store")->name("${actionName}.store");
+  Route::put("/${actionName}/{id}",    "${ctrl}@update")->name("${actionName}.update");
+  Route::delete("/${actionName}/{id}", "${ctrl}@destroy")->name("${actionName}.destroy");
 });
 
 // Stock (Produtos/Serviços)
@@ -141,10 +142,10 @@ Route::group([
   'middleware' => $defaultMiddleware
 ], function () {
   $ctrl = 'App\Http\Controllers\Stock\StockController';
-  $uri = 'stock';
-  Route::get("/${uri}",         "${ctrl}@index")->name("${uri}.index");
-  Route::get("/${uri}/{id}",    "${ctrl}@show")->name("${uri}.show");
-  Route::post("/${uri}",        "${ctrl}@store")->name("${uri}.store");
-  Route::put("/${uri}/{id}",    "${ctrl}@update")->name("${uri}.update");
-  Route::delete("/${uri}/{id}", "${ctrl}@destroy")->name("${uri}.destroy");
+  $actionName = 'stock';
+  Route::get("/${actionName}",         "${ctrl}@index")->name("${actionName}.index");
+  Route::get("/${actionName}/{id}",    "${ctrl}@show")->name("${actionName}.show");
+  Route::post("/${actionName}",        "${ctrl}@store")->name("${actionName}.store");
+  Route::put("/${actionName}/{id}",    "${ctrl}@update")->name("${actionName}.update");
+  Route::delete("/${actionName}/{id}", "${ctrl}@destroy")->name("${actionName}.destroy");
 });

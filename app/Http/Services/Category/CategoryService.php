@@ -4,6 +4,7 @@ namespace App\Http\Services\Category;
 
 use App\Http\Dto\Category\CategoryDto;
 use App\Http\Repositories\Category\CategoryRepository;
+use App\Http\Services\User\RoleService;
 
 class CategoryService
 {
@@ -41,4 +42,9 @@ class CategoryService
   {
     return $this->categoryRepository->setTransaction(false)->update($id, $dto);
   }
+
+  public function permissionTemplate(): array
+  {
+    return RoleService::permissionTemplateDefault('category', 'Categorias');
+  }  
 }
