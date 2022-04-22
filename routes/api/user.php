@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::group([
   'middleware' => ApiRoute::DefaultMiddleWare(),
-  'namespace' => 'App\Http\Controllers\User',
+  'namespace' => ApiRoute::DefaultPathController().'\User',  
 ], function () {
   Route::get("user",         "UserController@index")->name("user.index");
   Route::get("user/{id}",    "UserController@show")->name("user.show");

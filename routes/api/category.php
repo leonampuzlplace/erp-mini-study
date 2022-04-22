@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::group([
   'middleware' => ApiRoute::DefaultMiddleWare(),
-  'namespace' => 'App\Http\Controllers\Category',
+  'namespace' => ApiRoute::DefaultPathController().'\Category',  
 ], function () {
   Route::get("/category",         "CategoryController@index")->name("category.index");
   Route::post("/category",        "CategoryController@store")->name("category.store");

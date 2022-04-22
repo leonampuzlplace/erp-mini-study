@@ -59,13 +59,13 @@ class RoleService
   /**
    * Template Padrão para facilitar cadastro de Permissões
    *
-   * @param string $actionName
+   * @param string $routeName
    * Utilize o mesmo nome da rota antes do ".".
    * Supondo que temos as seguintes rotas: 
    * Route::get("/person", "personController@index")->name("person.store");
    * Route::get("/person", "personController@update")->name("person.update");
    * Route::get("/person", "personController@destroy")->name("person.destroy");
-   * $actionName deve ser: person 
+   * $routeName deve ser: person 
    * O que está após o ponto se for .store, .update, .destroy, será adiconado como default
    * 
    * @param string $actionGroupDescription
@@ -74,29 +74,29 @@ class RoleService
    * 
    * @return array
    */
-  public static function permissionTemplateDefault(string $actionName, string $actionGroupDescription): array 
+  public static function permissionTemplateDefault(string $routeName, string $actionGroupDescription): array 
   {
     $permissionTemplate = [
       [
-        'action_name' => "${actionName}.formAccess",
+        'action_name' => "${routeName}.formAccess",
         'action_group_description' => $actionGroupDescription,
         'action_name_description' => 'Acesso ao formulário',
         'is_allowed' => false
       ],
       [
-        'action_name' => "${actionName}.store",
+        'action_name' => "${routeName}.store",
         'action_group_description' => $actionGroupDescription,
         'action_name_description' => 'Incluir',
         'is_allowed' => false
       ],
       [
-        'action_name' => "${actionName}.update",
+        'action_name' => "${routeName}.update",
         'action_group_description' => $actionGroupDescription,
         'action_name_description' => 'Editar',
         'is_allowed' => false
       ],
       [
-        'action_name' => "${actionName}.destroy",
+        'action_name' => "${routeName}.destroy",
         'action_group_description' => $actionGroupDescription,
         'action_name_description' => 'Deletar',
         'is_allowed' => false

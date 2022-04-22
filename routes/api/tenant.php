@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::group([
   'middleware' => ApiRoute::DefaultMiddleWare(),
-  'namespace' => 'App\Http\Controllers\Tenant',
+  'namespace' => ApiRoute::DefaultPathController().'\Tenant',  
 ], function () {
   Route::get("/tenant",         "TenantController@index")->name("tenant.index");
   Route::get("/tenant/{id}",    "TenantController@show")->name("tenant.show");

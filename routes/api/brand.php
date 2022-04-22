@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::group([
   'middleware' => ApiRoute::DefaultMiddleWare(),
-  'namespace' => 'App\Http\Controllers\Brand',
+  'namespace' => ApiRoute::DefaultPathController().'\Brand',
 ], function () {
   Route::get("/brand",         "BrandController@index")->name("brand.index");
   Route::post("/brand",        "BrandController@store")->name("brand.store");

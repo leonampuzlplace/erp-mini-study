@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::group([
   'middleware' => ApiRoute::DefaultMiddleWare(),
-  'namespace' => 'App\Http\Controllers\Person',
+  'namespace' => ApiRoute::DefaultPathController().'\Person',  
 ], function () {
   Route::get("/person",         "PersonController@index")->name("person.index");
   Route::post("/person",        "PersonController@store")->name("person.store");

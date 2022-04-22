@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::group([
   'middleware' => ApiRoute::DefaultMiddleWare(),
-  'namespace' => 'App\Http\Controllers\Unit',
+  'namespace' => ApiRoute::DefaultPathController().'\Unit',  
 ], function () {
   Route::get("/unit",         "UnitController@index")->name("unit.index");
   Route::get("/unit/{id}",    "UnitController@show")->name("unit.show");
