@@ -4,6 +4,7 @@ namespace App\Http\Services\Person;
 
 use App\Http\Dto\Person\PersonDto;
 use App\Http\Repositories\Person\PersonRepository;
+use App\Http\Services\User\RoleService;
 
 class PersonService
 {
@@ -41,4 +42,9 @@ class PersonService
   {
     return $this->personRepository->setTransaction(true)->update($id, $dto);
   }
+
+  public function permissionTemplate(): array
+  {
+    return RoleService::permissionTemplateDefault('person', 'Pessoas');
+  }  
 }

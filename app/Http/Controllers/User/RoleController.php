@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Dto\User\RoleDto;
+use App\Http\Middleware\ACL;
 use App\Http\Services\User\RoleService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -54,7 +55,7 @@ class RoleController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function show(int $id): JsonResponse 
+    public function show(int $id): JsonResponse
     {
         return $this->responseSuccess(
             $this->roleService->show($id)
@@ -86,6 +87,19 @@ class RoleController extends Controller
     {
         return $this->responseSuccess(
             $this->roleService->update($id, $roleDto)
+        );
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return JsonResponse
+     */
+    public function permissionTemplate(): JsonResponse
+    {
+        return $this->responseSuccess(
+            $this->roleService->permissionTemplate()
         );
     }    
 }

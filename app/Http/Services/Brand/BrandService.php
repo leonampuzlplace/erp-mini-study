@@ -4,6 +4,7 @@ namespace App\Http\Services\Brand;
 
 use App\Http\Dto\Brand\BrandDto;
 use App\Http\Repositories\Brand\BrandRepository;
+use App\Http\Services\User\RoleService;
 
 class BrandService
 {
@@ -40,5 +41,10 @@ class BrandService
   public function update(int $id, BrandDto $dto): BrandDto
   {
     return $this->brandRepository->setTransaction(false)->update($id, $dto);
+  }
+
+  public function permissionTemplate(): array
+  {
+    return RoleService::permissionTemplateDefault('brand', 'Marcas');
   }
 }
