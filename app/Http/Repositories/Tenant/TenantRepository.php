@@ -70,7 +70,7 @@ class TenantRepository extends BaseRepository
   public function show(int $id): Data
   {
     $modelFound = $this->model
-      ->where('id', $id)
+      ->whereId($id)
       ->with('tenantAddress.city.state')
       ->with('tenantContact')
       ->first();

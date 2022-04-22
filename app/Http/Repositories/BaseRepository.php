@@ -36,7 +36,7 @@ abstract class BaseRepository
       // Apagar registro permanentemente (delete trashed)
       if (!$modelFound) {
         $modelFound = $this->model
-          ->where('id', $id)
+          ->whereId($id)
           ->onlyTrashed()
           ->first();
 

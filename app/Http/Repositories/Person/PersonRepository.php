@@ -70,7 +70,7 @@ class PersonRepository extends BaseRepository
   public function show(int $id): Data
   {
     $modelFound = $this->model
-      ->where('id', $id)
+      ->whereId($id)
       ->with('personAddress.city.state')
       ->with('personContact')
       ->first();
