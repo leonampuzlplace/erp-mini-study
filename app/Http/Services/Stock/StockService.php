@@ -43,7 +43,7 @@ class StockService
     return $this->stockRepository->setTransaction(false)->update($id, $dto);
   }
 
-  public function permissionTemplate(): array
+  public static function permissionTemplate(): array
   {
     return RoleService::permissionTemplateDefault('stock', 'Produtos / Serviços');
   }  

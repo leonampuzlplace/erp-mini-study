@@ -43,7 +43,7 @@ class CategoryService
     return $this->categoryRepository->setTransaction(false)->update($id, $dto);
   }
 
-  public function permissionTemplate(): array
+  public static function permissionTemplate(): array
   {
     return RoleService::permissionTemplateDefault('category', 'Categorias');
   }  

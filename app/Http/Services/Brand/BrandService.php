@@ -43,7 +43,7 @@ class BrandService
     return $this->brandRepository->setTransaction(false)->update($id, $dto);
   }
 
-  public function permissionTemplate(): array
+  public static function permissionTemplate(): array
   {
     return RoleService::permissionTemplateDefault('brand', 'Marcas');
   }

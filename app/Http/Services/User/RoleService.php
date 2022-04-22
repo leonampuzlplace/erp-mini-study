@@ -49,10 +49,10 @@ class RoleService
   public function permissionTemplate(): array
   {
     return [
-      ...BrandService::make()->permissionTemplate(),
-      ...CategoryService::make()->permissionTemplate(),
-      ...PersonService::make()->permissionTemplate(),
-      ...StockService::make()->permissionTemplate(),
+      ...BrandService::permissionTemplate(),
+      ...CategoryService::permissionTemplate(),
+      ...PersonService::permissionTemplate(),
+      ...StockService::permissionTemplate(),
     ];    
   }
 
