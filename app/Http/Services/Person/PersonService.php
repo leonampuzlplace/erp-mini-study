@@ -43,7 +43,7 @@ class PersonService
     return $this->personRepository->setTransaction(true)->update($id, $dto);
   }
 
-  public function permissionTemplate(): array
+  public static function permissionTemplate(): array
   {
     return RoleService::permissionTemplateDefault('person', 'Pessoas');
   }  
