@@ -43,7 +43,6 @@ abstract class BaseRepository
         throw_if(!$modelFound, new ModelNotFoundException(trans('message_lang.model_not_found') . ' Trashed id: ' . $id));
         return $modelFound->forceDelete();
       }
-      throw_if(!$modelFound, new ModelNotFoundException(trans('message_lang.model_not_found') . ' id: ' . $id));
 
       // Apagar registro (alterar para trashed. Não exclui permanentemente)
       return $modelFound->delete();
