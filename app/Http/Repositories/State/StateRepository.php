@@ -3,7 +3,7 @@
 namespace App\Http\Repositories\State;
 
 use App\Http\Repositories\BaseRepository;
-use App\Models\State;
+use App\Models\State\State;
 
 class StateRepository extends BaseRepository
 {

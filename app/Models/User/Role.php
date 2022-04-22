@@ -1,28 +1,31 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\User;
 
-use App\Http\Dto\City\CityDto;
+use App\Http\Dto\User\RoleDto;
+use App\Traits\TenantAbleTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\WithData;
 
-class City extends Model
+class Role extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use WithData;
+    use TenantAbleTrait;
 
-    protected $table = 'city';
-    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
-    protected $dataClass = CityDto::class;
+    protected $table = 'role';
+    protected $dates = ['deleted_at'];
+    protected $dataClass = RoleDto::class;
     public $timestamps = true;
 
     protected $hidden = [
         'deleted_at',
-        'created_at', 
-        'updated_at'
+    ];
+
+    protected $casts = [
     ];
 
     protected $guarded = [
@@ -41,9 +44,9 @@ class City extends Model
         // Formatar dados antes de recuperar a informação
         static::retrieved(fn ($model) => $model);
     }
-    
-    public function state()
+
+    public function rolePermission()
     {
-        return $this->belongsTo(State::class);
+        return $this->hasMany(RolePermission::class);
     }
 }

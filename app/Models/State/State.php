@@ -1,19 +1,28 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\State;
 
+use App\Http\Dto\State\StateDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\LaravelData\WithData;
 
-class TenantAddress extends Model
+class State extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+    use WithData;
 
-    protected $table = 'tenant_address';
-    public $timestamps = false;
+    protected $table = 'state';
+    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
+    protected $dataClass = StateDto::class;
+    public $timestamps = true;
 
-    protected $casts = [
-        'is_default' => 'boolean',
+    protected $hidden = [
+        'deleted_at',
+        'created_at',
+        'updated_at'
     ];
 
     protected $guarded = [
@@ -31,10 +40,5 @@ class TenantAddress extends Model
 
         // Formatar dados antes de recuperar a informação
         static::retrieved(fn ($model) => $model);
-    }
-    
-    public function city()
-    {
-        return $this->belongsTo(City::class);
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Repositories\Brand;
 
 use App\Http\Repositories\BaseRepository;
-use App\Models\Brand;
+use App\Models\Brand\Brand;
 
 class BrandRepository extends BaseRepository
 {

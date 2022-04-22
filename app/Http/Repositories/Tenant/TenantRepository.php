@@ -4,7 +4,7 @@ namespace App\Http\Repositories\Tenant;
 
 use App\Exceptions\ModelNotFoundException;
 use App\Http\Repositories\BaseRepository;
-use App\Models\Tenant;
+use App\Models\Tenant\Tenant;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\Data;

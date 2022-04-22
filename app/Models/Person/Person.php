@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Person;
 
 use App\Http\Dto\Person\PersonDto;
 use App\Traits\TenantAbleTrait;

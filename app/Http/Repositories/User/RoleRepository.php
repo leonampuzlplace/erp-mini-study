@@ -3,7 +3,7 @@
 namespace App\Http\Repositories\User;
 
 use App\Http\Repositories\BaseRepository;
-use App\Models\Role;
+use App\Models\User\Role;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\Data;

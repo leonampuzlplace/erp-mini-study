@@ -1,28 +1,19 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Tenant;
 
-use App\Http\Dto\State\StateDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\LaravelData\WithData;
 
-class State extends Model
+class TenantContact extends Model
 {
     use HasFactory;
-    use SoftDeletes;
-    use WithData;
 
-    protected $table = 'state';
-    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
-    protected $dataClass = StateDto::class;
-    public $timestamps = true;
+    protected $table = 'tenant_contact';
+    public $timestamps = false;
 
-    protected $hidden = [
-        'deleted_at',
-        'created_at',
-        'updated_at'
+    protected $casts = [
+        'is_default' => 'boolean',
     ];
 
     protected $guarded = [

@@ -4,7 +4,7 @@ namespace App\Http\Repositories\City;
 
 use App\Exceptions\ModelNotFoundException;
 use App\Http\Repositories\BaseRepository;
-use App\Models\City;
+use App\Models\City\City;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\LaravelData\Data;
 
