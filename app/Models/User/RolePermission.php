@@ -1,37 +1,30 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\User;
 
-use App\Http\Dto\User\RoleDto;
-use App\Traits\TenantAbleTrait;
+use App\Http\Dto\User\RolePermissionDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\WithData;
 
-class Role extends Model
+class RolePermission extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     use WithData;
-    use TenantAbleTrait;
-
-    protected $table = 'role';
-    protected $dates = ['deleted_at'];
-    protected $dataClass = RoleDto::class;
-    public $timestamps = true;
+    
+    protected $table = 'role_permission';
+    protected $dataClass = RolePermissionDto::class;
+    public $timestamps = false;
 
     protected $hidden = [
-        'deleted_at',
     ];
 
     protected $casts = [
+        'is_allowed' => 'boolean',
     ];
 
     protected $guarded = [
         'id',
-        'created_at',
-        'updated_at',
     ];
 
     protected static function boot()
@@ -43,10 +36,5 @@ class Role extends Model
 
         // Formatar dados antes de recuperar a informação
         static::retrieved(fn ($model) => $model);
-    }
-
-    public function rolePermission()
-    {
-        return $this->hasMany(RolePermission::class);
     }
 }

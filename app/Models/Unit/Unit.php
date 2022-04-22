@@ -1,30 +1,31 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Unit;
 
-use App\Http\Dto\Tenant\TenantDto;
+use App\Http\Dto\Unit\UnitDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\WithData;
 
-class Tenant extends Model
+class Unit extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use WithData;
+    use WithData;    
 
-    protected $table = 'tenant';
+    protected $table = 'unit';
     protected $dates = ['deleted_at'];
-    protected $dataClass = TenantDto::class;
+    protected $dataClass = UnitDto::class;
     public $timestamps = true;
 
     protected $hidden = [
         'deleted_at',
+        'created_at',
+        'updated_at'
     ];
 
     protected $casts = [
-        'icms_taxpayer' => 'boolean',
     ];
 
     protected $guarded = [
@@ -38,19 +39,9 @@ class Tenant extends Model
         parent::boot();
 
         // Formatar dados antes de salvar a informação
-        static::saving(fn ($model) => $model->ein = onlyNumbers($model->ein ?? ''));
+        static::saving(fn ($model) => $model);
 
         // Formatar dados antes de recuperar a informação
-        static::retrieved(fn ($model) => $model->ein = formatCpfCnpj($model->ein ?? ''));
-    }
-
-    public function tenantAddress()
-    {
-        return $this->hasMany(TenantAddress::class);
-    }
-
-    public function tenantContact()
-    {
-        return $this->hasMany(TenantContact::class);
+        static::retrieved(fn ($model) => $model);
     }
 }

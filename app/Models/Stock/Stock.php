@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Stock;
 
-use App\Http\Dto\Category\CategoryDto;
+use App\Http\Dto\Stock\StockDto;
 use App\Traits\TenantAbleTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\WithData;
 
-class Category extends Model
+class Stock extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use WithData;
     use TenantAbleTrait;
 
-    protected $table = 'category';
+    protected $table = 'stock';
     protected $dates = ['deleted_at'];
-    protected $dataClass = CategoryDto::class;
+    protected $dataClass = StockDto::class;
     public $timestamps = true;
 
     protected $hidden = [
@@ -26,6 +26,11 @@ class Category extends Model
     ];
 
     protected $casts = [
+        'is_service' => 'boolean',
+        'cost_price' => 'float',
+        'sale_price' => 'float',
+        'minimum_quantity' => 'float',
+        'current_quantity' => 'float',
     ];
 
     protected $guarded = [
@@ -43,5 +48,20 @@ class Category extends Model
 
         // Formatar dados antes de recuperar a informação
         static::retrieved(fn ($model) => $model);
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+    
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
 }

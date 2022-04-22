@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Person;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TenantContact extends Model
+class PersonAddress extends Model
 {
     use HasFactory;
 
-    protected $table = 'tenant_contact';
+    protected $table = 'person_address';
     public $timestamps = false;
 
     protected $casts = [
@@ -31,5 +31,10 @@ class TenantContact extends Model
 
         // Formatar dados antes de recuperar a informação
         static::retrieved(fn ($model) => $model);
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
     }
 }

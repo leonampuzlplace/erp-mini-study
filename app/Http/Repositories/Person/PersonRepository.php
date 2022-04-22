@@ -4,7 +4,7 @@ namespace App\Http\Repositories\Person;
 
 use App\Exceptions\ModelNotFoundException;
 use App\Http\Repositories\BaseRepository;
-use App\Models\Person;
+use App\Models\Person\Person;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\Data;

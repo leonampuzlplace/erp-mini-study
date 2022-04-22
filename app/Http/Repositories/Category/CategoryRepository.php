@@ -3,7 +3,7 @@
 namespace App\Http\Repositories\Category;
 
 use App\Http\Repositories\BaseRepository;
-use App\Models\Category;
+use App\Models\Category\Category;
 
 class CategoryRepository extends BaseRepository
 {

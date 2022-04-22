@@ -4,7 +4,7 @@ namespace App\Http\Repositories\Stock;
 
 use App\Exceptions\ModelNotFoundException;
 use App\Http\Repositories\BaseRepository;
-use App\Models\Stock;
+use App\Models\Stock\Stock;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\LaravelData\Data;
 

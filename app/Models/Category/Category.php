@@ -1,28 +1,28 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Category;
 
-use App\Http\Dto\Unit\UnitDto;
+use App\Http\Dto\Category\CategoryDto;
+use App\Traits\TenantAbleTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\WithData;
 
-class Unit extends Model
+class Category extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use WithData;    
+    use WithData;
+    use TenantAbleTrait;
 
-    protected $table = 'unit';
+    protected $table = 'category';
     protected $dates = ['deleted_at'];
-    protected $dataClass = UnitDto::class;
+    protected $dataClass = CategoryDto::class;
     public $timestamps = true;
 
     protected $hidden = [
         'deleted_at',
-        'created_at',
-        'updated_at'
     ];
 
     protected $casts = [

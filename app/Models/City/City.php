@@ -1,36 +1,28 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\City;
 
-use App\Http\Dto\Stock\StockDto;
-use App\Traits\TenantAbleTrait;
+use App\Http\Dto\City\CityDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\WithData;
 
-class Stock extends Model
+class City extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use WithData;
-    use TenantAbleTrait;
 
-    protected $table = 'stock';
-    protected $dates = ['deleted_at'];
-    protected $dataClass = StockDto::class;
+    protected $table = 'city';
+    protected $dates = ['deleted_at', 'created_at', 'updated_at'];
+    protected $dataClass = CityDto::class;
     public $timestamps = true;
 
     protected $hidden = [
         'deleted_at',
-    ];
-
-    protected $casts = [
-        'is_service' => 'boolean',
-        'cost_price' => 'float',
-        'sale_price' => 'float',
-        'minimum_quantity' => 'float',
-        'current_quantity' => 'float',
+        'created_at', 
+        'updated_at'
     ];
 
     protected $guarded = [
@@ -49,19 +41,9 @@ class Stock extends Model
         // Formatar dados antes de recuperar a informação
         static::retrieved(fn ($model) => $model);
     }
-
-    public function unit()
-    {
-        return $this->belongsTo(Unit::class);
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
     
-    public function brand()
+    public function state()
     {
-        return $this->belongsTo(Brand::class);
+        return $this->belongsTo(State::class);
     }
 }
