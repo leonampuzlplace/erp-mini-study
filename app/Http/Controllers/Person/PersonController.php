@@ -12,20 +12,20 @@ use Illuminate\Http\Response;
 class PersonController extends Controller
 {
   public function __construct(
-    protected PersonService $personService
+    protected PersonService $service
   ) {
   }
 
   public function destroy(int $id): JsonResponse
   {
-    $this->personService->destroy($id);
+    $this->service->destroy($id);
     return $this->responseSuccess(code: Response::HTTP_NO_CONTENT);
   }
 
   public function index(Request $request): JsonResponse
   {
     return $this->responseSuccess(
-      $this->personService->index(
+      $this->service->index(
         $request->input('page'),
         $request->input('filter'),
       )
@@ -35,14 +35,14 @@ class PersonController extends Controller
   public function show(int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->personService->show($id)
+      $this->service->show($id)
     );
   }
 
   public function store(PersonDto $personDto): JsonResponse
   {
     return $this->responseSuccess(
-      $this->personService->store($personDto)->toArray(),
+      $this->service->store($personDto)->toArray(),
       Response::HTTP_CREATED
     );
   }
@@ -50,7 +50,7 @@ class PersonController extends Controller
   public function update(PersonDto $personDto, int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->personService->update($id, $personDto)
+      $this->service->update($id, $personDto)
     );
   }
 }

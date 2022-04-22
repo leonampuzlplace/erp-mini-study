@@ -11,9 +11,9 @@ use Spatie\LaravelData\Data;
 
 class PersonRepository extends BaseRepository
 {
-  public function __construct(Person $person)
+  public function __construct(Person $model)
   {
-    parent::__construct($person);
+    parent::__construct($model);
   }
 
   public static function make(): Self

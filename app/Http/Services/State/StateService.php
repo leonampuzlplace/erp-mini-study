@@ -8,7 +8,7 @@ use App\Http\Repositories\State\StateRepository;
 class StateService
 {
   public function __construct(
-    protected StateRepository $stateRepository
+    protected StateRepository $repository
   ) {
   }
 
@@ -19,11 +19,11 @@ class StateService
 
   public function index(array|null $page = [], array|null $filter = [], array|null $filterEx = []): array
   {
-    return $this->stateRepository->index($page, $filter, $filterEx);
+    return $this->repository->index($page, $filter, $filterEx);
   }
 
   public function show(int $id): StateDto
   {
-    return $this->stateRepository->show($id);
+    return $this->repository->show($id);
   }
 }

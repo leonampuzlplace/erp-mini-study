@@ -8,7 +8,7 @@ use App\Http\Repositories\Unit\UnitRepository;
 class UnitService
 {
   public function __construct(
-    protected UnitRepository $unitRepository
+    protected UnitRepository $repository
   ) {
   }
 
@@ -19,11 +19,11 @@ class UnitService
 
   public function index(array|null $page = [], array|null $filter = [], array|null $filterEx = []): array
   {
-    return $this->unitRepository->index($page, $filter, $filterEx);
+    return $this->repository->index($page, $filter, $filterEx);
   }
 
   public function show(int $id): UnitDto
   {
-    return $this->unitRepository->show($id);
+    return $this->repository->show($id);
   }
 }

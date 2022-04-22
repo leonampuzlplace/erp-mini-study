@@ -8,7 +8,7 @@ use App\Http\Repositories\City\CityRepository;
 class CityService
 {
   public function __construct(
-    protected CityRepository $cityRepository
+    protected CityRepository $repository
   ) {
   }
 
@@ -19,11 +19,11 @@ class CityService
 
   public function index(array|null $page = [], array|null $filter = [], array|null $filterEx = []): array
   {
-    return $this->cityRepository->index($page, $filter, $filterEx);
+    return $this->repository->index($page, $filter, $filterEx);
   }
 
   public function show(int $id): CityDto
   {
-    return $this->cityRepository->show($id);
+    return $this->repository->show($id);
   }
 }

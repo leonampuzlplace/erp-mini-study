@@ -15,10 +15,10 @@ class RoleController extends Controller
     /**
     * Constructor
     *
-    * @param RoleService $roleService
+    * @param RoleService $service
     */
     public function __construct(
-        protected RoleService $roleService
+        protected RoleService $service
     ) {
     }
 
@@ -30,7 +30,7 @@ class RoleController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $this->roleService->destroy($id);
+        $this->service->destroy($id);
         return $this->responseSuccess(code: Response::HTTP_NO_CONTENT);
     }
 
@@ -42,7 +42,7 @@ class RoleController extends Controller
     public function index(Request $request): JsonResponse
     {
         return $this->responseSuccess(
-        $this->roleService->index(
+        $this->service->index(
             $request->input('page'),
             $request->input('filter'),
         )
@@ -58,7 +58,7 @@ class RoleController extends Controller
     public function show(int $id): JsonResponse
     {
         return $this->responseSuccess(
-            $this->roleService->show($id)
+            $this->service->show($id)
         );
     }
 
@@ -71,7 +71,7 @@ class RoleController extends Controller
     public function store(RoleDto $roleDto): JsonResponse
     {
         return $this->responseSuccess(
-            $this->roleService->store($roleDto)->toArray(),
+            $this->service->store($roleDto)->toArray(),
             Response::HTTP_CREATED
         );
     }
@@ -86,7 +86,7 @@ class RoleController extends Controller
     public function update(RoleDto $roleDto, int $id): JsonResponse
     {
         return $this->responseSuccess(
-            $this->roleService->update($id, $roleDto)
+            $this->service->update($id, $roleDto)
         );
     }
 
@@ -99,7 +99,7 @@ class RoleController extends Controller
     public function permissionTemplate(): JsonResponse
     {
         return $this->responseSuccess(
-            $this->roleService->permissionTemplate()
+            $this->service->permissionTemplate()
         );
     }    
 }

@@ -7,9 +7,9 @@ use App\Models\Brand\Brand;
 
 class BrandRepository extends BaseRepository
 {
-  public function __construct(Brand $brand)
+  public function __construct(Brand $model)
   {
-    parent::__construct($brand);
+    parent::__construct($model);
   }
 
   public static function make(): Self

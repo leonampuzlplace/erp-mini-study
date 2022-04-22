@@ -14,23 +14,23 @@ class BrandController extends Controller
   /**
    * Undocumented function
    *
-   * @param BrandService $brandService
+   * @param BrandService $service
    */
   public function __construct(
-    protected BrandService $brandService
+    protected BrandService $service
   ) {
   }
 
   public function destroy(int $id): JsonResponse
   {
-    $this->brandService->destroy($id);
+    $this->service->destroy($id);
     return $this->responseSuccess(code: Response::HTTP_NO_CONTENT);
   }
 
   public function index(Request $request): JsonResponse
   {
     return $this->responseSuccess(
-      $this->brandService->index(
+      $this->service->index(
         $request->input('page'),
         $request->input('filter'),
       )
@@ -40,14 +40,14 @@ class BrandController extends Controller
   public function show(int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->brandService->show($id)
+      $this->service->show($id)
     );
   }
 
   public function store(BrandDto $brandDto): JsonResponse
   {
     return $this->responseSuccess(
-      $this->brandService->store($brandDto)->toArray(),
+      $this->service->store($brandDto)->toArray(),
       Response::HTTP_CREATED
     );
   }
@@ -62,7 +62,7 @@ class BrandController extends Controller
   public function update(BrandDto $brandDto, int $id): JsonResponse
   {
     return $this->responseSuccess(
-      $this->brandService->update($id, $brandDto)
+      $this->service->update($id, $brandDto)
     );
   }
 }

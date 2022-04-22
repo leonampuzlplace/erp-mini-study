@@ -12,7 +12,7 @@ use App\Http\Services\Stock\StockService;
 class RoleService
 {
   public function __construct(
-    protected RoleRepository $roleRepository
+    protected RoleRepository $repository
   ) {
   }
 
@@ -23,27 +23,27 @@ class RoleService
 
   public function destroy(int $id): bool
   {
-    return $this->roleRepository->destroy($id);
+    return $this->repository->destroy($id);
   }
 
   public function index(array|null $page = [], array|null $filter = [], array|null $filterEx = []): array
   {
-    return $this->roleRepository->index($page, $filter, $filterEx);
+    return $this->repository->index($page, $filter, $filterEx);
   }
 
   public function show(int $id): RoleDto
   {
-    return $this->roleRepository->show($id);
+    return $this->repository->show($id);
   }
 
   public function store(RoleDto $dto): RoleDto
   {
-    return $this->roleRepository->setTransaction(true)->store($dto);
+    return $this->repository->setTransaction(true)->store($dto);
   }
 
   public function update(int $id, RoleDto $dto): RoleDto
   {
-    return $this->roleRepository->setTransaction(true)->update($id, $dto);
+    return $this->repository->setTransaction(true)->update($id, $dto);
   }
 
   public function permissionTemplate(): array

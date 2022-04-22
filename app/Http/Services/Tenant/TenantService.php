@@ -8,7 +8,7 @@ use App\Http\Repositories\Tenant\TenantRepository;
 class TenantService
 {
   public function __construct(
-    protected TenantRepository $tenantRepository
+    protected TenantRepository $repository
   ) {
   }
 
@@ -19,26 +19,26 @@ class TenantService
 
   public function destroy(int $id): bool
   {
-    return $this->tenantRepository->destroy($id);
+    return $this->repository->destroy($id);
   }
 
   public function index(array|null $page = [], array|null $filter = [], array|null $filterEx = []): array
   {
-    return $this->tenantRepository->index($page, $filter, $filterEx);
+    return $this->repository->index($page, $filter, $filterEx);
   }
 
   public function show(int $id): TenantDto
   {
-    return $this->tenantRepository->show($id);
+    return $this->repository->show($id);
   }
 
   public function store(TenantDto $dto): TenantDto
   {
-    return $this->tenantRepository->setTransaction(true)->store($dto);
+    return $this->repository->setTransaction(true)->store($dto);
   }
 
   public function update(int $id, TenantDto $dto): TenantDto
   {
-    return $this->tenantRepository->setTransaction(true)->update($id, $dto);
+    return $this->repository->setTransaction(true)->update($id, $dto);
   }
 }
