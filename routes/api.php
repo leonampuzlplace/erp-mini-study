@@ -2,17 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-*/
-
 // Auth (Autenticação)
 Route::group([
   'namespace' => 'App\Http\Controllers',
@@ -26,8 +15,15 @@ Route::group([
 });
 
 /**
- * Configuração de middleware padrão para as rotas
+ * Auxilio para configuração das rotas
  */
-class ApiRoute{public static function DefaultMiddleWare(){
-  return ['api', 'jwt', 'cors', 'locale', 'acl'];
-}}
+class ApiRoute{
+  public static function DefaultMiddleWare(): array
+  {
+    return ['api', 'jwt', 'cors', 'locale', 'acl'];
+  }
+  public static function DefaultPathController(): string
+  {
+    return 'App\Http\Controllers';
+  }
+}

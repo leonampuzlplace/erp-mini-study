@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::group([
   'middleware' => ApiRoute::DefaultMiddleWare(),
-  'namespace' => 'App\Http\Controllers\User',
+  'namespace' => ApiRoute::DefaultPathController().'\User',  
 ], function () {
   Route::get("/role/permission-template", "RoleController@permissionTemplate")->name("role.permissionTemplate");
   Route::get("/role",                     "RoleController@index")->name("role.index");
