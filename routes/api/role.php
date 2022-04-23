@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Route;
  * Role (Perfil de usuários)
  */
 Route::group([
-  'middleware' => ApiRoute::DefaultMiddleWare(),
-  'namespace' => ApiRoute::DefaultPathController().'\User',  
+  'middleware' => ['api', 'jwt', 'cors', 'acl', 'X-Locale'],
+  'namespace' => 'App\Http\Controllers\User',
 ], function () {
   Route::get("/role/permission-template", "RoleController@permissionTemplate")->name("role.permissionTemplate");
   Route::get("/role",                     "RoleController@index")->name("role.index");

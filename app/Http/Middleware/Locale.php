@@ -17,7 +17,7 @@ class Locale
      */
     public function handle(Request $request, Closure $next)
     {
-        App::setLocale($request->header('locale', 'en'));
+        App::setLocale($request->header('X-Locale', 'en'));
         return $next($request);
     }
 }
