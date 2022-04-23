@@ -29,4 +29,14 @@ class CityDto extends Data
     public object|array|null $state,
   ) {
   }
+
+  /**
+   * Utilizado para formatar os dados caso seja necessário
+   *
+   * @return array
+   */
+  public function toResource(): array
+  {
+    return parent::toArray();
+  }
 }

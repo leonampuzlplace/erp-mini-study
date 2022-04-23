@@ -18,7 +18,6 @@ return new class extends Migration
             $table->bigInteger('id')->primary();
             $table->string('name', 50)->index();
             $table->char('abbreviation', 2)->index();
-            $table->softDeletes();
             $table->timestamps();
         });
 

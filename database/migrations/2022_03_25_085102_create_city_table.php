@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('ibge_code', 20)->index();
             $table->bigInteger('state_id');
             $table->foreign('state_id', 'state_id_fk')->references('id')->on('state')->onUpdate('cascade')->onDelete('cascade');
-            $table->softDeletes();
             $table->timestamps();
         });
 

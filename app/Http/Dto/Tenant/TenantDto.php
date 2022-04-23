@@ -123,4 +123,14 @@ class TenantDto extends Data
       }
     });
   }
+
+  /**
+   * Utilizado para formatar os dados caso seja necessário
+   *
+   * @return array
+   */
+  public function toResource(): array
+  {
+    return parent::toArray();
+  }
 }

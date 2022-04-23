@@ -30,7 +30,6 @@ return new class extends Migration
             $table->foreignId('category_id')->nullable()->constrained('category');
             $table->foreignId('brand_id')->nullable()->constrained('brand');
             $table->integer('is_service')->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
     }
