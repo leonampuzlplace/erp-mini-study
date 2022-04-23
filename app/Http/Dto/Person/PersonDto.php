@@ -160,5 +160,5 @@ class PersonDto extends Data
         }
       }
     });
-  }  
+  }
 }

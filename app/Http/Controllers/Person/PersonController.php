@@ -34,6 +34,7 @@ class PersonController extends Controller
 
   public function show(int $id): JsonResponse
   {
+    $dto = $this->service->show($id);
     return $this->responseSuccess(
       $this->service->show($id)
     );
