@@ -21,9 +21,9 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->integer('is_default')->default(0)->comment('[0=false, 1=true]');
-            $table->string('name', 60)->nullable();
+            $table->string('name', 80)->nullable();
             $table->string('ein', 20)->nullable();
-            $table->string('type', 60)->nullable();
+            $table->string('type', 80)->nullable();
             $table->text('note')->nullable();
             $table->string('phone', 30)->nullable();
             $table->string('email', 100)->nullable();

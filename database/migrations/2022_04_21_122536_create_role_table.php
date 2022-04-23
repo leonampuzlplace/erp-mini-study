@@ -20,7 +20,7 @@ return new class extends Migration
                 ->constrained('tenant')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string('name', 60)->index();
+            $table->string('name', 80)->index();
             $table->timestamps();
         });
 
