@@ -42,7 +42,7 @@ class CategoryController extends Controller
   public function store(CategoryDto $categoryDto): JsonResponse
   {
     return $this->responseSuccess(
-      $this->service->store($categoryDto)->toArray(),
+      $this->service->store($categoryDto),
       Response::HTTP_CREATED
     );
   }

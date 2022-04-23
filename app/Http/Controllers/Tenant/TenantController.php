@@ -42,7 +42,7 @@ class TenantController extends Controller
   public function store(TenantDto $tenantDto): JsonResponse
   {
     return $this->responseSuccess(
-      $this->service->store($tenantDto)->toArray(), 
+      $this->service->store($tenantDto), 
       Response::HTTP_CREATED
     );
   }

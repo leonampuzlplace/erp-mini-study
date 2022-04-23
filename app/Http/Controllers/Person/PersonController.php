@@ -42,7 +42,7 @@ class PersonController extends Controller
   public function store(PersonDto $personDto): JsonResponse
   {
     return $this->responseSuccess(
-      $this->service->store($personDto)->toArray(),
+      $this->service->store($personDto),
       Response::HTTP_CREATED
     );
   }

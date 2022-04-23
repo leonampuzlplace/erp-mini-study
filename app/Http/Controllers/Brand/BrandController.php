@@ -47,7 +47,7 @@ class BrandController extends Controller
   public function store(BrandDto $brandDto): JsonResponse
   {
     return $this->responseSuccess(
-      $this->service->store($brandDto)->toArray(),
+      $this->service->store($brandDto),
       Response::HTTP_CREATED
     );
   }

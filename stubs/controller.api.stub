@@ -68,7 +68,7 @@ class {{ class }} extends Controller
     public function store({{ class }}Dto $classInLowerCaseDto): JsonResponse
     {
         return $this->responseSuccess(
-            $this->classInLowerCaseService->store($classInLowerCaseDto)->toArray(),
+            $this->classInLowerCaseService->store($classInLowerCaseDto),
             Response::HTTP_CREATED
         );
     }

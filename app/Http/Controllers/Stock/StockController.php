@@ -42,7 +42,7 @@ class StockController extends Controller
   public function store(StockDto $stockDto): JsonResponse
   {
     return $this->responseSuccess(
-      $this->service->store($stockDto)->toArray(),
+      $this->service->store($stockDto),
       Response::HTTP_CREATED
     );
   }

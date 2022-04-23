@@ -71,7 +71,7 @@ class RoleController extends Controller
     public function store(RoleDto $roleDto): JsonResponse
     {
         return $this->responseSuccess(
-            $this->service->store($roleDto)->toArray(),
+            $this->service->store($roleDto),
             Response::HTTP_CREATED
         );
     }

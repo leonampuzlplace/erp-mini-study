@@ -3,6 +3,9 @@
 namespace App\Models\Stock;
 
 use App\Http\Dto\Stock\StockDto;
+use App\Models\Brand\Brand;
+use App\Models\Category\Category;
+use App\Models\Unit\Unit;
 use App\Traits\TenantAbleTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
