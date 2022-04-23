@@ -15,7 +15,10 @@ return new class extends Migration
     {
         Schema::create('person', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tenant_id')->constrained('tenant')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('tenant_id')
+                ->constrained('tenant')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('business_name', 80)->index();
             $table->string('alias_name', 80)->nullable()->index();
             $table->string('ein', 20)->nullable()->index();

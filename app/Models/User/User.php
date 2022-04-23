@@ -2,8 +2,6 @@
 
 namespace App\Models\User;
 
-use App\Traits\TenantAbleTrait;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -15,7 +13,6 @@ class User extends Authenticatable implements JWTSubject
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
-    use TenantAbleTrait;
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

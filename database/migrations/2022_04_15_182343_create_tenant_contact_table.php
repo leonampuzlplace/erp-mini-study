@@ -16,7 +16,10 @@ return new class extends Migration
     {
         Schema::create('tenant_contact', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tenant_id')->constrained('tenant')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('tenant_id')
+                ->constrained('tenant')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->integer('is_default')->default(0)->comment('[0=false, 1=true]');
             $table->string('name', 60)->nullable();
             $table->string('ein', 20)->nullable();

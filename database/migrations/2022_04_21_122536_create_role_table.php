@@ -16,7 +16,10 @@ return new class extends Migration
     {
         Schema::create('role', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tenant_id')->constrained('tenant')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('tenant_id')
+                ->constrained('tenant')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('name', 60)->index();
             $table->timestamps();
         });

@@ -66,6 +66,12 @@ class StockDto extends Data
 
     #[Rule('nullable')]
     public object|array|null $brand,
+
+    #[Rule('nullable|string|min:10')]
+    public ?string $created_at,
+
+    #[Rule('nullable|string|min:10')]
+    public ?string $updated_at,
   ) {
   }
 
