@@ -103,3 +103,14 @@ if (!function_exists('formatCpfCnpj')) {
       : preg_replace("/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/", "\$1.\$2.\$3/\$4-\$5", $value);
   }
 }
+
+// Remover chaves do array
+if (!function_exists('array_except')) {
+  function array_except(array $array, array $keys): array
+  {
+    foreach ($keys as $key) {
+      unset($array[$key]);
+    }
+    return $array;
+  }
+}
