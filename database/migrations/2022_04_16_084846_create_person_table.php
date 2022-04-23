@@ -31,7 +31,6 @@ return new class extends Migration
             $table->integer('is_technician')->nullable();
             $table->integer('is_employee')->nullable();
             $table->integer('is_other')->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
     }

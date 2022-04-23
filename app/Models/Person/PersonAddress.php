@@ -12,6 +12,7 @@ class PersonAddress extends Model
 
     protected $table = 'person_address';
     public $timestamps = false;
+    protected $hidden = [];
 
     protected $casts = [
         'is_default' => 'boolean',

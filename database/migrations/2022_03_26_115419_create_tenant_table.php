@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('municipal_registration', 20)->nullable();
             $table->text('note')->nullable();
             $table->string('internet_page', 255)->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
     }

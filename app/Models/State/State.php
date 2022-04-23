@@ -5,13 +5,11 @@ namespace App\Models\State;
 use App\Http\Dto\State\StateDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\WithData;
 
 class State extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     use WithData;
 
     protected $table = 'state';
@@ -20,7 +18,6 @@ class State extends Model
     public $timestamps = true;
 
     protected $hidden = [
-        'deleted_at',
         'created_at',
         'updated_at'
     ];

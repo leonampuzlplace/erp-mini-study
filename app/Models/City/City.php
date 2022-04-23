@@ -6,13 +6,11 @@ use App\Http\Dto\City\CityDto;
 use App\Models\State\State;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\WithData;
 
 class City extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     use WithData;
 
     protected $table = 'city';
@@ -21,7 +19,6 @@ class City extends Model
     public $timestamps = true;
 
     protected $hidden = [
-        'deleted_at',
         'created_at', 
         'updated_at'
     ];

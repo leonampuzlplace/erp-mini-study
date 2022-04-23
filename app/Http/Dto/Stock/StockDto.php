@@ -85,5 +85,15 @@ class StockDto extends Data
           ->where(fn ($query) => $query->where('tenant_id', currentTenantId())),
       ],
     ];
-  }     
+  }
+
+  /**
+   * Utilizado para formatar os dados caso seja necessário
+   *
+   * @return array
+   */
+  public function toResource(): array
+  {
+    return parent::toArray();
+  }
 }

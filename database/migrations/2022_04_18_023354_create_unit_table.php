@@ -18,7 +18,6 @@ return new class extends Migration
             $table->id();
             $table->string('abbreviation', 10)->unique();
             $table->string('description', 60)->nullable()->index();
-            $table->softDeletes();
             $table->timestamps();
         });
 

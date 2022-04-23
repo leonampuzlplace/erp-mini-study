@@ -23,4 +23,14 @@ class BrandDto extends Data
     public string $name,
   ) {
   }
+
+  /**
+   * Utilizado para formatar os dados caso seja necessário
+   *
+   * @return array
+   */
+  public function toResource(): array
+  {
+    return parent::toArray();
+  }
 }

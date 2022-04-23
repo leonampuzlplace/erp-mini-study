@@ -23,7 +23,6 @@ abstract class BaseRepository
 
   /**
    * Apagar registro
-   * Se executado duas vezes, registro será apagado permanentemente
    *
    * @param integer $id
    * @return boolean
@@ -32,19 +31,8 @@ abstract class BaseRepository
   {
     $executeDestroy = function ($id) {
       $modelFound = $this->model->find($id);
-      
-      // Apagar registro permanentemente (delete trashed)
-      if (!$modelFound) {
-        $modelFound = $this->model
-          ->whereId($id)
-          ->onlyTrashed()
-          ->first();
+      throw_if(!$modelFound, new ModelNotFoundException(trans('message_lang.model_not_found') . ' Id: ' . $id));
 
-        throw_if(!$modelFound, new ModelNotFoundException(trans('message_lang.model_not_found') . ' Trashed id: ' . $id));
-        return $modelFound->forceDelete();
-      }
-
-      // Apagar registro (alterar para trashed. Não exclui permanentemente)
       return $modelFound->delete();
     };
 
@@ -75,7 +63,6 @@ abstract class BaseRepository
    * filter[where][tableName.fieldName][operator]
    * filter[orWhere][tableName.fieldName][operator]
    * filter[orderBy]
-   * filter[onlyTrashed]   
    * 
    * @param array $filterEx
    * Filtro extra para utilizar da forma que desejar dentro da classe que extende BaseRepository
@@ -143,11 +130,6 @@ abstract class BaseRepository
         }
         $queryBuilder->orderBy($orderByColumn, $orderByDirection);
       }
-    }
-
-    // Registros Apagados
-    if (intVal($this->filter['onlyTrashed'] ?? 0) === 1) {
-      $queryBuilder->onlyTrashed();
     }
 
     return $queryBuilder;

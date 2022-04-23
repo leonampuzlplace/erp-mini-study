@@ -27,4 +27,14 @@ class RoleDto extends Data
     public DataCollection $role_permission,
   ) {
   }
+
+  /**
+   * Utilizado para formatar os dados caso seja necessário
+   *
+   * @return array
+   */
+  public function toResource(): array
+  {
+    return parent::toArray();
+  }
 }

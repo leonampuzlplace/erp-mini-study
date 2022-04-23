@@ -23,4 +23,14 @@ class StateDto extends Data
     public string $abbreviation,
   ) {
   }
+
+  /**
+   * Utilizado para formatar os dados caso seja necessário
+   *
+   * @return array
+   */
+  public function toResource(): array
+  {
+    return parent::toArray();
+  }
 }

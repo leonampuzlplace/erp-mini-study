@@ -6,13 +6,11 @@ use App\Http\Dto\Person\PersonDto;
 use App\Traits\TenantAbleTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\WithData;
 
 class Person extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     use WithData;
     use TenantAbleTrait;
         
@@ -22,7 +20,6 @@ class Person extends Model
     public $timestamps = true;
 
     protected $hidden = [
-        'deleted_at',
     ];
 
     protected $casts = [
