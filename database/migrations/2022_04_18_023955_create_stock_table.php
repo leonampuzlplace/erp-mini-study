@@ -15,7 +15,10 @@ return new class extends Migration
     {
         Schema::create('stock', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tenant_id')->constrained('tenant')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('tenant_id')
+                ->constrained('tenant')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('name', 120)->index();
             $table->string('reference_code', 36)->index()->nullable();
             $table->string('ean_code', 36)->index()->nullable();

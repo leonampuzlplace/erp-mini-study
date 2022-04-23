@@ -23,6 +23,12 @@ class RoleDto extends Data
     #[Rule('required|string|max:60')]
     public string $name,
 
+    #[Rule('nullable|string|min:10')]
+    public ?string $created_at,
+
+    #[Rule('nullable|string|min:10')]
+    public ?string $updated_at,
+
     /** @var RolePermissionDto[] */
     public DataCollection $role_permission,
   ) {

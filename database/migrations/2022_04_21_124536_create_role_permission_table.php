@@ -16,7 +16,10 @@ return new class extends Migration
     {
         Schema::create('role_permission', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->constrained('role')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('role_id')
+                ->constrained('role')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('action_name', 255)->index();
             $table->string('action_group_description', 255)->index();
             $table->string('action_name_description', 255)->index();

@@ -15,7 +15,10 @@ return new class extends Migration
     {
         Schema::create('tenant_address', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tenant_id')->constrained('tenant')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('tenant_id')
+                ->constrained('tenant')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->integer('is_default')->default(0)->comment('[0=false, 1=true]');
             $table->string('zipcode', 10)->nullable();
             $table->string('address', 100)->index();

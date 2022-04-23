@@ -22,6 +22,9 @@ class ACL
     public function handle(Request $request, Closure $next)
     {
         $user = currentUser();
+        if (!$user) {
+            throw_if(!$user, new \Exception('ACL: '.trans('auth_lang.not_authorized')));
+        }
         $currentAction = $request->route()->getName();
         $isAllowed = $user['is_admin'];
 
@@ -38,7 +41,7 @@ class ACL
             };
         }
 
-        throw_if(!$isAllowed, new \Exception(trans('auth_lang.not_authorized')));
+        throw_if(!$isAllowed, new \Exception('ACL: '.trans('auth_lang.not_authorized')));
         return $next($request);
     }
 }

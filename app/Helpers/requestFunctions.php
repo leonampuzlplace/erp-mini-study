@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Cache;
 if (!function_exists('tokenFromCurrentRequest')) {
   function tokenFromCurrentRequest(): string
   {
-    return str_replace(
-      "Bearer ",
-      "",
-      request()->header('Authorization') ?? ''
-    );
+    if (!$authorization = request()->header('Authorization')) {
+      $authorization = request()->input('Authorization', '');
+    }
+    
+    return str_replace("Bearer ", "", $authorization ?? '');
   }
 }
 
@@ -30,4 +30,10 @@ if (!function_exists('currentTenantId')) {
   }
 }
 
-    
+if (!function_exists('getRouteParameter')) {
+  function getRouteParameter($route)
+  {
+    $parameters = $route->parameters ?? [];
+    return array_shift($parameters);
+  }
+}
