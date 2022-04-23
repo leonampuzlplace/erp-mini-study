@@ -52,7 +52,7 @@ class Kernel extends HttpKernel
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            'locale' => \App\Http\Middleware\Locale::class,
+            'X-Locale' => \App\Http\Middleware\Locale::class,
             // \Illuminate\Session\Middleware\StartSession::class,
         ],
     ];
@@ -75,7 +75,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'cors' => \App\Http\Middleware\Cors::class,
-        'locale' => \App\Http\Middleware\Locale::class,
+        'X-Locale' => \App\Http\Middleware\Locale::class,
         'jwt' => \App\Http\Middleware\JWT::class,
         'acl' => \App\Http\Middleware\ACL::class,
     ];

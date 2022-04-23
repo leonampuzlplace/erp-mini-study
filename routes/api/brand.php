@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Route;
  * Brand (Marca)
  */
 Route::group([
-  'middleware' => ApiRoute::DefaultMiddleWare(),
-  'namespace' => ApiRoute::DefaultPathController().'\Brand',
+  'middleware' => ['api', 'jwt', 'cors', 'acl', 'X-Locale'],
+  'namespace' => 'App\Http\Controllers\Brand',
 ], function () {
   Route::get("/brand",         "BrandController@index")->name("brand.index");
   Route::post("/brand",        "BrandController@store")->name("brand.store");
